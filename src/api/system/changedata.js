@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询【请填写功能名称】列表
 export function listData(query) {
   return request({
-    url: '/system/data/list',
+    url: '/system/changedata/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listData(query) {
 // 查询部门下拉树结构
 export function changeDataTreeSelect() {
   return request({
-    url: '/system/data/changeTree',
+    url: '/system/changedata/changeTree',
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function changeDataTreeSelect() {
 // 查询【请填写功能名称】详细
 export function getData(id) {
   return request({
-    url: '/system/data/' + id,
+    url: '/system/changedata/' + id,
     method: 'get'
   })
 }
@@ -28,7 +28,7 @@ export function getData(id) {
 // 新增【请填写功能名称】
 export function addData(data) {
   return request({
-    url: '/system/data',
+    url: '/system/changedata',
     method: 'post',
     data: data
   })
@@ -37,7 +37,7 @@ export function addData(data) {
 // 修改【请填写功能名称】
 export function updateData(data) {
   return request({
-    url: '/system/data',
+    url: '/system/changedata',
     method: 'put',
     data: data
   })
@@ -46,7 +46,7 @@ export function updateData(data) {
 // 删除【请填写功能名称】
 export function delData(id) {
   return request({
-    url: '/system/data/' + id,
+    url: '/system/changedata/' + id,
     method: 'delete'
   })
 }
