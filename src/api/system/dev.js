@@ -9,6 +9,15 @@ export function listDev(query) {
   })
 }
 
+// 查询quality_problem列表
+export function listAllDev(query) {
+  return request({
+    url: '/system/dev/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询quality_problem详细
 export function getDev(id) {
   return request({
@@ -42,3 +51,12 @@ export function delDev(id) {
     method: 'delete'
   })
 }
+
+// 下载导入模板
+export function importTemplate() {
+  return request({
+    url: '/system/dev/importTemplate',
+    method: 'get'
+  })
+}
+
