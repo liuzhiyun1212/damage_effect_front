@@ -9,6 +9,16 @@ export function listDev(query) {
   })
 }
 
+// 查询quality_problem列表
+export function listAllDev(query) {
+  return request({
+    url: '/system/dev/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询quality_problem详细
 // 季度质量问题发生时间统计结果
 export function qualityHappenSum(query) {
   return request({
@@ -90,3 +100,12 @@ export function delDev(id) {
     method: 'delete'
   })
 }
+
+// 下载导入模板
+export function importTemplate() {
+  return request({
+    url: '/system/dev/importTemplate',
+    method: 'get'
+  })
+}
+
