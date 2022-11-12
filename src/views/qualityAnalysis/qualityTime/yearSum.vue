@@ -51,6 +51,7 @@
 <script>
  import * as echarts from 'echarts';
 import {qualityHappenSum,oneQuality,oneYear,yearHappenSum} from '@/api/system/dev';
+import { log } from 'console';
 export default {
     data() {
         return {
@@ -76,6 +77,7 @@ export default {
         // 年度总数
     yearHappenSum(){
       yearHappenSum(this.queryParams).then(response => {
+        console.log(response);
         this.yearHappenList = response;
         this.selectList = this.yearHappenList;
         for(let i=0;i<this.yearHappenList.length;i++){
