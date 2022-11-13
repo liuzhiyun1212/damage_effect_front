@@ -84,7 +84,7 @@ export default {
           this.xYear.push(this.yearHappenList[i].quarter)
           this.yYear.push(this.yearHappenList[i].sum)
         }
-        console.log("aaaaaaaaaaaaa",this.yearHappenList);
+        // console.log("aaaaaaaaaaaaa",this.yearHappenList);
         this.getYear();
       });
     },
@@ -92,6 +92,7 @@ export default {
     oneYear(){
       oneYear(this.queryParams).then(response => {
         this.allYearList = response;
+        console.log("aaaaaaaaaaaaa",this.allYearList);
       });
     },
     // 表格条件筛选

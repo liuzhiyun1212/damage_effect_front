@@ -40,6 +40,11 @@
               label="质量问题数量"
             >
             </el-table-column>
+            <el-table-column
+              prop="condition"
+              label="满足条件"
+            >
+            </el-table-column>
           </el-table>
   </div>
 </template>
@@ -86,25 +91,37 @@ export default {
         oneQuality(){
             oneQuality(this.queryParams).then(response => {
                 this.allQualityList = response;
-                for(let i=0;i<this.allQualityList.length;i++){
-                    this.selectList.push(...this.allQualityList[i]);
-                }
-                // console.log("aaaaaaaaaaa",this.selectList);
+                this.selectList = this.allQualityList
+                // for(let i=0;i<this.allQualityList.length;i++){
+                //     this.selectList.push(...this.allQualityList[i]);
+                // }
+                // console.log("aaaaaaaaaaa",this.allQualityList);
             });
         },
         // 表格条件筛选
         selectInfo(n){
-            if(n==='0'){
-                this.selectList = this.allQualityList[0];
-            }else if(n==='1'){
-                this.selectList = this.allQualityList[1];
-            }else if(n==='2'){
-                this.selectList = this.allQualityList[2];
+            this.selectList = [];
+            for(let i=0;i<this.allQualityList.length;i++){
+                if((this.allQualityList[i].condition === '1' || this.allQualityList[i].condition === '1,2'
+                ||this.allQualityList[i].condition === '1,2,3') && n==='0'){
+                    this.selectList.push(this.allQualityList[i]);
+                }else if((this.allQualityList[i].condition === '2' || this.allQualityList[i].condition === '2,3'
+                ||this.allQualityList[i].condition === '1,2,3') && n==='1'){
+                    this.selectList.push(this.allQualityList[i]);
+                }else if((this.allQualityList[i].condition === '3' || this.allQualityList[i].condition === '2,3'
+                ||this.allQualityList[i].condition === '1,2,3') && n==='2'){
+                    this.selectList.push(this.allQualityList[i])
+                }
             }
+            // if(n==='0'){
+            //     this.selectList = this.allQualityList[0];
+            // }else if(n==='1'){
+            //     this.selectList = this.allQualityList[1];
+            // }else if(n==='2'){
+            //     this.selectList = this.allQualityList[2];
+            // }
         },
         allInfo() {
-            console.log("aaaaaaaaaaa",this.selectList);
-            this.selectList=[];
             this.queryParams.pageNum = 1;
             this.oneQuality();
         //     qualityHappenSum(this.queryParams).then(response => {
