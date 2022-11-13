@@ -7,6 +7,7 @@
 <script>
 import * as echarts from "echarts";
 import 'echarts-gl'
+import {partssite} from ""
 export default {
   name: "threeD1",
 
@@ -24,8 +25,11 @@ export default {
         [1,12,2,125,'故障件1'],
         [2,9,3,10,'故障件2'],
         [3,6,1,90,'故障件3'],
-        [3,1,1,170,'故障件4'],
-        [3,1,1,10,'故障件5'],
+        [3,1,0.5,170,'故障件4'],
+        [3,1,1.2,10,'故障件5'],
+        [3,1,1.3,10,'故障件6'],
+        [3,1,1.4,10,'故障件7'],
+        [3,1,1.5,10,'故障件8'],
 
       ],
       x: [],
@@ -163,7 +167,7 @@ export default {
             //coordinateSystem: 'grid3D',	//使用地球三维地理坐标系
             //grid3DIndex: 0,				//坐标轴使用的 geo3D 组件的索引
             symbol: 'diamond',				//点形状 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
-            symbolSize: 28,  				//点大小
+            symbolSize: 12,  				//点大小
             itemStyle: {
               // color: 'red',		   		//点颜色
               // borderColor: 'red',  		//点边框颜色
@@ -171,7 +175,7 @@ export default {
               borderWidth: 0.5       		//图形描边宽度
             },
             label: {
-              show: false, 				//是否显示点上面的标签，默认false
+              show: true, 				//是否显示点上面的标签，默认false
               distance: 15,				//标签与点的距离
               position: 'left',      		//标签位置
               textStyle: {
