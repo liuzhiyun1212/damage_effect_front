@@ -2,6 +2,7 @@
 <template>
   <div>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+      <!-- 改型时间线图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
         <p
           style="
@@ -17,9 +18,9 @@
       </div>
       <div
         id="remodel_timeline"
-        style="cursor: pointer; width: 100%; height: 300px"
+        :style="style_timeline"
       ></div>
-
+      <!-- 对比堆叠图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
         <p
           style="
@@ -35,7 +36,7 @@
       </div>
       <div
         id="compared_stacked"
-        style="cursor: pointer; width: 100%; height: 300px"
+        :style="style_stacked"
       ></div>
     </el-card>
   </div>
@@ -56,6 +57,11 @@ export default {
       totalDataList2: [],
       // 飞机改型时间
       plane_remodel_time: [],
+
+      //改型时间线图样式
+      style_timeline: "cursor: pointer; width: 100%; height: 300px",
+      //对比堆叠图样式
+      style_stacked: "cursor: pointer; width: 100%; height: 300px",
 
       // 改型时间线折线图 x轴时间数据
       xData_timeline: [],
@@ -253,7 +259,7 @@ export default {
 
       for (var x = 0; x <= max; x++) {
         let se = {
-          name: "第" + (x + 1) + "时间段",
+          name: "第" + x + "次改型",
           type: "bar",
           stack: "total",
           label: {
@@ -268,6 +274,7 @@ export default {
         for (var i = 0; i < this.plane_remodel_time.length; i++) {
           se.data.push(0)
         }
+        if (x === 0) se.name = "未改型"
         this.se_stacked.push(se)
       }
 
