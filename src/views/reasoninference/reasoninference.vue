@@ -137,7 +137,6 @@ export default {
     },
     ruledevup2(){
       devup2().then(response => {
-        console.log(response.rows)
         var biaozhuline = []
         for(let i =0;i<response.rows.length;i++){
           if(response.rows[i].devHappennum!=-1){
@@ -222,16 +221,6 @@ export default {
         // 渲染图表
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
-          title: {
-            text: '',
-            textStyle: {
-              color: '#000',
-              fontSize: 14
-            }
-          },
-          tooltip: {
-            trigger: 'item'
-          },
           legend: {
             data: name
           },
