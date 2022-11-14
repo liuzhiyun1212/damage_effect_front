@@ -113,6 +113,12 @@ export default {
       this.total2 = 0
       this.total3 = 0
       this.total4 = 0
+      this.rule1 = ""
+      this.rule2 = ""
+      this.rule3 = ""
+      this.rule4 = ""
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      myChart.clear()
       if(label=="装备型号升级"){
         this.rule1 = "1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"
         this.rule2 = "2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"
@@ -221,6 +227,13 @@ export default {
         // 渲染图表
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
+          title: {
+            text: '',
+            textStyle: {
+              color: '#000',
+              fontSize: 14
+            }
+          },
           legend: {
             data: name
           },
@@ -233,6 +246,9 @@ export default {
           xAxis: {
             type: 'category',
             boundaryGap: false,
+            axisLabel:{
+              interval: 0
+            },
             data: xdate
           },
           yAxis: {
