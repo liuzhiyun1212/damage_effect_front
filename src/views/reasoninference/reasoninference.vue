@@ -42,7 +42,7 @@
             <span>判断依据</span>
           </div>
           <div class="body">
-            <div id="stackedLineChart" :style="{ width: '100%', height: '180px' }"></div>
+            <div id="stackedLineChart" :style="{ width: '100%', height: '250px' }"></div>
           </div>
         </el-card>
       </el-col>
@@ -113,6 +113,12 @@ export default {
       this.total2 = 0
       this.total3 = 0
       this.total4 = 0
+      this.rule1 = ""
+      this.rule2 = ""
+      this.rule3 = ""
+      this.rule4 = ""
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      myChart.clear()
       if(label=="装备型号升级"){
         this.rule1 = "1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"
         this.rule2 = "2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"
@@ -122,17 +128,158 @@ export default {
       }
     },
     handleRule(rule){
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      myChart.clear()
+      if(rule=="1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"){
+        this.ruledevup1()
+      }
       if(rule=="2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"){
         this.ruledevup2()
       }
     },
     ifdevup(){
-      devup2().then(response => {
-        this.total2 = response.total
-        if(this.total2>0){
-          this.if2 = true
-          this.ruledevup2()
+      devup1().then(response1 => {
+        devup2().then(response => {
+          this.total1 = response1.total
+          this.total2 = response.total
+          if(this.total1>0&&this.total2>0){
+            this.if1 = true
+            this.if2 = true
+            this.ruledevup1()
+          }else if(this.total1>0){
+            this.if1 = true
+            this.ruledevup1()
+          }else if(this.total2>0){
+            this.if2 = true
+            this.ruledevup2()
+          }
+        })
+      })
+    },
+    ruledevup1(){
+      devup1().then(response => {
+        this.dataList1 = response.rows
+
+        var name = []
+        var date = ""
+        var xdate = []
+        var ndata = []
+        var md = ""
+
+        for (let i = 0; i < this.dataList1.length; i++) {
+          date = this.dataList1[i].planeType + "-" + this.dataList1[i].faultModel
+          if(name.indexOf(date) == -1){
+            name.push(date)
+          }
+          if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
+            xdate.push(this.dataList1[i].devHappenTime)
+          }
+          md = {name:date,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+          ndata.push(md)
         }
+        var compare1 = function (x, y) {//比较函数
+          if (x < y) {
+            return -1;
+          } else if (x > y) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+        xdate.sort(compare1)
+        var xdate1 = []
+        for (let i = 0; i < xdate.length; i++){
+          if(xdate[i]=="0"){
+            xdate1.push("未改型")
+          }else {
+            xdate1.push("第"+i+"次改型")
+          }
+        }
+        var fydata = new Array()
+        for (let i = 0; i < xdate.length; i++){
+          fydata[i] = new Array()
+          for (let j = 0; j < name.length; j++){
+            fydata[i][j]=0
+          }
+        }
+        for (let i = 0; i < ndata.length; i++){
+          let a = name.indexOf(ndata[i].name)
+          let b = xdate.indexOf(ndata[i].time)
+          fydata[b][a] = ndata[i].num
+        }
+        var by = ""
+        var oy = []
+        for (let i = 0; i < xdate.length; i++){
+          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: { show: true }}
+          oy.push(by)
+        }
+
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        var option={
+          tooltip: {
+            trigger: 'item',
+            position: function (point, params, dom, rect, size) {
+              // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+              // 提示框位置
+              var x = 0; // x坐标位置
+              var y = 0; // y坐标位置
+
+              // 当前鼠标位置
+              var pointX = point[0];
+              var pointY = point[1];
+
+              // 外层div大小
+              // var viewWidth = size.viewSize[0];
+              // var viewHeight = size.viewSize[1];
+
+              // 提示框大小
+              var boxWidth = size.contentSize[0];
+              var boxHeight = size.contentSize[1];
+
+              // boxWidth > pointX 说明鼠标左边放不下提示框
+              if (boxWidth > pointX) {
+                x = 5;
+              } else { // 左边放的下
+                x = pointX - boxWidth;
+              }
+
+              // boxHeight > pointY 说明鼠标上边放不下提示框
+              if (boxHeight > pointY) {
+                y = 5;
+              } else { // 上边放得下
+                y = pointY - boxHeight;
+              }
+
+              return [x, y];
+            },
+          },
+          legend: {
+            data: xdate1
+          },
+          grid: {
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
+            containLabel: true
+          },
+          xAxis: {
+            minInterval:1,
+            type: 'value',
+          },
+          yAxis: {
+            data: name,
+            type: 'category',
+            axisLabel:{
+              interval: 0
+            },
+          },
+          series: oy,
+        };
+        option && myChart.setOption(option)
+        // 刷新调整
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
       })
     },
     ruledevup2(){
@@ -153,8 +300,6 @@ export default {
 
         for (let i = 0; i < this.dataList2.length; i++) {
           date = this.dataList2[i].devHappenTime
-          date = date.replace(/-/,'年第');
-          date = date+"季度"
           if(xdate.indexOf(date) == -1){
             xdate.push(date)
           }
@@ -179,8 +324,6 @@ export default {
         var md2 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
-          date = date.replace(/-/,'年第');
-          date = date+"季度"
           md2 = {name:biaozhuline[i].planeType,time:date,num:xdate.indexOf(date)}
           ndata1.push(md2)
         }
@@ -221,18 +364,25 @@ export default {
         // 渲染图表
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
+          tooltip: {
+            trigger: 'axis'
+          },
           legend: {
             data: name
           },
           grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
             containLabel: true
           },
           xAxis: {
+            name:"年-季度",
             type: 'category',
             boundaryGap: false,
+            axisLabel:{
+              interval: 0
+            },
             data: xdate
           },
           yAxis: {
