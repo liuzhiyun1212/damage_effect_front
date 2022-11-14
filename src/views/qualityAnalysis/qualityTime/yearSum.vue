@@ -43,6 +43,11 @@
               label="质量问题数量"
             >
             </el-table-column>
+            <el-table-column
+              prop="condition"
+              label="满足条件"
+            >
+            </el-table-column>
           </el-table>
     </div>
  
@@ -51,7 +56,6 @@
 <script>
  import * as echarts from 'echarts';
 import {qualityHappenSum,oneQuality,oneYear,yearHappenSum} from '@/api/system/dev';
-import { log } from 'console';
 export default {
     data() {
         return {
@@ -64,6 +68,7 @@ export default {
             // 年度柱状图
             xYear:[],
             yYear:[],
+            xLength:null,
             // 查询参数
             queryParams: {
                     pageNum: 1,
@@ -79,10 +84,11 @@ export default {
       yearHappenSum(this.queryParams).then(response => {
         console.log(response);
         this.yearHappenList = response;
-        this.selectList = this.yearHappenList;
+        // this.selectList = this.yearHappenList;
         for(let i=0;i<this.yearHappenList.length;i++){
-          this.xYear.push(this.yearHappenList[i].quarter)
-          this.yYear.push(this.yearHappenList[i].sum)
+          this.xYear.push(this.yearHappenList[i].quarter+":"+this.yearHappenList[i].condition)
+          this.yYear.push(this.yearHappenList[i].sum);
+          this.xLength = this.yearHappenList[i].quarter.length;
         }
         // console.log("aaaaaaaaaaaaa",this.yearHappenList);
         this.getYear();
@@ -92,29 +98,32 @@ export default {
     oneYear(){
       oneYear(this.queryParams).then(response => {
         this.allYearList = response;
-        console.log("aaaaaaaaaaaaa",this.allYearList);
+        this.selectList = this.allYearList;
+        // console.log("aaaaaaaaaaaaa",this.allYearList);
       });
     },
     // 表格条件筛选
     selectInfo(n){
-            if(n==='0'){
-                this.selectList = this.allYearList[0];
-            }else if(n==='1'){
-                this.selectList = this.allYearList[1];
-            }else if(n==='2'){
-                this.selectList = this.allYearList[2];
+            this.selectList = [];
+            for(let i=0;i<this.allYearList.length;i++){
+                if((this.allYearList[i].condition === '1' || this.allYearList[i].condition === '1,2'
+                ||this.allYearList[i].condition === '1,2,3') && n==='0'){
+                    this.selectList.push(this.allYearList[i]);
+                }else if((this.allYearList[i].condition === '2' || this.allYearList[i].condition === '2,3'
+                ||this.allYearList[i].condition === '1,2,3') && n==='1'){
+                    this.selectList.push(this.allYearList[i]);
+                }else if((this.allYearList[i].condition === '3' || this.allYearList[i].condition === '2,3'
+                ||this.allYearList[i].condition === '1,2,3') && n==='2'){
+                    this.selectList.push(this.allYearList[i])
+                }
             }
         },
     allInfo() {
         this.queryParams.pageNum = 1;
-        yearHappenSum(this.queryParams).then(response => {
-        this.yearHappenList = response;
-        this.selectList = this.yearHappenList;
-    });
+        this.oneYear();
         },
     getYear(){
       var myChart = echarts.init(document.getElementById("year"))
-          var colorList = [];
           var option = {
             /*title: {
                 text: '维保计划按种类统计',
@@ -158,14 +167,12 @@ export default {
                 barWidth: 20,
                 itemStyle: {
                   color: (params) => {
-                  if(params.dataIndex == this.selectedDataIndex) {
-                    colorList[params.dataIndex] = 'red'
-                  } else {
-                    colorList[params.dataIndex] = 'blue'
-
-                  }
-                  return colorList[params.dataIndex]
-                }
+                            // console.log("aaaaaa",params.name.slice(this.xLength+1)!=='null');
+                            if(params.name.slice(this.xLength+1)!=='null'){
+                                return 'red'
+                            }
+                            return 'blue'
+                        }
                     // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     // { offset: 0, color: '#83bff6' },
                     // { offset: 0.5, color: '#188df0' },
