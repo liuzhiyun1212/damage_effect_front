@@ -216,13 +216,6 @@ export default {
 
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
-          title: {
-            text: '',
-            textStyle: {
-              color: '#000',
-              fontSize: 14
-            }
-          },
           tooltip: {
             trigger: 'item',
             position: function (point, params, dom, rect, size) {
@@ -276,6 +269,9 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            axisLabel:{
+              interval: 0
+            },
           },
           series: oy,
         };
@@ -368,13 +364,6 @@ export default {
         // 渲染图表
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
-          title: {
-            text: '',
-            textStyle: {
-              color: '#000',
-              fontSize: 14
-            }
-          },
           tooltip: {
             trigger: 'axis'
           },
