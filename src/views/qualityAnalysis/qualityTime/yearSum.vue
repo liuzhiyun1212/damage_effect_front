@@ -18,11 +18,9 @@
         </p>
         <el-button type="primary" icon="el-icon-s-home"  @click="allInfo" style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button>
         </div>
-        <ul>
-            <li style="cursor: pointer;" @click="selectInfo('0')">较上一年度增加或减少50%以上</li>
-            <li style="cursor: pointer;" @click="selectInfo('1')">连续两个年度增加或减少20%以上</li>
-            <li style="cursor: pointer;" @click="selectInfo('2')">连续三个年度呈单调变化趋势</li>
-        </ul>
+        <el-button type="primary" @click="selectInfo('0')">1.较上一年度增加或减少50%以上</el-button>
+        <el-button type="primary" @click="selectInfo('1')">2.连续两个年度增加或减少20%以上</el-button>
+        <el-button type="primary" @click="selectInfo('2')">3.连续三个年度呈单调变化趋势</el-button>
         <el-table
             v-loading="loading"
             :data="selectList"
@@ -130,10 +128,11 @@ export default {
             },*/
             tooltip: {
                 trigger: 'axis',
-                formatter: "{b} : {c}",
-                axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-                }
+                formatter:  (param)=> {
+                        if(param[0].axisValueLabel.slice(this.xLength+1) !== "null"){
+                            return "满足条件:"+param[0].axisValueLabel.slice(this.xLength+1);
+                        }
+                    }
             },
             xAxis: {
                 type: 'category',
@@ -141,6 +140,12 @@ export default {
               textStyle: {
                 fontSize: 14,
               },
+              axisLabel: {
+                        formatter: params=>{
+                            return params.slice(0,this.xLength);
+                            
+                        }
+                },
             },
             yAxis: {
                 axisLine: {

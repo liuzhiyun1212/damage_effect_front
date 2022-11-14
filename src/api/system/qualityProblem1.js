@@ -9,6 +9,21 @@ export function listQualityProblem1(query) {
   })
 }
 
+
+export function faultStatistics(query) {
+  return request({
+    url: '/system/qualityProblem1/faultStatistics',
+    method: 'get',
+    params: query
+  })
+}
+
+
+
+
+
+
+
 // 查询质量问题数据详细
 export function getQualityProblem1(id) {
   return request({
