@@ -39,7 +39,7 @@
         <hr />
         <el-card class="box-card" style="height: 350px;">
           <div slot="header" class="clearfix">
-            <span>判断依据</span>
+            <span>判断依据{{yiju}}</span>
           </div>
           <div class="body">
             <div id="stackedLineChart" :style="{ width: '100%', height: '250px' }"></div>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       reason:"",
+      yiju : "",
       rule1:"",
       rule2:"",
       rule3:"",
@@ -97,10 +98,12 @@ export default {
     handleNodeClick(data) {
       if(data.id>4){
         this.reason = "可能是由于"+data.label+"导致质量问题产生"
+        this.yiju = ""
         this.handleLabel(data.label)
       }
     },
     handleLabel(label){
+      this.yiju = ""
       this.if1 = false
       this.if2 = false
       this.if3 = false
@@ -158,6 +161,7 @@ export default {
     },
     ruledevup1(){
       devup1().then(response => {
+        this.yiju = "（判断规则1）"
         this.dataList1 = response.rows
 
         var name = []
@@ -209,8 +213,24 @@ export default {
         }
         var by = ""
         var oy = []
+        var labelOption = {
+          normal: {
+            show : true,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
         for (let i = 0; i < xdate.length; i++){
-          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: { show: true }}
+          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
           oy.push(by)
         }
 
@@ -284,6 +304,7 @@ export default {
     },
     ruledevup2(){
       devup2().then(response => {
+        this.yiju = "（判断规则2）"
         var biaozhuline = []
         for(let i =0;i<response.rows.length;i++){
           if(response.rows[i].devHappennum!=-1){
