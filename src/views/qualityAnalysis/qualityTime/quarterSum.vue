@@ -21,27 +21,35 @@
         <el-button type="primary" @click="selectInfo('1')">2.连续两个季度增加或减少20%以上</el-button>
         <el-button type="primary" @click="selectInfo('2')">3.连续三个季度呈单调变化趋势</el-button>
         <el-table
-            :data="selectList"
-            stripe
-            height="250px"
-            style="width: 100%;margin-top:0px !important"
+        :header-cell-style="{
+            background: '#84BBFE',
+            color: '#fff',
+            fontSize: '14px',
+            textAlign: 'center',
+            fontWeight: '600',
+            fontFamily: '黑体',
+            padding: '0',
+          }"
+          :header-row-style="{
+    height: '20',
+  }" :data="selectList" style="height:auto;margin-top: 20px;width:99%"
           >
             <el-table-column type="index"></el-table-column>
             <el-table-column
               prop="quarter"
               label="季度"
-              :show-overflow-tooltip="true"
+              :show-overflow-tooltip="true" align="center"
 
             >
             </el-table-column>
             <el-table-column
               prop="sum"
-              label="质量问题数量"
+              label="质量问题数量" align="center"
             >
             </el-table-column>
             <el-table-column
               prop="condition"
-              label="满足条件"
+              label="满足条件" align="center"
             >
             </el-table-column>
           </el-table>
@@ -188,6 +196,7 @@ export default {
                     barWidth: 20,
                     itemStyle: {
                             color: (params) => {
+                                console.log(params);
                             if(params.name.slice(this.xLength+1)!=='null'){
                                 return 'red'
                             }
