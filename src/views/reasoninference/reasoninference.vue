@@ -12,21 +12,71 @@
               node-key="id"
               default-expand-all
               highlight-current
+              @node-click="handleNodeClick"
             />
           </el-card>
         </div>
+      </el-col>
+      <el-col :span="20" :xs="24">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 16px;">原因推测及判断规则</span>
+          </div>
+          <div class="body">
+            <h2>原因推测</h2>
+            <div>{{reason}}</div>
+            <h2>判断规则</h2>
+            <div v-if = "this.if1==true"><el-button type="text" @click="handleRule(rule1)" style="font-size: 16px;">{{rule1}}</el-button></div>
+            <p v-else style="font-size: 16px;">{{rule1}}</p>
+            <div v-if = "this.if2==true"><el-button type="text" @click="handleRule(rule2)" style="font-size: 16px;">{{rule2}}</el-button></div>
+            <p v-else style="font-size: 16px;">{{rule2}}</p>
+            <div v-if = "this.if3==true"><el-button type="text" @click="handleRule(rule3)" style="font-size: 16px;">{{rule3}}</el-button></div>
+            <p v-else style="font-size: 16px;">{{rule3}}</p>
+            <div v-if = "this.if4==true"><el-button type="text" @click="handleRule(rule4)" style="font-size: 16px;">{{rule4}}</el-button></div>
+            <p v-else style="font-size: 16px;">{{rule4}}</p>
+          </div>
+        </el-card>
+        <hr />
+        <el-card class="box-card" style="height: 350px;">
+          <div slot="header" class="clearfix">
+            <span>判断依据{{yiju}}</span>
+          </div>
+          <div class="body">
+            <div id="stackedLineChart" :style="{ width: '100%', height: '250px' }"></div>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import * as echarts from 'echarts'
 import {changeDataTreeSelect} from "../../api/system/changedata";
+import {devup1,devup2} from "../../api/system/reasonyuce";
 
 export default {
   name: "reasoninference",
   data() {
     return {
+      reason:"",
+      yiju : "",
+      rule1:"",
+      rule2:"",
+      rule3:"",
+      rule4:"",
+      if1:false,
+      if2:false,
+      if3:false,
+      if4:false,
+      dataList1:[],
+      dataList2:[],
+      dataList3:[],
+      dataList4:[],
+      total1:0,
+      total2:0,
+      total3:0,
+      total4:0,
       // 变更项选项
       changeOptions: undefined,
       defaultProps: {
@@ -42,12 +92,340 @@ export default {
     getchangeTree() {
       changeDataTreeSelect().then(response => {
         this.changeOptions = response.data;
+        this.handleNodeClick({id:5,label:"装备型号升级"});
+      });
+    },
+    handleNodeClick(data) {
+      if(data.id>4){
+        this.reason = "可能是由于"+data.label+"导致质量问题产生"
+        this.yiju = ""
+        this.handleLabel(data.label)
+      }
+    },
+    handleLabel(label){
+      this.yiju = ""
+      this.if1 = false
+      this.if2 = false
+      this.if3 = false
+      this.if4 = false
+      this.dataList1 = []
+      this.dataList2 = []
+      this.dataList3 = []
+      this.dataList4 = []
+      this.total1 = 0
+      this.total2 = 0
+      this.total3 = 0
+      this.total4 = 0
+      this.rule1 = ""
+      this.rule2 = ""
+      this.rule3 = ""
+      this.rule4 = ""
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      myChart.clear()
+      if(label=="装备型号升级"){
+        this.rule1 = "1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"
+        this.rule2 = "2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"
+        this.rule3 = ""
+        this.rule4 = ""
+        this.ifdevup()
+      }
+    },
+    handleRule(rule){
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      myChart.clear()
+      if(rule=="1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"){
+        this.ruledevup1()
+      }
+      if(rule=="2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"){
+        this.ruledevup2()
+      }
+    },
+    ifdevup(){
+      devup1().then(response1 => {
+        devup2().then(response => {
+          this.total1 = response1.total
+          this.total2 = response.total
+          if(this.total1>0&&this.total2>0){
+            this.if1 = true
+            this.if2 = true
+            this.ruledevup1()
+          }else if(this.total1>0){
+            this.if1 = true
+            this.ruledevup1()
+          }else if(this.total2>0){
+            this.if2 = true
+            this.ruledevup2()
+          }
+        })
+      })
+    },
+    ruledevup1(){
+      devup1().then(response => {
+        this.yiju = "（判断规则1）"
+        this.dataList1 = response.rows
+
+        var name = []
+        var date = ""
+        var xdate = []
+        var ndata = []
+        var md = ""
+
+        for (let i = 0; i < this.dataList1.length; i++) {
+          date = this.dataList1[i].planeType + "-" + this.dataList1[i].faultModel
+          if(name.indexOf(date) == -1){
+            name.push(date)
+          }
+          if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
+            xdate.push(this.dataList1[i].devHappenTime)
+          }
+          md = {name:date,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+          ndata.push(md)
+        }
+        var compare1 = function (x, y) {//比较函数
+          if (x < y) {
+            return -1;
+          } else if (x > y) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+        xdate.sort(compare1)
+        var xdate1 = []
+        for (let i = 0; i < xdate.length; i++){
+          if(xdate[i]=="0"){
+            xdate1.push("未改型")
+          }else {
+            xdate1.push("第"+i+"次改型")
+          }
+        }
+        var fydata = new Array()
+        for (let i = 0; i < xdate.length; i++){
+          fydata[i] = new Array()
+          for (let j = 0; j < name.length; j++){
+            fydata[i][j]=0
+          }
+        }
+        for (let i = 0; i < ndata.length; i++){
+          let a = name.indexOf(ndata[i].name)
+          let b = xdate.indexOf(ndata[i].time)
+          fydata[b][a] = ndata[i].num
+        }
+        var by = ""
+        var oy = []
+        var labelOption = {
+          normal: {
+            show : true,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
+        for (let i = 0; i < xdate.length; i++){
+          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+          oy.push(by)
+        }
+
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        var option={
+          tooltip: {
+            trigger: 'item',
+            position: function (point, params, dom, rect, size) {
+              // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+              // 提示框位置
+              var x = 0; // x坐标位置
+              var y = 0; // y坐标位置
+
+              // 当前鼠标位置
+              var pointX = point[0];
+              var pointY = point[1];
+
+              // 外层div大小
+              // var viewWidth = size.viewSize[0];
+              // var viewHeight = size.viewSize[1];
+
+              // 提示框大小
+              var boxWidth = size.contentSize[0];
+              var boxHeight = size.contentSize[1];
+
+              // boxWidth > pointX 说明鼠标左边放不下提示框
+              if (boxWidth > pointX) {
+                x = 5;
+              } else { // 左边放的下
+                x = pointX - boxWidth;
+              }
+
+              // boxHeight > pointY 说明鼠标上边放不下提示框
+              if (boxHeight > pointY) {
+                y = 5;
+              } else { // 上边放得下
+                y = pointY - boxHeight;
+              }
+
+              return [x, y];
+            },
+          },
+          legend: {
+            data: xdate1
+          },
+          grid: {
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
+            containLabel: true
+          },
+          xAxis: {
+            minInterval:1,
+            type: 'value',
+          },
+          yAxis: {
+            data: name,
+            type: 'category',
+            axisLabel:{
+              interval: 0
+            },
+          },
+          series: oy,
+        };
+        option && myChart.setOption(option)
+        // 刷新调整
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
+      })
+    },
+    ruledevup2(){
+      devup2().then(response => {
+        this.yiju = "（判断规则2）"
+        var biaozhuline = []
+        for(let i =0;i<response.rows.length;i++){
+          if(response.rows[i].devHappennum!=-1){
+            this.dataList2.push(response.rows[i])
+          }else{
+            biaozhuline.push(response.rows[i])
+          }
+        }
+        var name = []
+        var date = ""
+        var xdate = []
+        var ndata = []
+        var md = ""
+
+        for (let i = 0; i < this.dataList2.length; i++) {
+          date = this.dataList2[i].devHappenTime
+          if(xdate.indexOf(date) == -1){
+            xdate.push(date)
+          }
+          if(name.indexOf(this.dataList2[i].planeType) == -1){
+            name.push(this.dataList2[i].planeType)
+          }
+          md = {name:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
+          ndata.push(md)
+        }
+        var compare1 = function (x, y) {//比较函数
+          if (x < y) {
+            return -1;
+          } else if (x > y) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+        xdate.sort(compare1)
+
+        var ndata1 = []
+        var md2 = ""
+        for (let i = 0; i < biaozhuline.length; i++){
+          date = biaozhuline[i].devHappenTime
+          md2 = {name:biaozhuline[i].planeType,time:date,num:xdate.indexOf(date)}
+          ndata1.push(md2)
+        }
+
+        var fydata = new Array()
+        for (let i = 0; i < name.length; i++){
+          fydata[i] = new Array()
+          for (let j = 0; j < xdate.length; j++){
+            fydata[i][j]=0
+          }
+        }
+        for (let i = 0; i < ndata.length; i++){
+          let a = name.indexOf(ndata[i].name)
+          let b = xdate.indexOf(ndata[i].time)
+          fydata[a][b] = ndata[i].num
+        }
+        var by = ""
+        var oy = []
+        for (let i = 0; i < name.length; i++){
+          var a1 = ""
+          var a2 = []
+          var a3 = ""
+          for (let i1 = 0; i1 < ndata1.length; i1++){
+            if(ndata1[i1].name==name[i]){
+              a1 = { xAxis: ndata1[i1].num }
+              a2.push(a1)
+              a3 = ndata1[i1].date
+            }
+          }
+          var mark = {
+            symbol: 'triangle',
+            label: { show: true, formatter: name[i]+'技术状态升级时间'},
+            data: a2
+          }
+          by = {name:name[i], type: 'line',data: fydata[i], markLine:mark}
+          oy.push(by)
+        }
+        // 渲染图表
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        var option={
+          tooltip: {
+            trigger: 'axis'
+          },
+          legend: {
+            data: name
+          },
+          grid: {
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
+            containLabel: true
+          },
+          xAxis: {
+            name:"年-季度",
+            type: 'category',
+            boundaryGap: false,
+            axisLabel:{
+              interval: 0
+            },
+            data: xdate
+          },
+          yAxis: {
+            minInterval:1,
+            type: 'value'
+          },
+          series: oy,
+        };
+        option && myChart.setOption(option)
+        // 刷新调整
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
       });
     },
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.box-card {
+  padding: 10px;
+  margin: 10px 5px;
+}
 </style>

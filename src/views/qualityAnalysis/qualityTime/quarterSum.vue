@@ -21,7 +21,6 @@
         <el-button type="primary" @click="selectInfo('1')">2.连续两个季度增加或减少20%以上</el-button>
         <el-button type="primary" @click="selectInfo('2')">3.连续三个季度呈单调变化趋势</el-button>
         <el-table
-            v-loading="loading"
             :data="selectList"
             stripe
             height="250px"
@@ -51,8 +50,7 @@
 
 <script>
  import * as echarts from 'echarts';
-import {qualityHappenSum,oneQuality,oneYear,yearHappenSum} from '@/api/system/dev';
-import { log } from 'console';
+import {qualityHappenSum,oneQuality} from '@/api/system/dev';
 export default {
     data() {
         return {
@@ -64,6 +62,7 @@ export default {
             selectList:[],
             // 季度柱状图
             xQuarter:[],
+            xLength:null,
             yQuarter:[],
             // 查询参数
             queryParams: {
@@ -72,6 +71,8 @@ export default {
                     troubleName: null,
                     troubleIntroduction: null
                     },
+            // 柱状图选中柱子
+            selectedDataIndex:null,
         }
     },
     methods: {
@@ -81,8 +82,9 @@ export default {
             this.qualityHappenList = response;
             // this.selectList = this.qualityHappenList;
             for(let i=0;i<this.qualityHappenList.length;i++){
-            this.xQuarter.push(this.qualityHappenList[i].quarter)
-            this.yQuarter.push(this.qualityHappenList[i].sum)
+            this.xQuarter.push(this.qualityHappenList[i].quarter+":"+this.qualityHappenList[i].condition);
+            this.yQuarter.push(this.qualityHappenList[i].sum);
+            this.xLength = this.qualityHappenList[i].quarter.length;
             }
             this.chartView();
         });
@@ -131,23 +133,34 @@ export default {
           },
         chartView() {
         var myChart = echarts.init(document.getElementById("quarter"))
-            var colorList = [];
             var option = {
                 /*title: {
                     text: '维保计划按种类统计',
                 },*/
                 tooltip: {
                     trigger: 'axis',
-                    formatter: "{b} : {c}",
-                    axisPointer: { // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    formatter:  (param)=> {
+                        if(param[0].axisValueLabel.slice(this.xLength+1) !== "null"){
+                            return "满足条件:"+param[0].axisValueLabel.slice(this.xLength+1);
+                        }
                     }
+                    // trigger: 'axis',
+                    // formatter: "{b} : {c}",
+                    // axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                    //     type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    // }
                 },
                 xAxis: {
                     type: 'category',
                     data: this.xQuarter,
-                textStyle: {
-                    fontSize: 14,
+                    textStyle: {
+                        fontSize: 14,
+                    },
+                    axisLabel: {
+                        formatter: params=>{
+                            return params.slice(0,this.xLength);
+                            
+                        }
                 },
                 },
                 yAxis: {
@@ -174,15 +187,12 @@ export default {
                     showBackground: true,
                     barWidth: 20,
                     itemStyle: {
-                    color: (params) => {
-                    if(params.dataIndex == this.selectedDataIndex) {
-                        colorList[params.dataIndex] = 'red'
-                    } else {
-                        colorList[params.dataIndex] = 'blue'
-
-                    }
-                    return colorList[params.dataIndex]
-                    }
+                            color: (params) => {
+                            if(params.name.slice(this.xLength+1)!=='null'){
+                                return 'red'
+                            }
+                            return 'blue'
+                        }
                         // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                         // { offset: 0, color: '#83bff6' },
                         // { offset: 0.5, color: '#188df0' },
