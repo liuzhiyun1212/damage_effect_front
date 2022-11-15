@@ -1,7 +1,6 @@
 <template>
     <div>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
-            <!-- <h2>质量问题发生机型随时间变化情况</h2> -->
             <div ref="stackedLineChart" :style="{ width: '100%', height: '180px' }"></div>
 
             <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -29,10 +28,7 @@
             </div>
 
             <div>
-                <el-table 
-                    :data="tableData" 
-                    v-loading="loading" 
-                    style="height:auto; margin-top: 20px; width:99%"
+                <el-table :data="tableData" v-loading="loading" style="height:auto; margin-top: 20px; width:99%"
                     :header-cell-style="{
                         background: '#84BBFE',
                         color: '#fff',
@@ -41,10 +37,9 @@
                         fontWeight: '600',
                         fontFamily: '黑体',
                         padding: '0',
-                    }" 
-                    :header-row-style="{
-                        height: '20',
-                    }">
+                    }" :header-row-style="{
+    height: '20',
+}">
                     <el-table-column label="序号" type="index" align="center">
                     </el-table-column>
                     <el-table-column prop="aircraftType" label="机型" align="center">
@@ -71,13 +66,13 @@
 
 <script>
 import echarts from "echarts";
-import { getCheckList, getChartData } from "../../../api/chart/aircraftTypeWithTime"
+import { getCheckList, getChartData } from "../../../api/chart/useIntensity"
 
 export default {
-    name: "aircraftTypeAndTime",
+    name: "useIntensity",
     data() {
         return {
-            loading:false,
+            loading: false,
             option: {
                 tooltip: {
                     trigger: 'axis',
@@ -138,7 +133,9 @@ export default {
                     interval: 1,
                     type: 'value'
                 },
-                series: []
+                series: [],
+                color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+                gradientColor: ['#f6efa6', '#d88273', '#bf444c'],
             },
             // legend: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine'],
             xData: ['2022第一季度', '2022第二季度', '2022第三季度'],
