@@ -230,14 +230,13 @@ export default {
           }
         }
         for (let i = 0; i < xdate.length; i++){
-          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+          by = {name:xdate1[i],type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
           oy.push(by)
         }
-
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
           tooltip: {
-            trigger: 'item',
+            trigger: 'axis',
             position: function (point, params, dom, rect, size) {
               // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
               // 提示框位置
@@ -272,6 +271,24 @@ export default {
 
               return [x, y];
             },
+            formatter: function (params) {
+              var html = '';
+              if (params.length != 0) {
+                // 对应x轴的时间数据  也就是2019-01-01
+                var getName = params[0].name;
+                html += getName + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                  // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                  if (params[i].value != null && params[i].value != 0
+                    && params[i].value != '') {
+                    // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                    html += params[i].marker;
+                    html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                  }
+                }
+              }
+              return html;
+            }
           },
           legend: {
             data: xdate1

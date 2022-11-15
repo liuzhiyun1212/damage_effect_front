@@ -109,3 +109,18 @@ export function importTemplate() {
   })
 }
 
+// 统计爆发故障件的型号-名称及数量
+export function selectFaultyCount() {
+  return request({
+    url: '/system/dev/selectFaultyCount',
+    method: 'get'
+  })
+}
+
+// 统计所有故障件
+export function selectAllFaulty() {
+  return request({
+    url: '/system/dev/selectAllFaulty',
+    method: 'get'
+  })
+}
