@@ -45,21 +45,21 @@
                     :header-row-style="{
                         height: '20',
                     }">
-                    <el-table-column label="序号" type="index">
+                    <el-table-column label="序号" type="index" align="center">
                     </el-table-column>
-                    <el-table-column prop="aircraftType" label="机型">
+                    <el-table-column prop="aircraftType" label="机型" align="center">
                     </el-table-column>
-                    <el-table-column prop="changeRange" label="变动幅度">
+                    <!-- <el-table-column prop="changeRange" label="变动幅度">
+                    </el-table-column> -->
+                    <el-table-column prop="eldTime" label="起始时间" align="center">
                     </el-table-column>
-                    <el-table-column prop="eldTime" label="起始时间">
+                    <el-table-column prop="eldTimeNum" label="前一时间数量" align="center">
                     </el-table-column>
-                    <el-table-column prop="eldTimeNum" label="前一时间数量">
+                    <el-table-column prop="recentTime" label="结束时间" align="center">
                     </el-table-column>
-                    <el-table-column prop="recentTime" label="结束时间" >
+                    <el-table-column prop="recentTimeNum" label="后一时间数量" align="center">
                     </el-table-column>
-                    <el-table-column prop="recentTimeNum" label="后一时间数量" >
-                    </el-table-column>
-                    <el-table-column prop="checkCondition" label="符合的条件" >
+                    <el-table-column prop="checkCondition" label="符合的条件" align="center">
                     </el-table-column>
                 </el-table>
             </div>
