@@ -6,18 +6,22 @@
 
 <script>
 import { listProdeuctDesign3, getProdeuctDesign3, delProdeuctDesign3, addProdeuctDesign3, updateProdeuctDesign3 ,xyobject} from "@/api/system/prodeuctDesign3";
-import { listQualityProblem1, getQualityProblem1, delQualityProblem1, addQualityProblem1, updateQualityProblem1 } from "@/api/system/qualityProblem1";
+import { faultStatistics,listQualityProblem1, getQualityProblem1, delQualityProblem1, addQualityProblem1, updateQualityProblem1 } from "@/api/system/qualityProblem1";
 import * as echarts from "echarts";
 export default {
   name: "ProdeuctDesign3",
   data() {
     return {
-      count:null,
+      //后端传的数据
+      faultStatisticsArray:[],
+      //质量问题高发故障模式、总数、占比
+      qualityHigh:[],
+      qualityCountTotal:null,
+      qualityProportion:[],
+
       se:[],
-      se2:[],
       xyObject:{},
-      // xData: [],
-      // yData: [],
+
       prodeuctDesign3List: [],
       x:[],
       y:[],
@@ -64,16 +68,49 @@ export default {
     };
   },
   mounted() {
-    
-    this.getX();
-    
+    //改型时间线
+    this.getX(); 
     this.getY();
+
     
+  },
+  created(){
+    this.testfaultStatistics();
   },
 
 
   methods: {
+    //饼图时间线
+    testfaultStatistics(){
+      faultStatistics().then(response=>{
+        this.faultStatisticsArray = response;
+        console.log("faultStatisticsArray:",this.faultStatisticsArray);
+        for (let index = 0; index < this.faultStatisticsArray.length; index++) {
+          const element = this.faultStatisticsArray[index].modelCount;
+          this.qualityCountTotal =this.qualityCountTotal+element;
+        }
+        console.log("总数：",this.qualityCountTotal);
 
+
+        for (let index = 0; index < this.faultStatisticsArray.length; index++) {
+          const mc = this.faultStatisticsArray[index].modelCount;
+          if (mc/this.qualityCountTotal>0.1) {
+            // console.log("大于：",mc);
+            this.qualityHigh[index] =this.faultStatisticsArray[index].faultModel;
+            this.qualityProportion[index] = mc/this.qualityCountTotal;
+          }
+        }
+        console.log("高发：",this.qualityHigh);
+        console.log("占比：",this.qualityProportion);
+      })
+    },
+
+
+
+
+
+
+    
     dealRes() {
       for (var i = 0; i < this.xyObject.length; i++) {
         this.se.push({
@@ -110,6 +147,7 @@ export default {
         this.xyObject =response;
         this.dealRes();
 
+          //去重
           for(let i=0;i<response.length;i++){
             let mark=0;
             for(let j=0;j<this.x.length;j++){
@@ -237,40 +275,6 @@ export default {
       option && myChart.setOption(option);
     },
 
-
-
-
-
-
-
-
-      /**获取名称纵坐标 */
-      getYNameList(){
-        listProdeuctDesign3(this.queryParams).then(response => {
-            const list = response.rows;
-            for (let index = 0; index < list.length; index++) {
-              const element = list[index];
-              this.yData[index] = element.finishedName;
-            }
-            console.log(this.yData);
-      });
-      },
-
-      /**获取时间横坐标 */
-      getXTimeList(){
-        listProdeuctDesign3(this.queryParams).then(response => {
-            const list = response.rows;
-            for (let index = 0; index < list.length; index++) {
-              const element = list[index];
-              this.xData[index] = element.modifyTime;
-            }
-            
-            console.log(this.xData);
-            
-      });
-      },
-
-    
 
 
     /** 查询成品件设计数据列表 */
