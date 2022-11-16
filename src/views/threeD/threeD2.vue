@@ -1,24 +1,24 @@
 <template>
-<div>
-  <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
-  <div style="margin-bottom:20px;margin-left: 2%;width: 96%;height: 700px;background: #999; " >
-    <div id="main" style="width: 100%;height: 100%;background: #999;"></div>
-  </div>
-    <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
-      <p
-        style="
+  <div>
+    <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
+      <div style="margin-bottom:120px;margin-left: 2%;width: 96%;height: 700px;background: #999; " >
+        <div id="main" style="width: 100%;height: 100%;"></div>
+        <div id="legend" style="margin-bottom:10px;width: 100%;height: 100px;background:#998866"></div>
+      </div>
+      <div style="margin-top:10px;width: 100%; background: #d2e9ff; border-radius: 10px">
+        <p
+          style="
             font-family: Arial;
             font-size: 16px;
             font-weight: 600;
             display: inline-block;
             margin-left: 20px;
           "
-      >
-        故障件安装位置统计
-      </p>
-
-    </div>
-    <el-table :header-cell-style="{
+        >
+          故障件安装方法统计
+        </p>
+      </div>
+      <el-table :header-cell-style="{
           background: '#84BBFE',
           color: '#fff',
           fontSize: '14px',
@@ -27,32 +27,32 @@
           fontFamily: '黑体',
           padding: '0',
         }"
-              :header-row-style="{
+                :header-row-style="{
           height: '20',
         }"  :data="this.tabledata"  style="height:auto;margin-top: 20px;width:100%">
-      <el-table-column label="序号" align="center" type="index" />
-   <!--   <el-table-column label="故障件型号" align="center" prop="finishedModel" />
-      <el-table-column label="故障件名称" align="center" prop="finishedName" />
-      <el-table-column label="故障件类型" align="center" prop="finishedType" />-->
-      <el-table-column label="框数" align="center" prop="frame" />
-      <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
-      <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
-      <el-table-column label="故障件数" align="center" prop="num" />
-      <el-table-column label="故障件" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-edit"
-            @click="getwindow(scope.row)"
-            round
-          >查看</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-card>
-  <el-dialog :title="title" :visible.sync="open" height="1000px" width="75%" append-to-body>
-    <el-table :header-cell-style="{
+        <el-table-column label="序号" align="center" type="index" />
+        <!--   <el-table-column label="故障件型号" align="center" prop="finishedModel" />
+           <el-table-column label="故障件名称" align="center" prop="finishedName" />
+           <el-table-column label="故障件类型" align="center" prop="finishedType" />-->
+        <el-table-column label="故障件型号" align="center" prop="finishedModel" />
+        <el-table-column label="故障件名称" align="center" prop="finishedName" />
+        <el-table-column label="安装方法" align="center" prop="installMethod" />
+        <el-table-column label="质量问题数" align="center" prop="num" />
+        <!--<el-table-column label="故障件" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
+              @click="getwindow(scope.row)"
+              round
+            >查看</el-button>
+          </template>
+        </el-table-column>-->
+      </el-table>
+    </el-card>
+    <el-dialog :title="title" :visible.sync="open" height="1000px" width="75%" append-to-body>
+      <el-table :header-cell-style="{
           background: '#84BBFE',
           color: '#fff',
           fontSize: '14px',
@@ -61,21 +61,21 @@
           fontFamily: '黑体',
           padding: '0',
         }"
-              :header-row-style="{
+                :header-row-style="{
           height: '20',
         }"  :data="this.windata"  style="height:auto;margin-top: 20px;margin-left:10%;width:80%">
-      <el-table-column label="序号" align="center" type="index" />
-         <el-table-column label="故障件型号" align="center" prop="finishedModel" />
-         <el-table-column label="故障件名称" align="center" prop="finishedName" />
-         <el-table-column label="故障件类型" align="center" prop="finishedType" />
-      <el-table-column label="框数" align="center" prop="frame" />
-      <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
-      <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
-      <!--<el-table-column label="故障模式" align="center" prop="num" />-->
-      <el-table-column label="生产厂家" align="center" prop="finishedManufacturer"/>
-    </el-table>
-  </el-dialog>
-</div>
+        <el-table-column label="序号" align="center" type="index" />
+        <el-table-column label="故障件型号" align="center" prop="finishedModel" />
+        <el-table-column label="故障件名称" align="center" prop="finishedName" />
+        <el-table-column label="故障件类型" align="center" prop="finishedType" />
+        <el-table-column label="框数" align="center" prop="frame" />
+        <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
+        <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
+        <!--<el-table-column label="故障模式" align="center" prop="num" />-->
+        <el-table-column label="生产厂家" align="center" prop="finishedManufacturer"/>
+      </el-table>
+    </el-dialog>
+  </div>
 
 
 </template>
@@ -83,30 +83,31 @@
 <script>
 import * as echarts from "echarts";
 import 'echarts-gl'
-import {partsSite,pointCount,getWindow} from "../../../src/api/design.js"
+import {partsSite,pointCount,getWindow,getinstall_way,getana_install_way,getDesign} from "../../../src/api/design.js"
 export default {
-  name: "threeD1",
+  name: "threeD2",
 
 
 
   mounted() {
 
-this.getdata();
+    this.getdata();
     this.gettable()
   },
 
   data() {
     return {
       open:false,
+      install:[],
       data: [
-      /*  [1,12,2,'故障件1'],
-        [2,9,3,'故障件2'],
-        [3,6,1,'故障件3'],
-        [3,1,0.5,'故障件4'],
-        [3,1,1.2,'故障件5'],
-        [3,1,1.3,'故障件6'],
-        [3,1,1.4,'故障件7'],
-        [3,1,1.5,'故障件8'],*/
+        /*  [1,12,2,'故障件1'],
+          [2,9,3,'故障件2'],
+          [3,6,1,'故障件3'],
+          [3,1,0.5,'故障件4'],
+          [3,1,1.2,'故障件5'],
+          [3,1,1.3,'故障件6'],
+          [3,1,1.4,'故障件7'],
+          [3,1,1.5,'故障件8'],*/
 
       ],
       title:"该点分布的故障件",
@@ -118,27 +119,70 @@ this.getdata();
       name:[],
       a:[],
       windata:[],
+      color:[],
     };
   },
 
   methods: {
 
     getdata(){
-      partsSite().then((response)=>{
+      getinstall_way().then((response)=>{
         console.log(response);
         for(let i=0;i<response.length;i++){
           let data=[];
+          let mark=0;
           data.push(response[i].leftMiddleRight);
           data.push(response[i].frame);
           data.push(response[i].upperMiddleLower);
           data.push(response[i].finishedModel+'--'+response[i].finishedName);
+          data.push(response[i].installMethod);
           this.data.push(data);
+          for(let j=0;j<this.install.length;j++){
+
+
+            if(response[i].installMethod===this.install[j]){
+              mark=-1;
+            }
+          }
+            if(mark===0){
+              this.install.push(response[i].installMethod);
+              const r = Math.floor(Math.random()*256);
+              const g = Math.floor(Math.random()*256);
+              const b = Math.floor(Math.random()*256);
+              this.color.push(`rgb(${r},${g},${b})`);
+            }
         }
-      //  this.data=this.x;
+        //  this.data=this.x;
         console.log(this.data)
+        this.make_legend();
         this.initChart();
+
       })
     },
+
+    make_legend(){
+      console.log(this.color.length);
+      var MyDiv =document.getElementById("legend");
+      MyDiv.style.paddingTop=20+"px";
+      for(let i=0;i<this.color.length;i++){
+        var MyDiv =document.getElementById("legend");
+        var div = document.createElement("div")
+        div.style.height="30px";
+        div.style.width="150px";
+        div.style.background=this.color[i];
+        div.style.borderRadius="5px";
+        if(i!==0){
+          div.style.marginTop=-30+"px";
+        }
+        div.style.marginLeft=20+170*i+"px";
+        div.innerText=this.install[i];
+        div.style.textAlign="center";
+        div.style.lineHeight="30px";
+        div.style.color="white";
+        MyDiv.appendChild(div);
+      }
+    },
+
 
     getwindow(row){
 
@@ -146,9 +190,9 @@ this.getdata();
         this.windata=[];
         for(let i=0;i<response.length;i++){
 
-            if(response[i].leftMiddleRight===row.leftMiddleRight
-              &&response[i].frame===row.frame&&response[i].upperMiddleLower===row.upperMiddleLower){
-              this.windata.push(response[i]);
+          if(response[i].leftMiddleRight===row.leftMiddleRight
+            &&response[i].frame===row.frame&&response[i].upperMiddleLower===row.upperMiddleLower){
+            this.windata.push(response[i]);
 
           }
         }
@@ -158,7 +202,7 @@ this.getdata();
 
 
     gettable(){
-      pointCount().then((response)=>{
+      getana_install_way().then((response)=>{
         this.tabledata=response;
         console.log(this.tabledata);
       })
@@ -172,6 +216,10 @@ this.getdata();
 
 
     setOption() {
+      let install=this.install;
+      let colors=this.color;
+      let test=[];
+      console.log(colors);
       let option = {
         /*visualMap: {
           min: 0,
@@ -290,12 +338,12 @@ this.getdata();
             //grid3DIndex: 0,				//坐标轴使用的 geo3D 组件的索引
             symbol: 'diamond',				//点形状 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
             symbolSize: 12,  				//点大小
-            itemStyle: {
+            /*itemStyle: {
               // color: 'red',		   		//点颜色
               // borderColor: 'red',  		//点边框颜色
               opacity: 1,            		//点的透明度 1不透明
               borderWidth: 0.5       		//图形描边宽度
-            },
+            },*/
             label: {
               show: true, 				//是否显示点上面的标签，默认false
               distance: 15,				//标签与点的距离
@@ -309,21 +357,30 @@ this.getdata();
                 fontWeight: 'normal'		//是否加粗
               }
             },
-            // itemStyle: {
-            //   normal: {
-            //     color:function(params){  //根据不同数据显示不同颜色的标记
-            //       console.log("------",params)
-            //       if (params.data[3]=='TC-2--液压泵1') {
-            //         return '#fff';
-            //       } else{
-            //         return '#00ff00';
-            //       }
-            //     },
-            //     // color: '#f4e925',
-            //     shadowBlur: 10,
-            //     shadowColor: '#333'
-            //   }
-            // },
+            itemStyle: {
+              normal: {
+                color:function(params){  //根据不同数据显示不同颜色的标记
+                  console.log("------",params)
+                  console.log("------",install)
+                  for(let i=0;i<install.length;i++){
+                    let mark=0;
+                    if(params.data[4]===install[i]){
+                      /*test.push(colors[i]);*/
+                      return colors[i];
+
+
+                    }
+                  }
+                  /*if (params.data[3]=='TC-2--液压泵1') {
+                    return 'rgb(40,141,168)';
+                  } else{
+                    return '#00ff00';
+                  }*/
+                },
+                // color: '#f4e925',
+                shadowBlur: 10,
+                shadowColor: '#333'
+            },
             emphasis: {
               itemStyle: {
                 color: 'red',			//鼠标移到点上的颜色变化
@@ -356,7 +413,7 @@ this.getdata();
               z: '井深',
               tooltip: [0, 1, 2, 3, 4]
             }
-          }
+          }}
         ]
       };
       return option;

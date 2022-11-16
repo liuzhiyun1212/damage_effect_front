@@ -9,6 +9,46 @@ export function listDesign(query) {
   })
 }
 
+
+export function partsSite() {
+  return request({
+    url: '/system/design/partssite',
+    method: 'get',
+  })
+}
+
+export function getWindow() {
+  return request({
+    url: '/system/design/listall',
+    method: 'get',
+  })
+}
+
+export function getinstall_way() {
+  return request({
+    url: '/system/design/getinstall_way',
+    method: 'get',
+  })
+}
+
+export function getana_install_way() {
+  return request({
+    url: '/system/design/getana_install_way',
+    method: 'get',
+  })
+}
+
+
+
+export function pointCount() {
+  return request({
+    url: '/system/design/pointcount',
+    method: 'get',
+  })
+}
+
+
+
 // 查询成品件设计数据详细
 export function getDesign(id) {
   return request({

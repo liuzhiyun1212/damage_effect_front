@@ -140,6 +140,7 @@ export default {
                 },
                 series: []
             },
+            color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
             // legend: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine'],
             xData: ['2022第一季度', '2022第二季度', '2022第三季度'],
             tableData: [
