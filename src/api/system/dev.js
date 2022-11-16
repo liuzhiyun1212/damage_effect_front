@@ -124,3 +124,18 @@ export function selectAllFaulty() {
     method: 'get'
   })
 }
+
+// 生产班组变更情况
+export function selectByGradeFaultModel() {
+  return request({
+    url: '/system/dev/selectByGradeFaultModel',
+    method: 'get'
+  })
+}
+// 生产班组统计质量问题总数
+export function qualitySumByGrade() {
+  return request({
+    url: '/system/dev/qualitySumByGrade',
+    method: 'get'
+  })
+}
