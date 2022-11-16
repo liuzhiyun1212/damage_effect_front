@@ -423,10 +423,10 @@ export default {
                   let a = name.indexOf(params[i].seriesName)
                   let b = xdate.indexOf(getName)
                   let d = ydata[a][b]
-                  if(d==null){
+                  if(d==null||d == ""){
                       let c = b;
                       for(;;){
-                        if(ydata[a][c]==null){
+                        if(ydata[a][c]==null||ydata[a][c] == ""){
                           c--;
                         }else{
                           d = ydata[a][c]
@@ -434,10 +434,10 @@ export default {
                         }
                         if(c<0){
                           d = ydata[a][0]
-                          if(d==null){
+                          if(d==null||d == ""){
                             let e = 0
                             for(;;){
-                              if(ydata[a][e]==null){
+                              if(ydata[a][e]==null||ydata[a][e] == ""){
                                 e++;
                               }else{
                                 d = ydata[a][e]
