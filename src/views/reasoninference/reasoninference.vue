@@ -171,14 +171,14 @@ export default {
         var md = ""
 
         for (let i = 0; i < this.dataList1.length; i++) {
-          date = this.dataList1[i].planeType + "-" + this.dataList1[i].faultModel
+          date = this.dataList1[i].modelSeries + "-" + this.dataList1[i].faultModel
           if(name.indexOf(date) == -1){
             name.push(date)
           }
           if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
             xdate.push(this.dataList1[i].devHappenTime)
           }
-          md = {name:date,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+          md = {name:date,id:this.dataList1[i].planeType,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
           ndata.push(md)
         }
         var compare1 = function (x, y) {//比较函数
@@ -193,23 +193,24 @@ export default {
         xdate.sort(compare1)
         var xdate1 = []
         for (let i = 0; i < xdate.length; i++){
-          if(xdate[i]=="0"){
-            xdate1.push("未改型")
-          }else {
-            xdate1.push("第"+i+"次改型")
-          }
+          let a = i+1;
+          xdate1.push("型号"+a)
         }
         var fydata = new Array()
+        var ydata = new Array()
         for (let i = 0; i < xdate.length; i++){
           fydata[i] = new Array()
+          ydata[i] = new Array()
           for (let j = 0; j < name.length; j++){
             fydata[i][j]=0
+            ydata[i][j]=""
           }
         }
         for (let i = 0; i < ndata.length; i++){
           let a = name.indexOf(ndata[i].name)
           let b = xdate.indexOf(ndata[i].time)
           fydata[b][a] = ndata[i].num
+          ydata[b][a] = ndata[i].id
         }
         var by = ""
         var oy = []
@@ -283,7 +284,9 @@ export default {
                     && params[i].value != '') {
                     // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
                     html += params[i].marker;
-                    html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                    let a = name.indexOf(getName)
+                    let b = xdate1.indexOf(params[i].seriesName)
+                    html += ydata[b][a] + ': ' + params[i].value + '次<br/>';
                   }
                 }
               }
@@ -341,10 +344,10 @@ export default {
           if(xdate.indexOf(date) == -1){
             xdate.push(date)
           }
-          if(name.indexOf(this.dataList2[i].planeType) == -1){
-            name.push(this.dataList2[i].planeType)
+          if(name.indexOf(this.dataList2[i].modelSeries) == -1){
+            name.push(this.dataList2[i].modelSeries)
           }
-          md = {name:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
+          md = {name:this.dataList2[i].modelSeries,id:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
           ndata.push(md)
         }
         var compare1 = function (x, y) {//比较函数
@@ -362,24 +365,44 @@ export default {
         var md2 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
-          md2 = {name:biaozhuline[i].planeType,time:date,num:xdate.indexOf(date)}
+          md2 = {name:biaozhuline[i].modelSeries,id:this.dataList2[i].planeType,time:date,num:xdate.indexOf(date)}
           ndata1.push(md2)
         }
 
         var fydata = new Array()
+        var ydata = new Array()
         for (let i = 0; i < name.length; i++){
           fydata[i] = new Array()
+          ydata[i] = new Array()
           for (let j = 0; j < xdate.length; j++){
             fydata[i][j]=0
+            ydata[i][j]=""
           }
         }
         for (let i = 0; i < ndata.length; i++){
           let a = name.indexOf(ndata[i].name)
           let b = xdate.indexOf(ndata[i].time)
           fydata[a][b] = ndata[i].num
+          ydata[a][b] = ndata[i].id
         }
         var by = ""
         var oy = []
+        var labelOption = {
+          normal: {
+            show : false,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
         for (let i = 0; i < name.length; i++){
           var a1 = ""
           var a2 = []
@@ -396,14 +419,38 @@ export default {
             label: { show: true, formatter: name[i]+'技术状态升级时间'},
             data: a2
           }
-          by = {name:name[i], type: 'line',data: fydata[i], markLine:mark}
+          by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
           oy.push(by)
         }
         // 渲染图表
         var myChart = echarts.init(document.getElementById('stackedLineChart'));
         var option={
           tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            formatter: function (params) {
+              var html = '';
+              if (params.length != 0) {
+                // 对应x轴的时间数据  也就是2019-01-01
+                var getName = params[0].name;
+                html += getName + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  if (params[i].value != null && params[i].value != 0
+                    && params[i].value != '') {
+                    // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                    html += params[i].marker;
+                    let a = name.indexOf(params[i].seriesName)
+                    let b = xdate.indexOf(getName)
+                    let d = ydata[a][b]
+                    html += d + ': ' + params[i].value + '次<br/>';
+                  }
+                }
+              }
+              if(html == getName + '<br/>'||html == ''){
+                return null
+              }
+              return html;
+            }
           },
           legend: {
             data: name
