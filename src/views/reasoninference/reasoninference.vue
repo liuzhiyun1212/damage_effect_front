@@ -387,6 +387,22 @@ export default {
         }
         var by = ""
         var oy = []
+        var labelOption = {
+          normal: {
+            show : false,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
         for (let i = 0; i < name.length; i++){
           var a1 = ""
           var a2 = []
@@ -403,7 +419,7 @@ export default {
             label: { show: true, formatter: name[i]+'技术状态升级时间'},
             data: a2
           }
-          by = {name:name[i], type: 'line',data: fydata[i], markLine:mark}
+          by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
           oy.push(by)
         }
         // 渲染图表
@@ -419,42 +435,19 @@ export default {
                 html += getName + '<br/>';
                 for (var i = 0; i < params.length; i++) {
                   // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
-                  html += params[i].marker;
-                  let a = name.indexOf(params[i].seriesName)
-                  let b = xdate.indexOf(getName)
-                  let d = ydata[a][b]
-                  if(d==null||d == ""){
-                      let c = b;
-                      for(;;){
-                        if(ydata[a][c]==null||ydata[a][c] == ""){
-                          c--;
-                        }else{
-                          d = ydata[a][c]
-                          break;
-                        }
-                        if(c<0){
-                          d = ydata[a][0]
-                          if(d==null||d == ""){
-                            let e = 0
-                            for(;;){
-                              if(ydata[a][e]==null||ydata[a][e] == ""){
-                                e++;
-                              }else{
-                                d = ydata[a][e]
-                                break;
-                              }
-                              if(e==ydata[a].length){
-                                d = ydata[a][e-1]
-                                break;
-                              }
-                            }
-                          }
-                          break;
-                        }
-                      }
+                  if (params[i].value != null && params[i].value != 0
+                    && params[i].value != '') {
+                    // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                    html += params[i].marker;
+                    let a = name.indexOf(params[i].seriesName)
+                    let b = xdate.indexOf(getName)
+                    let d = ydata[a][b]
+                    html += d + ': ' + params[i].value + '次<br/>';
                   }
-                  html += d + ': ' + params[i].value + '次<br/>';
                 }
+              }
+              if(html == getName + '<br/>'||html == ''){
+                return null
               }
               return html;
             }
