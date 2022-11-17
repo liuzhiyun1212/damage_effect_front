@@ -250,6 +250,26 @@ export default {
           fydata[b][a] = ndata[i].num
           ydata[b][a] = ndata[i].id
         }
+        for (let i = 0;;){
+          let aaa = false
+          for (let j = 0; j < fydata[0].length; j++){
+            if(fydata[i][j]>0){
+              aaa = true
+            }
+          }
+          if(aaa==false){
+            xdate1.splice(i,1)
+            xdate.splice(i,1)
+            fydata.splice(i,1)
+            ydata.splice(i,1)
+          }
+          if(i==fydata.length-1){
+            break;
+          }
+          if(aaa==true){
+            i++
+          }
+        }
         var by = ""
         var oy = []
         var labelOption = {
