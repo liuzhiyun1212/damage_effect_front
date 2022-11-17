@@ -31,3 +31,19 @@ export function devcapup2() {
     method: 'get'
   })
 }
+
+//产品改型:1.不同故障件型号中，某种故障模式质量问题数量存在较大差异
+export function prochaange1() {
+  return request({
+    url: '/system/reasonrule/prochaange1',
+    method: 'get'
+  })
+}
+
+//产品改型:4.故障件型号技术状态升级时间与质量问题数量变化时间一致或不超过一定范围
+export function prochaange4() {
+  return request({
+    url: '/system/reasonrule/prochaange4',
+    method: 'get'
+  })
+}
