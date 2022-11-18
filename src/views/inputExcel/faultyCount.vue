@@ -17,6 +17,12 @@
         >
           统计故障件型号-名称
         </p>
+        <el-tooltip placement="top">
+            <!-- <div slot="content">多行信息<br/>第二行信息</div> -->
+             <div slot="content">若某故障件名称质量问题发生数大于质量问题故障件名称平均发生数50%，则质量问题在该故障件名称上集中爆发。</div>
+            <!-- <el-button icon="el-icon-question" circle></el-button> -->
+            <i class="el-icon-question"></i>
+        </el-tooltip>
         <!-- <el-button type="primary" icon="el-icon-s-home"  @click="allInfo" style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button> -->
         </div>
         <el-table
@@ -36,12 +42,12 @@
             </el-table-column>
             <el-table-column
               prop="partsCount"
-              label="故障件数量"
+              label="问题发生数"
             >
             </el-table-column>
             <el-table-column
               prop="partsProportion"
-              label="故障件发生数占比"
+              label="百分比"
             >
             </el-table-column>
           </el-table>
@@ -79,6 +85,9 @@ export default {
             faultyCountList:[],
             //平均数
             averagePart: null,
+            loading: false,
+            //爆发故障件名字列表
+            faultyList:[],
             // FaultyPartsCount:{
             //     partsModelName:null,
             //     partsCount:null,
@@ -90,25 +99,37 @@ export default {
         // 故障件型号-名称
         selectFaultyCount(){
             selectFaultyCount().then(response => {
+                debugger
+                this.faultyCountList = [],
+                this.faultyList = [],
                 this.faultyCountList = response;
-                console.log(this.faultyCountList);
-                this.selectList = this.faultyCountList               
+                console.log("问题爆发",this.faultyCountList);
+                this.selectList = this.faultyCountList  
+                for(let i=0;i<this.faultyCountList.length;i++){
+                    this.faultyList.push(this.faultyCountList[i].partsModelName)
+                }
+                console.log(this.faultyList);    
+                this.selectAllFaulty();      
             });
         },
         
         selectAllFaulty(){
             selectAllFaulty().then(response => {
+                this.xQuarter = [],
+                this.yQuarter = [],
                 this.allFaultyList = response;
-                console.log(this.allFaultyList);
+                
+                console.log("全部",this.allFaultyList);
                 for(let i=0;i<this.allFaultyList.length;i++){
-                this.xQuarter.push(this.allFaultyList[i].partsModelName)
-                this.yQuarter.push(this.allFaultyList[i].partsCount)
+                    this.xQuarter.push(this.allFaultyList[i].partsModelName)
+                    this.yQuarter.push(this.allFaultyList[i].partsCount)
                 }
+                // this.chartView(this.faultyCountList);
                 this.chartView();
             });
         },
         chartView() {
-        var myChart = echarts.init(document.getElementById("quarter"))
+            var myChart = echarts.init(document.getElementById("quarter"))
             var colorList = [];
             var option = {
                 tooltip: {
@@ -149,30 +170,25 @@ export default {
                     showBackground: true,
                     barWidth: 20,
                     itemStyle: {
-                    color: (params) => {
-                        console.log("111",params);
-                        console.log("222",this.faultyCountList);
-                        debugger
-                    // if(params.dataIndex == this.selectedDataIndex) {
-                    if(this.faultyCountList.includes(params.name)) {
-                        colorList[params.dataIndex] = 'red'
-                    } else {
-                        colorList[params.dataIndex] = 'blue'
-
-                    }
-                    return colorList[params.dataIndex]
-                    }
-                        // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        // { offset: 0, color: '#83bff6' },
-                        // { offset: 0.5, color: '#188df0' },
-                        // { offset: 1, color: '#188df0' }
-                        // ])
+                        color: (params) => {
+                            // console.log("111",params);
+                            console.log("222",this.faultyList);
+                            // debugger
+                        // if(params.dataIndex == this.selectedDataIndex) {
+                            if(this.faultyList.includes(params.name)) {
+                                
+                                colorList[params.dataIndex] = 'red'
+                            } else {
+                                colorList[params.dataIndex] = 'blue'
+                            }
+                            return colorList[params.dataIndex]
+                        }
                     },
                     data: this.yQuarter
                     }
                 ]
                 };
-        myChart.setOption(option);
+            myChart.setOption(option);
             // echarts自适应
             window.addEventListener("resize", () => {
             myChart.resize();
@@ -181,12 +197,11 @@ export default {
     },
     created() {
         this.selectFaultyCount();
-        this.selectAllFaulty();
+        // this.selectAllFaulty();
     },
     mounted() {
         
     },
-
 }
 </script>
 
