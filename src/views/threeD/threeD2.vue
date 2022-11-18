@@ -32,8 +32,8 @@
         }"  :data="this.tabledata"  style="height:auto;margin-top: 20px;width:100%">
         <el-table-column label="序号" align="center" type="index" />
         <!--   <el-table-column label="故障件型号" align="center" prop="finishedModel" />
-           <el-table-column label="故障件名称" align="center" prop="finishedName" />
-           <el-table-column label="故障件类型" align="center" prop="finishedType" />-->
+           <el-table-column label="故障件名称" align="center" prop="finishedName" />-->
+           <el-table-column label="机型" align="center" prop="planeType" />
         <el-table-column label="故障件型号" align="center" prop="finishedModel" />
         <el-table-column label="故障件名称" align="center" prop="finishedName" />
         <el-table-column label="安装方法" align="center" prop="installMethod" />
@@ -134,6 +134,7 @@ export default {
           data.push(response[i].leftMiddleRight);
           data.push(response[i].frame);
           data.push(response[i].upperMiddleLower);
+          data.push(response[i].planeType);
           data.push(response[i].finishedModel+'--'+response[i].finishedName);
           data.push(response[i].installMethod);
           this.data.push(data);
