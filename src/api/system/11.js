@@ -1,44 +1,44 @@
 import request from '@/utils/request'
 
 // 查询8:装备部署数据列表
-export function list8(query) {
+export function list11(query) {
   return request({
-    url: '/system/8/list',
+    url: '/system/11/list',
     method: 'get',
     params: query
   })
 }
 
 // 查询8:装备部署数据详细
-export function get8(id) {
+export function get11(id) {
   return request({
-    url: '/system/8/' + id,
+    url: '/system/11/' + id,
     method: 'get'
   })
 }
 
 // 新增8:装备部署数据
-export function add8(data) {
+export function add11(data) {
   return request({
-    url: '/system/8',
+    url: '/system/11',
     method: 'post',
     data: data
   })
 }
 
 // 修改8:装备部署数据
-export function update8(data) {
+export function update11(data) {
   return request({
-    url: '/system/8',
+    url: '/system/11',
     method: 'put',
     data: data
   })
 }
 
 // 删除8:装备部署数据
-export function del8(id) {
+export function del11(id) {
   return request({
-    url: '/system/8/' + id,
+    url: '/system/11/' + id,
     method: 'delete'
   })
 }

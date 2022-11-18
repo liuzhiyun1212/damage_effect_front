@@ -53,7 +53,7 @@
 <script>
 import * as echarts from 'echarts'
 import {changeDataTreeSelect} from "../../api/system/changedata";
-import {devcapup1, devcapup2, devup1, devup2, prochaange1, prochaange4} from "../../api/system/reasonyuce";
+import {devcapup1, devcapup2, devup1, devup2, prochaange1, prochaange2, prochaange3,prochaange4} from "../../api/system/reasonyuce";
 
 export default {
   name: "reasoninference",
@@ -162,26 +162,48 @@ export default {
       if(rule=="1.不同故障件型号中，某种故障模式质量问题数量存在较大差异；"){
         this.ruleprochaange1()
       }
+      if(rule=="2.相同故障件型号的不同安装方式中，某种故障模式质量问题数量存在较大差异；"){
+        this.ruleprochaange2()
+      }
+      if(rule=="3.相同故障件型号的不同安装位置中，某种故障模式质量问题数量存在较大差异；"){
+        this.ruleprochaange3()
+      }
       if(rule=="4.故障件型号技术状态升级时间与质量问题数量变化时间一致或不超过一定范围。"){
         this.ruleprochaange4()
       }
     },
     ifprochaange(){
       prochaange1().then(response1 => {
-        prochaange4().then(response4 => {
-          this.total1 = response1.total;
-          this.total4 = response4.total;
-          if(this.total1>0){
-            this.if1 = true
-          }
-          if(this.total4>0){
-            this.if4 = true
-          }
-          if(this.total1>0){
-            this.ruleprochaange1()
-          }else if(this.total4>0){
-            this.ruleprochaange4()
-          }
+        prochaange2().then(response2 => {
+          prochaange3().then(response3 => {
+            prochaange4().then(response4 => {
+              this.total1 = response1.total;
+              this.total2 = response2.total;
+              this.total3 = response3.total;
+              this.total4 = response4.total;
+              if(this.total1>0){
+                this.if1 = true
+              }
+              if(this.total2>0){
+                this.if2 = true
+              }
+              if(this.total3>0){
+                this.if3 = true
+              }
+              if(this.total4>0){
+                this.if4 = true
+              }
+              if(this.total1>0){
+                this.ruleprochaange1()
+              }else if(this.total2>0){
+                this.ruleprochaange2()
+              }else if(this.total3>0){
+                this.ruleprochaange3()
+              }else if(this.total4>0){
+                this.ruleprochaange4()
+              }
+            })
+          })
         })
       })
     },
@@ -957,6 +979,300 @@ export default {
                 // 对应x轴的时间数据  也就是2019-01-01
                 var getName = params[0].name;
                 html += getName + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                  // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                  if (params[i].value != null && params[i].value != 0
+                    && params[i].value != '') {
+                    // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                    html += params[i].marker;
+                    let a = name.indexOf(getName)
+                    let b = xdate1.indexOf(params[i].seriesName)
+                    html += ydata[b][a] + ': ' + params[i].value + '次<br/>';
+                  }
+                }
+              }
+              return html;
+            }
+          },
+          legend: {
+            data: xdate1
+          },
+          grid: {
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
+            containLabel: true
+          },
+          xAxis: {
+            minInterval:1,
+            type: 'value',
+          },
+          yAxis: {
+            data: name,
+            type: 'category',
+            axisLabel:{
+              interval: 0
+            },
+          },
+          series: oy,
+        };
+        option && myChart.setOption(option)
+        // 刷新调整
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
+      })
+    },
+    ruleprochaange2(){
+      prochaange2().then(response => {
+        this.yiju = "（判断规则2）"
+        this.dataList2 = response.rows
+        var name = []
+        var date = ""
+        var xdate = []
+        var ndata = []
+        var md = ""
+        for (let i = 0; i < this.dataList2.length; i++) {
+          date = this.dataList2[i].partsName + "（" + this.dataList2[i].partsModel + "）"+this.dataList2[i].faultModel
+          if(name.indexOf(date) == -1){
+            name.push(date)
+          }
+          if(xdate.indexOf(this.dataList2[i].installMethod) == -1){
+            xdate.push(this.dataList2[i].installMethod)
+          }
+          md = {name:date,time:this.dataList2[i].installMethod,num:this.dataList2[i].devHappennum}
+          ndata.push(md)
+        }
+        var xdate1 = []
+        for (let i = 0; i < xdate.length; i++){
+          let a = i+1;
+          xdate1.push("安装方法"+a)
+        }
+        var fydata = new Array()
+        var ydata = new Array()
+        for (let i = 0; i < xdate.length; i++){
+          fydata[i] = new Array()
+          ydata[i] = new Array()
+          for (let j = 0; j < name.length; j++){
+            fydata[i][j]=0
+            ydata[i][j]=""
+          }
+        }
+        for (let i = 0; i < ndata.length; i++){
+          let a = name.indexOf(ndata[i].name)
+          let b = xdate.indexOf(ndata[i].time)
+          fydata[b][a] = ndata[i].num
+          ydata[b][a] = ndata[i].time
+        }
+        var by = ""
+        var oy = []
+        var labelOption = {
+          normal: {
+            show : true,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
+        for (let i = 0; i < xdate.length; i++){
+          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+          oy.push(by)
+        }
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        var option={
+          tooltip: {
+            trigger: 'axis',
+            position: function (point, params, dom, rect, size) {
+              // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+              // 提示框位置
+              var x = 0; // x坐标位置
+              var y = 0; // y坐标位置
+              // 当前鼠标位置
+              var pointX = point[0];
+              var pointY = point[1];
+              // 外层div大小
+              // var viewWidth = size.viewSize[0];
+              // var viewHeight = size.viewSize[1];
+              // 提示框大小
+              var boxWidth = size.contentSize[0];
+              var boxHeight = size.contentSize[1];
+              // boxWidth > pointX 说明鼠标左边放不下提示框
+              if (boxWidth > pointX) {
+                x = 5;
+              } else { // 左边放的下
+                x = pointX - boxWidth;
+              }
+              // boxHeight > pointY 说明鼠标上边放不下提示框
+              if (boxHeight > pointY) {
+                y = 5;
+              } else { // 上边放得下
+                y = pointY - boxHeight;
+              }
+              return [x, y];
+            },
+            formatter: function (params) {
+              var html = '';
+              if (params.length != 0) {
+                // 对应x轴的时间数据  也就是2019-01-01
+                var getName = params[0].name;
+                html += getName + '<br/>';
+                for (var i = 0; i < params.length; i++) {
+                  // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                  if (params[i].value != null && params[i].value != 0
+                    && params[i].value != '') {
+                    // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                    html += params[i].marker;
+                    let a = name.indexOf(getName)
+                    let b = xdate1.indexOf(params[i].seriesName)
+                    html += ydata[b][a] + ': ' + params[i].value + '次<br/>';
+                  }
+                }
+              }
+              return html;
+            }
+          },
+          legend: {
+            data: xdate1
+          },
+          grid: {
+            left: '1%',
+            right: '4.2%',
+            bottom: '1%',
+            containLabel: true
+          },
+          xAxis: {
+            minInterval:1,
+            type: 'value',
+          },
+          yAxis: {
+            data: name,
+            type: 'category',
+            axisLabel:{
+              interval: 0
+            },
+          },
+          series: oy,
+        };
+        option && myChart.setOption(option)
+        // 刷新调整
+        window.addEventListener('resize', () => {
+          myChart.resize()
+        })
+      })
+    },
+    ruleprochaange3(){
+      prochaange3().then(response => {
+        this.yiju = "（判断规则3）"
+        this.dataList3 = response.rows
+        var name = []
+        var date = ""
+        var xdate = []
+        var xx = []
+        var x = ""
+        var ndata = []
+        var md = ""
+        for (let i = 0; i < this.dataList3.length; i++) {
+          date = this.dataList3[i].partsName + "（" + this.dataList3[i].partsModel + "）"+this.dataList3[i].faultModel
+          if(name.indexOf(date) == -1){
+            name.push(date)
+          }
+          xx = this.dataList3[i].installWhere.split('/')
+          x = '（'+xx[0]+'，'+xx[1]+'，'+xx[2]+'）'
+          if(xdate.indexOf(x) == -1){
+            xdate.push(x)
+          }
+          md = {name:date,time:x,num:this.dataList3[i].devHappennum}
+          ndata.push(md)
+        }
+        var xdate1 = []
+        for (let i = 0; i < xdate.length; i++){
+          let a = i+1;
+          xdate1.push("安装位置"+a)
+        }
+        var fydata = new Array()
+        var ydata = new Array()
+        for (let i = 0; i < xdate.length; i++){
+          fydata[i] = new Array()
+          ydata[i] = new Array()
+          for (let j = 0; j < name.length; j++){
+            fydata[i][j]=0
+            ydata[i][j]=""
+          }
+        }
+        for (let i = 0; i < ndata.length; i++){
+          let a = name.indexOf(ndata[i].name)
+          let b = xdate.indexOf(ndata[i].time)
+          fydata[b][a] = ndata[i].num
+          ydata[b][a] = ndata[i].time
+        }
+        var by = ""
+        var oy = []
+        var labelOption = {
+          normal: {
+            show : true,
+            formatter: function(params) {
+              // params是每根柱子的对象
+              var html = '';
+              if (params.value > 0) {
+                // 千万不要html += '';
+                html = params.value
+                return html;
+              }
+              // 没有数据的返回'' 不是返回0
+              return html;
+            },
+          }
+        }
+        for (let i = 0; i < xdate.length; i++){
+          by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+          oy.push(by)
+        }
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        var option={
+          tooltip: {
+            trigger: 'axis',
+            position: function (point, params, dom, rect, size) {
+              // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+              // 提示框位置
+              var x = 0; // x坐标位置
+              var y = 0; // y坐标位置
+              // 当前鼠标位置
+              var pointX = point[0];
+              var pointY = point[1];
+              // 外层div大小
+              // var viewWidth = size.viewSize[0];
+              // var viewHeight = size.viewSize[1];
+              // 提示框大小
+              var boxWidth = size.contentSize[0];
+              var boxHeight = size.contentSize[1];
+              // boxWidth > pointX 说明鼠标左边放不下提示框
+              if (boxWidth > pointX) {
+                x = 5;
+              } else { // 左边放的下
+                x = pointX - boxWidth;
+              }
+              // boxHeight > pointY 说明鼠标上边放不下提示框
+              if (boxHeight > pointY) {
+                y = 5;
+              } else { // 上边放得下
+                y = pointY - boxHeight;
+              }
+              return [x, y];
+            },
+            formatter: function (params) {
+              var html = '';
+              if (params.length != 0) {
+                // 对应x轴的时间数据  也就是2019-01-01
+                var getName = params[0].name;
+                html += getName+'（框，上中下，左中右）' + '<br/>';
                 for (var i = 0; i < params.length; i++) {
                   // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
                   if (params[i].value != null && params[i].value != 0
