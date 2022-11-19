@@ -83,9 +83,9 @@ export default {
             for(let i=0;i<this.allList.length;i++){
                 this.xPlane.push(this.allList[i].quarter)
                 this.yPlane.push(this.allList[i].sum);
-                this.getChart();
                 count += this.allList[i].sum;
                 this.average = count/this.allList.length;
+                this.getChart();
         }
         
         this.xLength = this.allList.length;
@@ -150,6 +150,7 @@ export default {
                                 }else{
                                     return 'blue'
                                 }
+                        
                         }
                     // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     // { offset: 0, color: '#83bff6' },
