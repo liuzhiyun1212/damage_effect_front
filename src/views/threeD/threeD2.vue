@@ -83,7 +83,7 @@
 <script>
 import * as echarts from "echarts";
 import 'echarts-gl'
-import {partsSite,pointCount,getWindow,getinstall_way,getana_install_way,getDesign} from "../../../src/api/design.js"
+import {partsSite,pointCount,getWindow,getinstall_way,getana_install_way,getDesign} from "../../../src/api/system/design.js"
 export default {
   name: "threeD2",
 
