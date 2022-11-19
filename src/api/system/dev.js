@@ -139,3 +139,24 @@ export function qualitySumByGrade() {
     method: 'get'
   })
 }
+// 生产班组统计产品总数
+export function productSumByGrade() {
+  return request({
+    url: '/system/dev/productSumByGrade',
+    method: 'get'
+  })
+}
+// 故障件生产班组变更
+export function selectByGradeChanged() {
+  return request({
+    url: '/system/dev/selectByGradeChanged',
+    method: 'get'
+  })
+}
+// 时间线统计图用故障件生产班组变更
+export function timeGradeChanged() {
+  return request({
+    url: '/system/dev/timeGradeChanged',
+    method: 'get'
+  })
+}

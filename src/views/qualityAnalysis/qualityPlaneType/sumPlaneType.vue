@@ -18,7 +18,6 @@
         质量问题集中爆发的机型(若某机型质量问题发生数大于质量问题机型平均发生数50%，则质量问题在该机型上集中爆发)
         </p>
         </div>
-    </el-card>
         <el-table :header-cell-style="{
             background: '#84BBFE',
             color: '#fff',
@@ -45,6 +44,8 @@
             >
             </el-table-column>
           </el-table>
+    </el-card>
+        
   </div>
 </template>
 
