@@ -3,11 +3,11 @@
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
         <div
             id="duibi"
-            style="width: 100%; height: 200px;"
+            style="width: 100%; height: 400px;"
           ></div>
           <div
             id="timeLine"
-            style="width: 100%; height: 200px;"
+            style="width: 100%; height: 300px;"
           ></div>
           
     </el-card>
@@ -17,6 +17,7 @@
 <script>
  import * as echarts from 'echarts';
 import {selectByGradeFaultModel,qualitySumByGrade,productSumByGrade,selectByGradeChanged,timeGradeChanged} from '@/api/system/dev';
+import { log } from 'console';
 export default {
     data() {
         return {
@@ -62,6 +63,8 @@ export default {
         },
         dealRes(data) {
             var l1=[];
+            
+        var count=0;
       for (var i = 0; i < data.length; i++) {
         this.seriesData.push({
           name: data[i].name,
@@ -85,6 +88,7 @@ export default {
           },
         });
         
+            count += data[i].list.length;
       }
 
       for(let i=0;i<this.allList.length;i++){
@@ -107,26 +111,16 @@ export default {
                 }
             }
       }
-
+    //   console.log(count);
       for(let j=0;j<this.seriesData.length;j++){
-        for(let i=0;i<this.xList.length;i++)
+        for(let i=0;i<count;i++)
     
           this.seriesData[j].data.push(j);
       }
-       console.log(this.seriesData);
+       console.log("11111111",this.allList);
     },
-        // 时间线统计列表
-        timeGradeChanged(){
-            timeGradeChanged(this.queryParams).then(response => {
-                this.allList=response;
-                this.selectByGradeChanged();
-                this.dealRes(this.allList);
-                this.getTime();
-                console.log("1111111",this.allList);
-        });
-        },
-        // 故障件生产班组变更
-        selectByGradeChanged(){
+    // 故障件生产班组变更
+    selectByGradeChanged(){
             selectByGradeChanged(this.queryParams).then(response => {
                 let arr=[];
                 let time1=[];
@@ -141,15 +135,30 @@ export default {
                     return time1.indexOf(item) === index;  
                 });
                 // this.dealRes(this.yList.length);
-                console.log("3333",this.xList);
+                // console.log("3333",this.xList);
                 this.getTime();
 
         });
         },
+        // 时间线统计列表
+        timeGradeChanged(){
+            timeGradeChanged(this.queryParams).then(response => {
+                this.allList=response;
+                
+                this.dealRes(this.allList);
+                this.selectByGradeChanged();
+                this.getTime();
+                // console.log("1111111",this.allList);
+        });
+        },
+        
         // 对比堆叠图
         getChart(){
             var myChart = echarts.init(document.getElementById("duibi"))
             var option = {
+                title: {
+                    text: '故障件涉及生产班组对比堆叠图'
+                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -210,11 +219,14 @@ export default {
             var myChart = echarts.init(document.getElementById("timeLine"))
             var option = {
                 title: {
-                    text: 'Temperature Change in the Coming Week'
+                    text: '故障件生产班组变更情况'
                 },
-                tooltip: {
-                    trigger: 'axis'
-                },
+    //             tooltip: {
+    //                 trigger: 'axis',
+    // axisPointer: {
+    //   type: 'cross'
+    // }
+                // },
                 legend: {},
                 toolbox: {
                     show: true,
@@ -231,7 +243,13 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: this.xList
+                    data: this.xList,
+                    axisLabel: {
+                        formatter: params=>{
+                            return params.slice(0,10);
+                            
+                        }
+                },
                 },
                 yAxis: {
                     type: 'value',
