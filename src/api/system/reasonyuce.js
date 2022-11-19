@@ -40,6 +40,22 @@ export function prochaange1() {
   })
 }
 
+//产品改型:2.相同故障件型号的不同安装方式中，某种故障模式质量问题数量存在较大差异
+export function prochaange2() {
+  return request({
+    url: '/system/reasonrule/prochaange2',
+    method: 'get'
+  })
+}
+
+//产品改型:3.相同故障件型号的不同安装位置中，某种故障模式质量问题数量存在较大差异
+export function prochaange3() {
+  return request({
+    url: '/system/reasonrule/prochaange3',
+    method: 'get'
+  })
+}
+
 //产品改型:4.故障件型号技术状态升级时间与质量问题数量变化时间一致或不超过一定范围
 export function prochaange4() {
   return request({
