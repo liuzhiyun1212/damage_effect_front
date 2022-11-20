@@ -7,7 +7,7 @@
           ></div>
           <div
             id="timeLine"
-            style="width: 100%; height: 300px;"
+            style="width: 100%; height: 600px;"
           ></div>
           
     </el-card>
@@ -17,7 +17,6 @@
 <script>
  import * as echarts from 'echarts';
 import {selectByGradeFaultModel,qualitySumByGrade,productSumByGrade,selectByGradeChanged,timeGradeChanged} from '@/api/system/dev';
-import { log } from 'console';
 export default {
     data() {
         return {
@@ -39,6 +38,13 @@ export default {
         }
     },
     methods: {
+        // 高度适应
+        getHeight(){
+           var d =  document.getElementById("timeLine");
+           var height=this.yList.length*150;
+           //d.setAttribute(height,height+"px");
+           d.style.cssText="height:"+height+"px";
+        },
         // 故障件生产班组变更情况
         selectByGradeFaultModel(){
             selectByGradeFaultModel(this.queryParams).then(response => {
@@ -136,6 +142,8 @@ export default {
                 });
                 // this.dealRes(this.yList.length);
                 // console.log("3333",this.xList);
+                
+                this.getHeight();
                 this.getTime();
 
         });
@@ -266,7 +274,7 @@ export default {
                 },
                 series: this.seriesData
                 };
-
+                // this.getHeight();
             myChart.setOption(option);
             console.log(this.seriesData);
             // echarts自适应

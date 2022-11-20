@@ -160,3 +160,25 @@ export function timeGradeChanged() {
     method: 'get'
   })
 }
+// 统计高发故障模式环境
+export function selectEnvironment() {
+  return request({
+    url: '/system/dev/selectEnvironment',
+    method: 'get'
+  })
+}
+// 统计高发故障模式环境装备数量
+export function selectDevByEnvironment() {
+  return request({
+    url: '/system/dev/selectDevByEnvironment',
+    method: 'get'
+  })
+}
+// 统计高发故障模式环境质量问题数量
+export function selectQualityByEnvironment() {
+  return request({
+    url: '/system/dev/selectQualityByEnvironment',
+    method: 'get'
+  })
+}
+
