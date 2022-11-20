@@ -1,30 +1,93 @@
 <template>
   <div class="app-container">
-       <div id="echart-line" :style="{width: '100%', height: '400px'}"></div>  
+     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
+    <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
+     
+    <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+      <p
+        style="
+          font-family: Arial;
+          font-size: 16px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 20px;
+        "
+      >
+        故障件改型情况
+      </p>
+    </div>
+
+
+        <el-table 
+      :header-cell-style="{
+        background: '#84BBFE',
+        color: '#fff',
+        fontSize: '14px',
+        textAlign: 'center',
+        fontWeight: '600',
+        fontFamily: '黑体',
+        padding: '0',
+      }"
+      :header-row-style="{
+        height: '20',
+      }"
+     
+      :data="productChange"
+      @selection-change="handleSelectionChange"
+      style="height: auto; margin-top: 20px; width: 99%"
+    >
+      <el-table-column type="index" align="center" label="序号" width="50" />
+      <el-table-column
+        label="故障件型号"
+        align="center"
+        prop="productModel"
+      ></el-table-column>
+      <el-table-column
+        label="故障件名称"
+        align="center"
+        prop="productName"
+      ></el-table-column>
+      <el-table-column
+        label="改型时间"
+        align="center"
+        prop="modifyTime"
+      >
+      </el-table-column>
+      <!-- <el-table-column label="质量问题标题" align="center" prop="title" />
+     
+      <el-table-column label="故障件种类" align="center" prop="partsType" />
+      <el-table-column label="故障件名称" align="center" prop="partsName" />
+      <el-table-column label="故障模式" align="center" prop="faultModel" /> -->
+    </el-table>
+
+
+
+     </el-card>
+
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
 <script>
-import { listProdeuctDesign3, getProdeuctDesign3, delProdeuctDesign3, addProdeuctDesign3, updateProdeuctDesign3 ,xyobject} from "@/api/system/prodeuctDesign3";
-import { faultStatistics,listQualityProblem1, getQualityProblem1, delQualityProblem1, addQualityProblem1, updateQualityProblem1 } from "@/api/system/qualityProblem1";
+import { listModify, getModify, delModify, addModify, updateModify, listProductChange } from "@/api/system/modify";
 import * as echarts from "echarts";
+
 export default {
-  name: "ProdeuctDesign3",
+  name: "Modify",
   data() {
     return {
-      //后端传的数据
-      faultStatisticsArray:[],
-      //质量问题高发故障模式、总数、占比
-      qualityHigh:[],
-      qualityCountTotal:null,
-      qualityProportion:[],
 
+      productChange:[],
       se:[],
-      xyObject:{},
-
-      prodeuctDesign3List: [],
       x:[],
       y:[],
+
 
       // 遮罩层
       loading: true,
@@ -38,6 +101,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      // 产品改型数据表格数据
+      modifyList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -47,16 +112,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         planeType: null,
-        finishedType: null,
-        finishedName: null,
-        finishedModel: null,
-        finishedManufacturer: null,
-        frame: null,
-        upperMiddleLower: null,
-        leftMiddleRight: null,
-        installMethod: null,
-        rawMaterial: null,
-        spareParts: null,
+        productType: null,
+        productName: null,
+        productModel: null,
         modifyTime: null,
         modifyMeasures: null
       },
@@ -67,62 +125,49 @@ export default {
       }
     };
   },
-  mounted() {
-    //改型时间线
-    this.getX(); 
-    this.getY();
-
+  created() {
     
   },
-  created(){
-    this.testfaultStatistics();
+  mounted(){
+    this.testChange();
+    
+    
   },
-
-
   methods: {
-    //饼图时间线
-    testfaultStatistics(){
-      faultStatistics().then(response=>{
-        this.faultStatisticsArray = response;
-        console.log("faultStatisticsArray:",this.faultStatisticsArray);
-        for (let index = 0; index < this.faultStatisticsArray.length; index++) {
-          const element = this.faultStatisticsArray[index].modelCount;
-          this.qualityCountTotal =this.qualityCountTotal+element;
-        }
-        console.log("总数：",this.qualityCountTotal);
+    getX(){
+      for (let index = 0; index < this.productChange.length; index++) {
+        this.x[index]  = this.productChange[index].modifyTime;
+      }
+      
+      console.log("x:",this.x);
+      this.dealRes();
 
-
-        for (let index = 0; index < this.faultStatisticsArray.length; index++) {
-          const mc = this.faultStatisticsArray[index].modelCount;
-          if (mc/this.qualityCountTotal>0.1) {
-            // console.log("大于：",mc);
-            this.qualityHigh[index] =this.faultStatisticsArray[index].faultModel;
-            this.qualityProportion[index] = mc/this.qualityCountTotal;
-          }
-        }
-        console.log("高发：",this.qualityHigh);
-        console.log("占比：",this.qualityProportion);
-      })
+    },
+    getY(){
+      for (let index = 0; index < this.productChange.length; index++) {
+        this.y[index] = this.productChange[index].productName;
+      }
+      console.log("y:",this.y);
+      this.initChart();
     },
 
 
 
 
-
-
-    
     dealRes() {
-      for (var i = 0; i < this.xyObject.length; i++) {
+      for (var i = 0; i < this.productChange.length; i++) {
         this.se.push({
-          name: this.xyObject[i].finishedName,
+          name: this.productChange[i].productName,
           type: "line",
           data: [],
           markPoint: {
             symbolSize: 20,
             symbol: 'triangle',
             data: [{
-                name: "11",
-                coord: [this.xyObject[i].modifyTime,this.xyObject[i].finishedName],
+                name: "",
+                coord: [
+                  this.productChange[i].modifyTime,
+                  this.productChange[i].productName],
                 label: {
                   show: true,
                   /*formatter: function (item) {
@@ -135,54 +180,24 @@ export default {
         );
       };
       for(let j=0;j<this.se.length;j++){
-        for(let i=0;i<this.xyObject.length;i++){
+        for(let i=0;i<this.productChange.length;i++){
           this.se[j].data.push(j);
         }
       }
       },
 
-    getX(){
-      xyobject().then(response => {
-        console.log("xyobject:",response);
-        this.xyObject =response;
-        this.dealRes();
 
-          //去重
-          for(let i=0;i<response.length;i++){
-            let mark=0;
-            for(let j=0;j<this.x.length;j++){
-                if(response[i].modifyTime===this.x[j]){
-                  mark=-1
-                }
-            }
-            if(mark===0){
-              this.x.push(response[i].modifyTime)
-            }
-          }
-          console.log(this.x);
-      });
+
+
+    testChange(){
+     listProductChange().then(res=>{
+      this.productChange = res;
+      console.log("productChange1:",this.productChange);
+      this.getX();
+      this.getY();
+
+     })
     },
-
-    getY(){
-          xyobject().then(response => {
-            console.log(response);
-              for(let i=0;i<response.length;i++){
-                let mark=0;
-                for(let j=0;j<this.y.length;j++){
-                    if(response[i].finishedName===this.y[j]){
-                      mark=-1
-                    }
-                }
-                if(mark===0){
-                  this.y.push(response[i].finishedName)
-                }
-              }
-              console.log("y:",this.y);
-              this.initChart();
-              console.log("se:",this.se);
-          });
-          
-        },
 
 
     initChart(){
@@ -212,7 +227,6 @@ export default {
         //     saveAsImage: {}
         //   }
         // },
-
         xAxis: {
           type: 'category',
           //x轴两边留白
@@ -226,64 +240,21 @@ export default {
          data:this.y,
 
         },
-         series: this.se
-         //[
-        //   {
-        //     name: 'Highest',
-        //     type: 'line',
-        //      data: this.se2,
-          
-        //      markPoint: {
-        //        symbolSize: 20,
-        //         symbol: "triangle",
-        //         data: this.se,
-        //      },
-            
-        //   },
-        //   // {
-        //   //   /**第二个 */
-        //   //   name: 'Lowest',
-        //   //   type: 'line',
-        //   //   data: [1, -2, 2, 5, 3, 2, 0],
-        //   //   // markPoint: {
-        //   //   //   data: [{ name: '周最低', value: -2, xAxis: 1, yAxis: -1.5 }]
-        //   //   // },
-        //   //   // markLine: {
-        //   //   //   data: [
-        //   //   //     { type: 'average', name: 'Avg' },
-        //   //   //     [
-        //   //   //       {
-        //   //   //         symbol: 'none',
-        //   //   //         x: '90%',
-        //   //   //         yAxis: 'max'
-        //   //   //       },
-        //   //   //       {
-        //   //   //         symbol: 'circle',
-        //   //   //         label: {
-        //   //   //           position: 'start',
-        //   //   //           formatter: 'Max'
-        //   //   //         },
-        //   //   //         type: 'max',
-        //   //   //         name: '最高点'
-        //   //   //       }
-        //   //   //     ]
-        //   //   //   ]
-        //   //   // }
-        //   // }
-        // ]
+        series: this.se
       };
       option && myChart.setOption(option);
     },
 
 
-
-    /** 查询成品件设计数据列表 */
+    /** 查询产品改型数据列表 */
     getList() {
       this.loading = true;
-      listProdeuctDesign3(this.queryParams).then(response => {
-        this.prodeuctDesign3List = response.rows;
+      listModify(this.queryParams).then(response => {
+        this.modifyList = response.rows;
         this.total = response.total;
         this.loading = false;
+
+
       });
     },
     // 取消按钮
@@ -296,16 +267,9 @@ export default {
       this.form = {
         id: null,
         planeType: null,
-        finishedType: null,
-        finishedName: null,
-        finishedModel: null,
-        finishedManufacturer: null,
-        frame: null,
-        upperMiddleLower: null,
-        leftMiddleRight: null,
-        installMethod: null,
-        rawMaterial: null,
-        spareParts: null,
+        productType: null,
+        productName: null,
+        productModel: null,
         modifyTime: null,
         modifyMeasures: null
       };
@@ -331,16 +295,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加成品件设计数据";
+      this.title = "添加产品改型数据";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getProdeuctDesign3(id).then(response => {
+      getModify(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改成品件设计数据";
+        this.title = "修改产品改型数据";
       });
     },
     /** 提交按钮 */
@@ -348,13 +312,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateProdeuctDesign3(this.form).then(response => {
+            updateModify(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addProdeuctDesign3(this.form).then(response => {
+            addModify(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -366,8 +330,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除成品件设计数据编号为"' + ids + '"的数据项？').then(function() {
-        return delProdeuctDesign3(ids);
+      this.$modal.confirm('是否确认删除产品改型数据编号为"' + ids + '"的数据项？').then(function() {
+        return delModify(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -375,9 +339,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/prodeuctDesign3/export', {
+      this.download('system/modify/export', {
         ...this.queryParams
-      }, `prodeuctDesign3_${new Date().getTime()}.xlsx`)
+      }, `modify_${new Date().getTime()}.xlsx`)
     }
   }
 };
