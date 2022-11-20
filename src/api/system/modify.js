@@ -9,6 +9,14 @@ export function listModify(query) {
   })
 }
 
+export function listProductChange() {
+  return request({
+    url: '/system/modify/listProductChange',
+    method: 'get',
+  })
+}
+
+
 // 查询产品改型数据详细
 export function getModify(id) {
   return request({
