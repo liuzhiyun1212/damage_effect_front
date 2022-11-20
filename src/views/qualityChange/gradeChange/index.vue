@@ -2,22 +2,28 @@
   <div>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
         <div
-            id="duibi"
-            style="width: 100%; height: 400px;"
-          ></div>
-          <div
             id="timeLine"
             style="width: 100%; height: 300px;"
           ></div>
+          <div
+            id="duibi"
+            style="width: 100%; height: 400px;"
+          ></div>
+          
           
     </el-card>
   </div>
 </template>
 
 <script>
- import * as echarts from 'echarts';
-import {selectByGradeFaultModel,qualitySumByGrade,productSumByGrade,selectByGradeChanged,timeGradeChanged} from '@/api/system/dev';
-import { log } from 'console';
+import * as echarts from "echarts"
+import {
+  selectByGradeFaultModel,
+  qualitySumByGrade,
+  productSumByGrade,
+  selectByGradeChanged,
+  timeGradeChanged,
+} from "@/api/system/dev"
 export default {
     data() {
         return {
@@ -39,6 +45,17 @@ export default {
         }
     },
     methods: {
+        // // 高度适应
+        // getHeight(myChart,option){
+        //    var d =  document.getElementById("timeLine");
+        //    var height=this.yList.length*150;
+        //    console.log("yyyyyy"+this.yList.length);
+        //  //  d.setAttribute(height,height+"px");
+        //    d.style.cssText="height:"+height+"px";
+        //    //myChart.setOption(option);
+        // },
+        // 对比堆叠图高度适应
+
         // 故障件生产班组变更情况
         selectByGradeFaultModel(){
             selectByGradeFaultModel(this.queryParams).then(response => {
@@ -72,11 +89,11 @@ export default {
           data: [],
           markPoint: {
             symbolSize: 20,
-            symbol: 'triangle',
+            symbol: "triangle",
             data: [
               {
-                name:'故障类型：'+data[i].name,
-                coord: [data[i].list,data[i].name],
+                name: "故障类型：" + data[i].name,
+                coord: [data[i].list, data[i].name],
                 label: {
                   show: true,
                   /*formatter: function (item) {
@@ -86,38 +103,34 @@ export default {
               },
             ],
           },
-        });
-        
-            count += data[i].list.length;
+        })
+
+        count += data[i].list.length
       }
 
-      for(let i=0;i<this.allList.length;i++){
-            for(let j=0;j<this.seriesData.length;j++){
-                if(this.allList[i].name===this.seriesData[j].name){
-                    for(let k=0;k<this.allList[i].list.length;k++){
-                        this.seriesData[j].markPoint.data.push(
-                            {
-                               // name:'故障类型：'+data[i].name,
-                                coord: [this.allList[i].list[k],j],
-                                label: {
-                                show: true,
-                                /*formatter: function (item) {
+      for (let i = 0; i < this.allList.length; i++) {
+        for (let j = 0; j < this.seriesData.length; j++) {
+          if (this.allList[i].name === this.seriesData[j].name) {
+            for (let k = 0; k < this.allList[i].list.length; k++) {
+              this.seriesData[j].markPoint.data.push({
+                // name:'故障类型：'+data[i].name,
+                coord: [this.allList[i].list[k], j],
+                label: {
+                  show: true,
+                  /*formatter: function (item) {
                                     return "预测故障发生";
                                 },*/
-                                },
-                            }
-                        );
-                    }
-                }
+                },
+              })
             }
+          }
+        }
       }
-    //   console.log(count);
-      for(let j=0;j<this.seriesData.length;j++){
-        for(let i=0;i<count;i++)
-    
-          this.seriesData[j].data.push(j);
+      //   console.log(count);
+      for (let j = 0; j < this.seriesData.length; j++) {
+        for (let i = 0; i < count; i++) this.seriesData[j].data.push(j)
       }
-       console.log("11111111",this.allList);
+      console.log("11111111", this.allList)
     },
     // 故障件生产班组变更
     selectByGradeChanged(){
@@ -134,8 +147,12 @@ export default {
                 this.xList = time1.filter(function(item,index){
                     return time1.indexOf(item) === index;  
                 });
-                // this.dealRes(this.yList.length);
-                // console.log("3333",this.xList);
+                 //hhhhhhhhhh高度适应
+                var d =  document.getElementById("timeLine");
+                var height=this.yList.length*150;
+                //  d.setAttribute(height,height+"px");
+                d.style.cssText="height:"+height+"px";
+                //  this.timeGradeChanged();
                 this.getTime();
 
         });
@@ -144,9 +161,9 @@ export default {
         timeGradeChanged(){
             timeGradeChanged(this.queryParams).then(response => {
                 this.allList=response;
-                
                 this.dealRes(this.allList);
                 this.selectByGradeChanged();
+                // this.getHeight();
                 this.getTime();
                 // console.log("1111111",this.allList);
         });
@@ -266,28 +283,24 @@ export default {
                 },
                 series: this.seriesData
                 };
-
+                  //this.getHeight(myChart,option);
             myChart.setOption(option);
-            console.log(this.seriesData);
+            // console.log(this.seriesData);
             // echarts自适应
             window.addEventListener("resize", () => {
             myChart.resize();
             });
         }
     },
-    created() {
-        this.selectByGradeFaultModel();
-        this.qualitySumByGrade();
-        this.productSumByGrade();
-        this.selectByGradeChanged();
-        this.timeGradeChanged();
-    },
-    mounted() {
-        
-    },
+  created() {
+    this.selectByGradeFaultModel()
+    this.qualitySumByGrade()
+    this.productSumByGrade()
+    this.selectByGradeChanged()
+    this.timeGradeChanged()
+  },
+  mounted() {},
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
