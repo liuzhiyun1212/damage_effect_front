@@ -16,8 +16,14 @@
 </template>
 
 <script>
- import * as echarts from 'echarts';
-import {selectByGradeFaultModel,qualitySumByGrade,productSumByGrade,selectByGradeChanged,timeGradeChanged} from '@/api/system/dev';
+import * as echarts from "echarts"
+import {
+  selectByGradeFaultModel,
+  qualitySumByGrade,
+  productSumByGrade,
+  selectByGradeChanged,
+  timeGradeChanged,
+} from "@/api/system/dev"
 export default {
     data() {
         return {
@@ -83,11 +89,11 @@ export default {
           data: [],
           markPoint: {
             symbolSize: 20,
-            symbol: 'triangle',
+            symbol: "triangle",
             data: [
               {
-                name:'故障类型：'+data[i].name,
-                coord: [data[i].list,data[i].name],
+                name: "故障类型：" + data[i].name,
+                coord: [data[i].list, data[i].name],
                 label: {
                   show: true,
                   /*formatter: function (item) {
@@ -97,38 +103,34 @@ export default {
               },
             ],
           },
-        });
-        
-            count += data[i].list.length;
+        })
+
+        count += data[i].list.length
       }
 
-      for(let i=0;i<this.allList.length;i++){
-            for(let j=0;j<this.seriesData.length;j++){
-                if(this.allList[i].name===this.seriesData[j].name){
-                    for(let k=0;k<this.allList[i].list.length;k++){
-                        this.seriesData[j].markPoint.data.push(
-                            {
-                               // name:'故障类型：'+data[i].name,
-                                coord: [this.allList[i].list[k],j],
-                                label: {
-                                show: true,
-                                /*formatter: function (item) {
+      for (let i = 0; i < this.allList.length; i++) {
+        for (let j = 0; j < this.seriesData.length; j++) {
+          if (this.allList[i].name === this.seriesData[j].name) {
+            for (let k = 0; k < this.allList[i].list.length; k++) {
+              this.seriesData[j].markPoint.data.push({
+                // name:'故障类型：'+data[i].name,
+                coord: [this.allList[i].list[k], j],
+                label: {
+                  show: true,
+                  /*formatter: function (item) {
                                     return "预测故障发生";
                                 },*/
-                                },
-                            }
-                        );
-                    }
-                }
+                },
+              })
             }
+          }
+        }
       }
-    //   console.log(count);
-      for(let j=0;j<this.seriesData.length;j++){
-        for(let i=0;i<count;i++)
-    
-          this.seriesData[j].data.push(j);
+      //   console.log(count);
+      for (let j = 0; j < this.seriesData.length; j++) {
+        for (let i = 0; i < count; i++) this.seriesData[j].data.push(j)
       }
-       console.log("11111111",this.allList);
+      console.log("11111111", this.allList)
     },
     // 故障件生产班组变更
     selectByGradeChanged(){
@@ -290,19 +292,15 @@ export default {
             });
         }
     },
-    created() {
-        this.selectByGradeFaultModel();
-        this.qualitySumByGrade();
-        this.productSumByGrade();
-        this.selectByGradeChanged();
-        this.timeGradeChanged();
-    },
-    mounted() {
-        
-    },
+  created() {
+    this.selectByGradeFaultModel()
+    this.qualitySumByGrade()
+    this.productSumByGrade()
+    this.selectByGradeChanged()
+    this.timeGradeChanged()
+  },
+  mounted() {},
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
