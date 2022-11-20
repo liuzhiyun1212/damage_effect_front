@@ -16,7 +16,10 @@
           改型时间线
         </p>
       </div>
-      <div id="remodel_timeline" :style="style_timeline"></div>
+      <div
+        id="remodel_timeline"
+        style="cursor: pointer; width: 100%; height: 300px"
+      ></div>
 
       <!-- 对比堆叠图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -32,7 +35,10 @@
           对比堆叠图
         </p>
       </div>
-      <div id="compared_stacked" :style="style_stacked"></div>
+      <div
+        id="compared_stacked"
+        style="cursor: pointer; width: 100%; height: 300px"
+      ></div>
     </el-card>
   </div>
 </template>
@@ -54,11 +60,6 @@ export default {
       DataList1: [],
       // 飞机改型时间
       plane_remodel_time: [],
-
-      //改型时间线图样式
-      style_timeline: "cursor: pointer; width: 100%; height: 300px",
-      //对比堆叠图样式
-      style_stacked: "cursor: pointer; width: 100%; height: 300px",
 
       // 改型时间线折线图 x轴时间数据
       xData_timeline: [],
@@ -88,6 +89,20 @@ export default {
       const y = dt.getFullYear()
       const m = (dt.getMonth() + 1 + "").padStart(2, "0")
       return `${y}.${m}`
+    },
+    // 高度适应 改型时间线
+    getHeight_timeline() {
+      var id__timeline = document.getElementById("remodel_timeline")
+      var height__timeline = this.yData_timeline.length * 150
+      //d.setAttribute(height,height+"px");
+      id__timeline.style.cssText = "height:" + height__timeline + "px"
+    },
+    // 高度适应 对比堆叠图
+    getHeight_stacked() {
+      var id__stacked = document.getElementById("compared_stacked")
+      var height__stacked = this.yData_stacked.length * 150
+      //d.setAttribute(height,height+"px");
+      id__stacked.style.cssText = "height:" + height__stacked + "px"
     },
 
     //获取数据 渲染 改型时间线折线图
@@ -128,6 +143,7 @@ export default {
         // console.log("xData_timeline:" + this.xData_timeline)
         // console.log("yData_timeline:" + this.yData_timeline)
         this.dealRes2()
+        this.getHeight_timeline()
         this.init_Chart_remodel_timeline()
 
         //console.log("totalDataList2", this.totalDataList2)
@@ -297,6 +313,7 @@ export default {
         console.log("DataList1", this.DataList1)
         console.log("yData_stacked:" + this.yData_stacked)
 
+        this.getHeight_stacked()
         this.dealRes1()
         this.init_Chart_compared_stacked()
       })
