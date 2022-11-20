@@ -145,7 +145,7 @@ export default {
     },
     getY(){
       for (let index = 0; index < this.productChange.length; index++) {
-        this.y[index] = this.productChange[index].productName;
+        this.y[index] = this.productChange[index].productModel+this.productChange[index].productName;
       }
       console.log("y:",this.y);
       this.initChart();
@@ -157,7 +157,7 @@ export default {
     dealRes() {
       for (var i = 0; i < this.productChange.length; i++) {
         this.se.push({
-          name: this.productChange[i].productName,
+          name: this.productChange[i].productModel,
           type: "line",
           data: [],
           markPoint: {
@@ -167,7 +167,7 @@ export default {
                 name: "",
                 coord: [
                   this.productChange[i].modifyTime,
-                  this.productChange[i].productName],
+                  this.productChange[i].productModel+this.productChange[i].productName],
                 label: {
                   show: true,
                   /*formatter: function (item) {
@@ -178,12 +178,16 @@ export default {
                  
               },}
         );
-      };
-      for(let j=0;j<this.se.length;j++){
-        for(let i=0;i<this.productChange.length;i++){
-          this.se[j].data.push(j);
+        for (let u = 0; u < this.x.length; u++) {
+          this.se[i].data.push(i)
         }
-      }
+      };
+      // for(let j=0;j<this.se.length;j++){
+      //   for(let i=0;i<this.productChange.length;i++){
+      //     this.se[j].data.push(j);
+      //   }
+      // }
+      
       },
 
 
@@ -243,6 +247,10 @@ export default {
         series: this.se
       };
       option && myChart.setOption(option);
+      // echarts自适应
+      window.addEventListener("resize", () => {
+        myChart.resize()
+      })
     },
 
 
