@@ -11,6 +11,7 @@ export function listProdeuctDesign3(query) {
 
 
 
+
 export function xyobject(query) {
   return request({
     url: '/system/prodeuctDesign3/xyobject',

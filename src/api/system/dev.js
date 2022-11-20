@@ -109,3 +109,76 @@ export function importTemplate() {
   })
 }
 
+// 统计爆发故障件的型号-名称及数量
+export function selectFaultyCount() {
+  return request({
+    url: '/system/dev/selectFaultyCount',
+    method: 'get'
+  })
+}
+
+// 统计所有故障件
+export function selectAllFaulty() {
+  return request({
+    url: '/system/dev/selectAllFaulty',
+    method: 'get'
+  })
+}
+
+// 生产班组变更情况
+export function selectByGradeFaultModel() {
+  return request({
+    url: '/system/dev/selectByGradeFaultModel',
+    method: 'get'
+  })
+}
+// 生产班组统计质量问题总数
+export function qualitySumByGrade() {
+  return request({
+    url: '/system/dev/qualitySumByGrade',
+    method: 'get'
+  })
+}
+// 生产班组统计产品总数
+export function productSumByGrade() {
+  return request({
+    url: '/system/dev/productSumByGrade',
+    method: 'get'
+  })
+}
+// 故障件生产班组变更
+export function selectByGradeChanged() {
+  return request({
+    url: '/system/dev/selectByGradeChanged',
+    method: 'get'
+  })
+}
+// 时间线统计图用故障件生产班组变更
+export function timeGradeChanged() {
+  return request({
+    url: '/system/dev/timeGradeChanged',
+    method: 'get'
+  })
+}
+// 统计高发故障模式环境
+export function selectEnvironment() {
+  return request({
+    url: '/system/dev/selectEnvironment',
+    method: 'get'
+  })
+}
+// 统计高发故障模式环境装备数量
+export function selectDevByEnvironment() {
+  return request({
+    url: '/system/dev/selectDevByEnvironment',
+    method: 'get'
+  })
+}
+// 统计高发故障模式环境质量问题数量
+export function selectQualityByEnvironment() {
+  return request({
+    url: '/system/dev/selectQualityByEnvironment',
+    method: 'get'
+  })
+}
+
