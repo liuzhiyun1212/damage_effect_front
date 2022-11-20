@@ -16,10 +16,8 @@
           改型时间线
         </p>
       </div>
-      <div
-        id="remodel_timeline"
-        :style="style_timeline"
-      ></div>
+      <div id="remodel_timeline" :style="style_timeline"></div>
+
       <!-- 对比堆叠图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
         <p
@@ -34,10 +32,7 @@
           对比堆叠图
         </p>
       </div>
-      <div
-        id="compared_stacked"
-        :style="style_stacked"
-      ></div>
+      <div id="compared_stacked" :style="style_stacked"></div>
     </el-card>
   </div>
 </template>
@@ -55,6 +50,8 @@ export default {
       totalDataList1: [],
       // 所有数据表2
       totalDataList2: [],
+      // 表1数据整理
+      DataList1: [],
       // 飞机改型时间
       plane_remodel_time: [],
 
@@ -83,6 +80,7 @@ export default {
     //对比堆叠图
     this.getData1()
   },
+
   methods: {
     //日期格式化 年.月
     dateFormat(originVal) {
@@ -95,7 +93,7 @@ export default {
     //获取数据 渲染 改型时间线折线图
     getData2() {
       listDataAll().then((response) => {
-        // console.log(response)
+        //console.log("data2", response)
         for (let i = 0; i < response.length; i++) {
           let markX = 0
           let markY = 0
@@ -114,13 +112,13 @@ export default {
           }
 
           for (let k = 0; k < this.yData_timeline.length; k++) {
-            if (this.yData_timeline[k] === response[i].planeType) {
+            if (this.yData_timeline[k] === response[i].modelSeries) {
               markY = -1
               break
             }
           }
           if (markY === 0) {
-            this.yData_timeline.push(response[i].planeType)
+            this.yData_timeline.push(response[i].modelSeries)
           }
         }
         this.xData_timeline.sort()
@@ -131,10 +129,69 @@ export default {
         // console.log("yData_timeline:" + this.yData_timeline)
         this.dealRes2()
         this.init_Chart_remodel_timeline()
+
+        //console.log("totalDataList2", this.totalDataList2)
+        // 飞机改型时间表 plane_remodel_time[]
+        for (let k = 0; k < this.totalDataList2.length; k++) {
+          let flag = 0
+          for (let l = 0; l < this.plane_remodel_time.length; l++) {
+            if (
+              this.totalDataList2[k].modelSeries ===
+              this.plane_remodel_time[l].modelSeries
+            ) {
+              flag = 1
+              this.plane_remodel_time[l].remodel.push({
+                planeType: this.totalDataList2[k].planeType,
+                date: this.dateFormat(this.totalDataList2[k].remodelDate),
+                is: 0,
+              })
+            }
+          }
+          if (flag === 0) {
+            this.plane_remodel_time.push({
+              modelSeries: this.totalDataList2[k].modelSeries,
+              remodel: [
+                {
+                  planeType: this.totalDataList2[k].planeType,
+                  date: this.dateFormat(this.totalDataList2[k].remodelDate),
+                  is: 0,
+                },
+              ],
+            })
+          }
+        }
+        var compare1 = function (obj1, obj2) {
+          var val1 = obj1.modelSeries
+          var val2 = obj2.modelSeries
+          if (val1 < val2) {
+            return -1
+          } else if (val1 > val2) {
+            return 1
+          } else {
+            return 0
+          }
+        }
+        this.plane_remodel_time.sort(compare1)
+        var compare2 = function (obj1, obj2) {
+          var val1 = obj1.date
+          var val2 = obj2.date
+          if (val1 < val2) {
+            return -1
+          } else if (val1 > val2) {
+            return 1
+          } else {
+            return 0
+          }
+        }
+        for (let i = 0; i < this.plane_remodel_time.length; i++) {
+          this.plane_remodel_time[i].remodel.sort(compare2)
+        }
+
+        //console.log("plane_remodel_time", this.plane_remodel_time)
       })
     },
     dealRes2() {
-      for (var i = 0; i < this.yData_timeline.length; i++) {
+      for (let i = 0; i < this.yData_timeline.length; i++) {
         this.se_timeline.push({
           name: this.yData_timeline[i],
           type: "line",
@@ -145,12 +202,12 @@ export default {
             data: [],
           },
         })
-        for (var y = 0; y < this.xData_timeline.length; y++) {
+        for (let y = 0; y < this.xData_timeline.length; y++) {
           this.se_timeline[i].data.push(this.yData_timeline[i])
         }
-        for (var y = 0; y < this.totalDataList2.length; y++) {
-          if (this.totalDataList2[y].planeType === this.yData_timeline[i]) {
-            var mkp = {
+        for (let y = 0; y < this.totalDataList2.length; y++) {
+          if (this.totalDataList2[y].modelSeries === this.yData_timeline[i]) {
+            let mkp = {
               name: this.yData_timeline[i],
               coord: [
                 this.dateFormat(this.totalDataList2[y].remodelDate),
@@ -186,6 +243,7 @@ export default {
           type: "category",
           boundaryGap: false,
           data: this.xData_timeline,
+          axisLabel: { interval: 0, rotate: 50 },
         },
         yAxis: {
           type: "category",
@@ -199,128 +257,164 @@ export default {
     //获取数据渲染 对比堆叠图
     getData1() {
       listAllDev().then((response) => {
+        //console.log("data1", response.rows)
         for (let i = 0; i < response.rows.length; i++) {
           let markY = 0
-          this.totalDataList1.push(response.rows[i])
 
-          for (let j = 0; j < this.yData_stacked.length; j++) {
-            if (this.yData_stacked[j] === response.rows[i].planeType) {
-              markY = -1
+          let pr = {
+            planeType: "",
+            modelSeries: "",
+            devHappenTime: "",
+          }
+          pr.planeType = response.rows[i].planeType
+          pr.devHappenTime = this.dateFormat(response.rows[i].devHappenTime)
+          for (let j = 0; j < this.plane_remodel_time.length; j++) {
+            if (
+              this.plane_remodel_time[j].modelSeries ===
+              response.rows[i].planeType.substring(
+                0,
+                this.plane_remodel_time[j].modelSeries.length
+              )
+            ) {
+              pr.modelSeries = this.plane_remodel_time[j].modelSeries
+            }
+          }
+          this.DataList1.push(pr)
+
+          for (let k = 0; k < this.yData_stacked.length; k++) {
+            if (this.yData_stacked[k] === pr.modelSeries) {
+              markY = 1
               break
             }
           }
           if (markY === 0) {
-            this.yData_stacked.push(response.rows[i].planeType)
+            //console.log(pr.modelSeries)
+            this.yData_stacked.push(pr.modelSeries)
           }
         }
-        //console.log(this.totalDataList1)
         this.yData_stacked.sort()
-        //console.log("yData_stacked:" + this.yData_stacked)
+
+        console.log("DataList1", this.DataList1)
+        console.log("yData_stacked:" + this.yData_stacked)
+
         this.dealRes1()
         this.init_Chart_compared_stacked()
       })
     },
     dealRes1() {
-      console.log("totalDataList1:", this.totalDataList1)
-      //console.log("totalDataList2:", this.totalDataList2)
-      // console.log("se_timeline:", this.se_timeline)
-
-      // 飞机改型时间表 plane_remodel_time[]
-      for (var k = 0; k < this.totalDataList2.length; k++) {
-        var flag = 0
-        for (var l = 0; l < this.plane_remodel_time.length; l++) {
-          if (
-            this.totalDataList2[k].planeType ===
-            this.plane_remodel_time[l].planeType
-          ) {
-            flag = 1
-            this.plane_remodel_time[l].remodelDate.push(
-              this.dateFormat(this.totalDataList2[k].remodelDate)
-            )
-          }
-        }
-        if (flag === 0) {
-          this.plane_remodel_time.push({
-            planeType: this.totalDataList2[k].planeType,
-            remodelDate: [this.dateFormat(this.totalDataList2[k].remodelDate)],
-          })
-        }
-      }
       //插入时间间隔最大的飞机类型的数量
       var max = 0
-      for (var l = 0; l < this.plane_remodel_time.length; l++) {
-        this.plane_remodel_time[l].remodelDate.sort()
-        if (this.plane_remodel_time[l].remodelDate.length > max) {
-          max = this.plane_remodel_time[l].remodelDate.length
+      for (let l = 0; l < this.plane_remodel_time.length; l++) {
+        if (this.plane_remodel_time[l].remodel.length > max) {
+          max = this.plane_remodel_time[l].remodel.length
         }
       }
       console.log("plane_remodel_time:", this.plane_remodel_time)
-      console.log("max:", max)
+      //console.log("max:", max)
 
-      for (var x = 0; x <= max; x++) {
-        let se = {
-          name: "第" + x + "次改型",
-          type: "bar",
-          stack: "total",
-          label: {
-            show: true,
-          },
-
-          emphasis: {
-            focus: "series",
-          },
-          data: [],
+      //插入se_stacked数据
+      for (let l = 0; l < this.plane_remodel_time.length; l++) {
+        for (let x = 0; x <= max; x++) {
+          let se = {
+            name: "",
+            type: "bar",
+            stack: "total",
+            label: {
+              show: true,
+            },
+            emphasis: {
+              focus: "series",
+            },
+            data: [],
+          }
+          for (let i = 0; i < this.plane_remodel_time.length; i++) {
+            se.data.push(0)
+          }
+          this.se_stacked.push(se)
         }
-        for (var i = 0; i < this.plane_remodel_time.length; i++) {
-          se.data.push(0)
-        }
-        if (x === 0) se.name = "未改型"
-        this.se_stacked.push(se)
       }
-
       console.log("se_stacked", this.se_stacked)
 
-      let aaa = []
-      aaa = JSON.parse(JSON.stringify(this.se_stacked))
+      let plane_remodel_time1 = []
+      // console.log(
+      //   "JSON.parse",
+      //   JSON.parse(JSON.stringify(this.plane_remodel_time))
+      // )
+      // plane_remodel_time1.push(
+      //   JSON.parse(JSON.stringify(this.plane_remodel_time))
+      // )
+      plane_remodel_time1 = JSON.parse(JSON.stringify(this.plane_remodel_time))
+
+      // console.log("plane_remodel_time1", plane_remodel_time1)
+
       //循环所有质量问题表
-      for (var j = 0; j < this.totalDataList1.length; j++) {
+      for (let i = 0; i < this.DataList1.length; i++) {
         //循环飞机改型时间表
-        for (var y = 0; y < this.plane_remodel_time.length; y++) {
+        for (let j = 0; j < plane_remodel_time1.length; j++) {
           //找到对应机型
           if (
-            this.plane_remodel_time[y].planeType ===
-            this.totalDataList1[j].planeType
+            this.DataList1[i].modelSeries === plane_remodel_time1[j].modelSeries
           ) {
-            var key = -1
-            //循环对应机型的改型时间数组
-            for (
-              var z = 0;
-              z < this.plane_remodel_time[y].remodelDate.length;
-              z++
-            ) {
-              //找到对应的时间间隔 (比他稍大一个)
+            let flag = 0
+            for (let k = 0; k < plane_remodel_time1[j].remodel.length; k++) {
               if (
-                this.dateFormat(this.totalDataList1[j].devHappenTime) <
-                this.plane_remodel_time[y].remodelDate[z]
+                this.DataList1[i].planeType ===
+                plane_remodel_time1[j].remodel[k].planeType
               ) {
-                key = z
+                plane_remodel_time1[j].remodel[k].is++
+                flag = 1
                 break
               }
             }
-            if (key === -1) {
-              key = this.plane_remodel_time[y].remodelDate.length
+            if (flag === 0) {
+              let plane = {
+                date: "",
+                is: 1,
+                planeType: this.DataList1[i].planeType,
+              }
+              //console.log("plane", plane)
+              plane_remodel_time1[j].remodel.unshift(plane)
             }
-            aaa[key].data[y]++
+            break
           }
         }
       }
-      console.log(aaa)
-      for (var q = 0; q < aaa.length; q++) {
-        for (var p = 0; p < aaa[q].data.length; p++) {
-          if (aaa[q].data[p] === 0) aaa[q].data[p] = ""
+
+      this.plane_remodel_time = plane_remodel_time1
+      console.log("plane_remodel_time", this.plane_remodel_time)
+
+      let ii = 0
+      for (let i = 0; i < this.plane_remodel_time.length; i++) {
+        for (let j = 0; j < this.plane_remodel_time[i].remodel.length; j++) {
+          this.se_stacked[ii].name =
+            this.plane_remodel_time[i].remodel[j].planeType
+          this.se_stacked[ii].data[i] = this.plane_remodel_time[i].remodel[j].is
+          ii++
         }
       }
-      this.se_stacked = aaa
+      console.log("se_stacked_", this.se_stacked)
+
+      for (let q = 0; q < this.se_stacked.length; q++) {
+        let jj = 0
+        for (let p = 0; p < this.se_stacked[q].data.length; p++) {
+          if (this.se_stacked[q].data[p] !== 0) {
+            jj = 1
+            break
+          }
+        }
+        if (jj === 0) {
+          this.se_stacked.splice(q, 1)
+          q--
+        }
+      }
+
+      for (let q = 0; q < this.se_stacked.length; q++) {
+        for (let p = 0; p < this.se_stacked[q].data.length; p++) {
+          if (this.se_stacked[q].data[p] === 0) {
+            this.se_stacked[q].data[p] = ""
+          }
+        }
+      }
     },
     //初始化 对比堆叠图
     init_Chart_compared_stacked() {
