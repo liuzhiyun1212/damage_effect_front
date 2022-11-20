@@ -2,13 +2,14 @@
   <div>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
         <div
+            id="timeLine"
+            style="width: 100%; height: 300px;"
+          ></div>
+          <div
             id="duibi"
             style="width: 100%; height: 400px;"
           ></div>
-          <div
-            id="timeLine"
-            style="width: 100%; height: 600px;"
-          ></div>
+          
           
     </el-card>
   </div>
@@ -38,13 +39,17 @@ export default {
         }
     },
     methods: {
-        // 高度适应
-        getHeight(){
-           var d =  document.getElementById("timeLine");
-           var height=this.yList.length*150;
-           //d.setAttribute(height,height+"px");
-           d.style.cssText="height:"+height+"px";
-        },
+        // // 高度适应
+        // getHeight(myChart,option){
+        //    var d =  document.getElementById("timeLine");
+        //    var height=this.yList.length*150;
+        //    console.log("yyyyyy"+this.yList.length);
+        //  //  d.setAttribute(height,height+"px");
+        //    d.style.cssText="height:"+height+"px";
+        //    //myChart.setOption(option);
+        // },
+        // 对比堆叠图高度适应
+
         // 故障件生产班组变更情况
         selectByGradeFaultModel(){
             selectByGradeFaultModel(this.queryParams).then(response => {
@@ -140,10 +145,12 @@ export default {
                 this.xList = time1.filter(function(item,index){
                     return time1.indexOf(item) === index;  
                 });
-                // this.dealRes(this.yList.length);
-                // console.log("3333",this.xList);
-                
-                this.getHeight();
+                 //hhhhhhhhhh高度适应
+                var d =  document.getElementById("timeLine");
+                var height=this.yList.length*150;
+                //  d.setAttribute(height,height+"px");
+                d.style.cssText="height:"+height+"px";
+                //  this.timeGradeChanged();
                 this.getTime();
 
         });
@@ -152,9 +159,9 @@ export default {
         timeGradeChanged(){
             timeGradeChanged(this.queryParams).then(response => {
                 this.allList=response;
-                
                 this.dealRes(this.allList);
                 this.selectByGradeChanged();
+                // this.getHeight();
                 this.getTime();
                 // console.log("1111111",this.allList);
         });
@@ -274,9 +281,9 @@ export default {
                 },
                 series: this.seriesData
                 };
-                // this.getHeight();
+                  //this.getHeight(myChart,option);
             myChart.setOption(option);
-            console.log(this.seriesData);
+            // console.log(this.seriesData);
             // echarts自适应
             window.addEventListener("resize", () => {
             myChart.resize();
