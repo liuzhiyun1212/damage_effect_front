@@ -68,6 +68,7 @@
          <el-table-column label="故障件型号" align="center" prop="finishedModel" />
          <el-table-column label="故障件名称" align="center" prop="finishedName" />
          <el-table-column label="故障件类型" align="center" prop="finishedType" />
+      <el-table-column label="机型" align="center" prop="planeType" />
       <el-table-column label="框数" align="center" prop="frame" />
       <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
       <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
@@ -83,7 +84,7 @@
 <script>
 import * as echarts from "echarts";
 import 'echarts-gl'
-import {partsSite,pointCount,getWindow} from "../../../src/api/design.js"
+import {partsSite,pointCount,getWindow} from "../../../src/api/system/design.js"
 export default {
   name: "threeD1",
 
@@ -144,6 +145,7 @@ this.getdata();
 
       getWindow().then((response)=>{
         this.windata=[];
+
         for(let i=0;i<response.length;i++){
 
             if(response[i].leftMiddleRight===row.leftMiddleRight
@@ -152,6 +154,7 @@ this.getdata();
 
           }
         }
+        console.log(this.windata)
         this.open=true;
       })
     },

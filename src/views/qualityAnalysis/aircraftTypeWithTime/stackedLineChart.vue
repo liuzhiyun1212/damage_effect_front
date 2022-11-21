@@ -63,8 +63,6 @@
                     </el-table-column>
                 </el-table>
             </div>
-
-            <el-table></el-table>
         </el-card>
     </div>
 </template>

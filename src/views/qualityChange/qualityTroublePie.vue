@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
+     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
+     
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
       <p
         style="
@@ -59,6 +61,7 @@
       <el-table-column label="故障件名称" align="center" prop="partsName" />
       <el-table-column label="故障模式" align="center" prop="faultModel" /> -->
     </el-table>
+     </el-card>
 
     <pagination
       v-show="total > 0"
@@ -68,6 +71,7 @@
       @pagination="getList"
     />
   </div>
+ 
 </template>
 
 <script>
@@ -261,11 +265,11 @@ export default {
           },
         });
       }
-      for (let j = 0; j < this.se.length; j++) {
-        for (let i = 0; i < this.xyObject.length; i++) {
-          this.se[j].data.push(j);
-        }
-      }
+      // for (let j = 0; j < this.se.length; j++) {
+      //   for (let i = 0; i < this.xyObject.length; i++) {
+      //     this.se[j].data.push(j);
+      //   }
+      // }
     },
 
     getX() {
