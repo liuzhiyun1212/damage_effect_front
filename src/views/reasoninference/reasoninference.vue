@@ -527,13 +527,52 @@ export default {
         xdate.sort(compare1)
 
         var ndata1 = []
+        var ndatatt = []
         var md2 = ""
+        var date2 = ""
+        var date1 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
-          md2 = {name:biaozhuline[i].modelSeries,id:this.dataList2[i].planeType,time:date,num:xdate.indexOf(date)}
-          ndata1.push(md2)
+          date1 = biaozhuline[i].modelSeries
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].modelSeries
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+              biaozhuline.splice(j,1)
+            }
+          }
         }
-
+        var bb = []
+        for (let i = 0; i < biaozhuline.length; i++){
+          bb.push(biaozhuline[i])
+        }
+        for (let i = 0; i < biaozhuline.length; i++){
+          date = biaozhuline[i].devHappenTime
+          date1 = biaozhuline[i].modelSeries
+          date2 = date1
+          let sss = -1
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].modelSeries
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+              sss = j
+              if(date2.indexOf(aaa)==-1){
+                date2 += "和"+aaa
+              }
+              biaozhuline.splice(sss,1)
+            }
+          }
+          md2 = {time:date,type:date2}
+          ndatatt.push(md2)
+        }
+        for (let i = 0; i < bb.length; i++){
+          for (let j = 0; j < ndatatt.length; j++){
+            date = bb[i].devHappenTime
+            date1 = bb[i].modelSeries
+            if(date==ndatatt[j].time){
+              md2 = {name:date1,time:date,type:ndatatt[j].type}
+              ndata1.push(md2)
+            }
+          }
+        }
         var fydata = new Array()
         for (let i = 0; i < name.length; i++){
           fydata[i] = new Array()
@@ -575,7 +614,17 @@ export default {
           }
           var mark = {
             symbol: 'triangle',
-            label: { show: true, formatter: name[i]+'技术状态升级时间'},
+            label: { show: true,
+              formatter: function(params){
+                let a = ""
+                for (let i1 = 0; i1 < ndata1.length; i1++){
+                  if(ndata1[i1].time==xdate[params.value]){
+                    a = ndata1[i1].type
+                  }
+                }
+                return a+'技术状态升级时间'
+              }
+            },
             data: a2
           }
           by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
@@ -825,11 +874,51 @@ export default {
         }
         xdate.sort(compare1)
         var ndata1 = []
+        var ndatatt = []
         var md2 = ""
+        var date2 = ""
+        var date1 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
-          md2 = {name:biaozhuline[i].planeType,time:date}
-          ndata1.push(md2)
+          date1 = biaozhuline[i].planeType
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].planeType
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+              biaozhuline.splice(j,1)
+            }
+          }
+        }
+        var bb = []
+        for (let i = 0; i < biaozhuline.length; i++){
+          bb.push(biaozhuline[i])
+        }
+        for (let i = 0; i < biaozhuline.length; i++){
+          date = biaozhuline[i].devHappenTime
+          date1 = biaozhuline[i].planeType
+          date2 = date1
+          let sss = -1
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].planeType
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+              sss = j
+              if(date2.indexOf(aaa)==-1){
+                date2 += "和"+aaa
+              }
+              biaozhuline.splice(sss,1)
+            }
+          }
+          md2 = {time:date,type:date2}
+          ndatatt.push(md2)
+        }
+        for (let i = 0; i < bb.length; i++){
+          for (let j = 0; j < ndatatt.length; j++){
+            date = bb[i].devHappenTime
+            date1 = bb[i].planeType
+            if(date==ndatatt[j].time){
+              md2 = {name:date1,time:date,type:ndatatt[j].type}
+              ndata1.push(md2)
+            }
+          }
         }
         var fydata = new Array()
         for (let i = 0; i < name.length; i++){
@@ -872,7 +961,17 @@ export default {
           }
           var mark = {
             symbol: 'triangle',
-            label: { show: true, formatter: name[i]+'能力提升时间'},
+            label: { show: true,
+              formatter: function(params){
+                let a = ""
+                for (let i1 = 0; i1 < ndata1.length; i1++){
+                  if(ndata1[i1].time==xdate[params.value]){
+                    a = ndata1[i1].type
+                  }
+                }
+                return a+'能力提升时间'
+              }
+            },
             data: a2
           }
           by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
@@ -1450,13 +1549,52 @@ export default {
           }
         }
         xdate.sort(compare1)
-
         var ndata1 = []
+        var ndatatt = []
         var md2 = ""
+        var date2 = ""
+        var date1 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
-          md2 = {name:biaozhuline[i].partsName,time:date,num:xdate.indexOf(date)}
-          ndata1.push(md2)
+          date1 = biaozhuline[i].partsName
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].partsName
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+              biaozhuline.splice(j,1)
+            }
+          }
+        }
+        var bb = []
+        for (let i = 0; i < biaozhuline.length; i++){
+          bb.push(biaozhuline[i])
+        }
+        for (let i = 0; i < biaozhuline.length; i++){
+          date = biaozhuline[i].devHappenTime
+          date1 = biaozhuline[i].partsName
+          date2 = date1
+          let sss = -1
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].partsName
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+              sss = j
+              if(date2.indexOf(aaa)==-1){
+                date2 += "和"+aaa
+              }
+              biaozhuline.splice(sss,1)
+            }
+          }
+          md2 = {time:date,type:date2}
+          ndatatt.push(md2)
+        }
+        for (let i = 0; i < bb.length; i++){
+          for (let j = 0; j < ndatatt.length; j++){
+            date = bb[i].devHappenTime
+            date1 = bb[i].partsName
+            if(date==ndatatt[j].time){
+              md2 = {name:date1,time:date,type:ndatatt[j].type}
+              ndata1.push(md2)
+            }
+          }
         }
 
         var fydata = new Array()
@@ -1500,7 +1638,17 @@ export default {
           }
           var mark = {
             symbol: 'triangle',
-            label: { show: true, formatter: name[i]+'技术状态升级时间'},
+            label: { show: true,
+              formatter: function(params){
+                let a = ""
+                for (let i1 = 0; i1 < ndata1.length; i1++){
+                  if(ndata1[i1].time==xdate[params.value]){
+                    a = ndata1[i1].type
+                  }
+                }
+                return a+'技术状态升级时间'
+              }
+            },
             data: a2
           }
           by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
@@ -1768,12 +1916,50 @@ export default {
         }
         xdate.sort(compare1)
         var ndata1 = []
+        var ndatatt = []
         var md2 = ""
+        var date2 = ""
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
           date1 = biaozhuline[i].partsName + "（" + biaozhuline[i].partsModel + "）"
-          md2 = {name:date1,time:date}
-          ndata1.push(md2)
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].partsName + "（" + biaozhuline[j].partsModel + "）"
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+              biaozhuline.splice(j,1)
+            }
+          }
+        }
+        var bb = []
+        for (let i = 0; i < biaozhuline.length; i++){
+          bb.push(biaozhuline[i])
+        }
+        for (let i = 0; i < biaozhuline.length; i++){
+          date = biaozhuline[i].devHappenTime
+          date1 = biaozhuline[i].partsName + "（" + biaozhuline[i].partsModel + "）"
+          date2 = date1
+          let sss = -1
+          for (let j = i; j < biaozhuline.length; j++){
+            let aaa = biaozhuline[j].partsName + "（" + biaozhuline[j].partsModel + "）"
+            if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+              sss = j
+              if(date2.indexOf(aaa)==-1){
+                date2 += "和"+aaa
+              }
+              biaozhuline.splice(sss,1)
+            }
+          }
+          md2 = {time:date,type:date2}
+          ndatatt.push(md2)
+        }
+        for (let i = 0; i < bb.length; i++){
+          for (let j = 0; j < ndatatt.length; j++){
+            date = bb[i].devHappenTime
+            date1 = bb[i].partsName + "（" + bb[i].partsModel + "）"
+            if(date==ndatatt[j].time){
+              md2 = {name:date1,time:date,type:ndatatt[j].type}
+              ndata1.push(md2)
+            }
+          }
         }
         var fydata = new Array()
         for (let i = 0; i < name.length; i++){
@@ -1816,7 +2002,17 @@ export default {
           }
           var mark = {
             symbol: 'triangle',
-            label: { show: true, formatter: name[i]+'生产班组调整时间'},
+            label: { show: true,
+              formatter: function(params){
+                let a = ""
+                for (let i1 = 0; i1 < ndata1.length; i1++){
+                  if(ndata1[i1].time==xdate[params.value]){
+                    a = ndata1[i1].type
+                  }
+                }
+                return a+'生产班组变更时间'
+              }
+            },
             data: a2
           }
           by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
@@ -2084,6 +2280,7 @@ export default {
         }
         xdate.sort(compare1)
         var ndata1 = []
+        var ndatatt = []
         var md2 = ""
         var date2 = ""
         for (let i = 0; i < biaozhuline.length; i++){
@@ -2096,6 +2293,10 @@ export default {
               biaozhuline.splice(j,1)
             }
           }
+        }
+        var bb = []
+        for (let i = 0; i < biaozhuline.length; i++){
+          bb.push(biaozhuline[i])
         }
         for (let i = 0; i < biaozhuline.length; i++){
           date = biaozhuline[i].devHappenTime
@@ -2115,8 +2316,36 @@ export default {
           if(date2==null){
             date2 = "生产人员变更"
           }
-          md2 = {name:date1,time:date,type:date2}
+          md2 = {name:date1,time:date,type:date1+date2}
           ndata1.push(md2)
+        }
+        for (let i = 0; i < ndata1.length; i++){
+          date2 = ndata1[i].type
+          let sss = -1
+          for (let j = i; j < ndata1.length; j++){
+            date = ndata1[i].time
+            let aaa = ndata1[j].type
+            if(ndata1[i].time==ndata1[j].time&&i!=j&&date1!=aaa){
+              sss = j
+              if(date2.indexOf(aaa)==-1){
+                date2 += "、"+aaa
+              }
+              ndata1.splice(sss,1)
+            }
+          }
+          md2 = {time:date,type:date2}
+          ndatatt.push(md2)
+        }
+        ndata1 = []
+        for (let i = 0; i < bb.length; i++){
+          for (let j = 0; j < ndatatt.length; j++){
+            date = bb[i].devHappenTime
+            date1 = bb[i].partsName + "（" + bb[i].partsModel + "）"
+            if(date==ndatatt[j].time){
+              md2 = {name:date1,time:date,type:ndatatt[j].type}
+              ndata1.push(md2)
+            }
+          }
         }
         var fydata = new Array()
         for (let i = 0; i < name.length; i++){
@@ -2161,8 +2390,13 @@ export default {
             symbol: 'triangle',
             label: { show: true,
               formatter: function(params){
-              let a = ndata1[params.dataIndex].type
-              return name[i]+a+'时间'
+                let a = ""
+                for (let i1 = 0; i1 < ndata1.length; i1++){
+                  if(ndata1[i1].time==xdate[params.value]){
+                    a = ndata1[i1].type
+                  }
+                }
+                return a+'时间'
               }
             },
             data: a2
