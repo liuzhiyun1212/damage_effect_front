@@ -206,3 +206,18 @@ export function selectQualityByEnvironment() {
   })
 }
 
+// 生产设备变更时间线
+export function timeProduceDeviceChanged() {
+  return request({
+    url: '/system/dev/timeProduceDeviceChanged',
+    method: 'get'
+  })
+}
+// 生产设备变更时间线
+export function selectByProduceDeviceChanged() {
+  return request({
+    url: '/system/dev/selectByProduceDeviceChanged',
+    method: 'get'
+  })
+}
+
