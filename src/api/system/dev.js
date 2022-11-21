@@ -118,9 +118,25 @@ export function selectFaultyCount() {
 }
 
 // 统计所有故障件
-export function selectAllFaulty() {
+  export function selectAllFaulty() {
+    return request({
+      url: '/system/dev/selectAllFaulty',
+      method: 'get'
+    })
+}
+
+//根据故障件种类统计数量
+export function selectPartsTypeCount() {
   return request({
-    url: '/system/dev/selectAllFaulty',
+    url: '/system/dev/selectPartsTypeCount',
     method: 'get'
   })
 }
+//根据故障件种类统计总数
+export function selectAllType() {
+  return request({
+    url: '/system/dev/selectAllType',
+    method: 'get'
+  })
+}
+
