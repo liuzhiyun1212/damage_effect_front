@@ -93,14 +93,14 @@ export default {
     // 高度适应 改型时间线
     getHeight_timeline() {
       var id__timeline = document.getElementById("remodel_timeline")
-      var height__timeline = this.yData_timeline.length * 150
+      var height__timeline = this.yData_timeline.length * 100
       //d.setAttribute(height,height+"px");
       id__timeline.style.cssText = "height:" + height__timeline + "px"
     },
     // 高度适应 对比堆叠图
     getHeight_stacked() {
       var id__stacked = document.getElementById("compared_stacked")
-      var height__stacked = this.yData_stacked.length * 150
+      var height__stacked = this.yData_stacked.length * 100
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
     },
@@ -243,7 +243,10 @@ export default {
       let remodel_timeline_chart = echarts.init(
         document.getElementById("remodel_timeline")
       )
-      remodel_timeline_chart.resize() //自适应大小
+      // echarts自适应
+      window.addEventListener("resize", () => {
+        remodel_timeline_chart.resize()
+      })
       remodel_timeline_chart.setOption(this.set_Option_remodel_timeline())
       //console.log(this.se_timeline)
     },
@@ -310,8 +313,8 @@ export default {
         }
         this.yData_stacked.sort()
 
-        console.log("DataList1", this.DataList1)
-        console.log("yData_stacked:" + this.yData_stacked)
+        //console.log("DataList1", this.DataList1)
+        //console.log("yData_stacked:" + this.yData_stacked)
 
         this.getHeight_stacked()
         this.dealRes1()
@@ -326,7 +329,7 @@ export default {
           max = this.plane_remodel_time[l].remodel.length
         }
       }
-      console.log("plane_remodel_time:", this.plane_remodel_time)
+      //console.log("plane_remodel_time:", this.plane_remodel_time)
       //console.log("max:", max)
 
       //插入se_stacked数据
@@ -350,7 +353,7 @@ export default {
           this.se_stacked.push(se)
         }
       }
-      console.log("se_stacked", this.se_stacked)
+      //console.log("se_stacked", this.se_stacked)
 
       let plane_remodel_time1 = []
       // console.log(
@@ -398,7 +401,7 @@ export default {
       }
 
       this.plane_remodel_time = plane_remodel_time1
-      console.log("plane_remodel_time", this.plane_remodel_time)
+      //console.log("plane_remodel_time", this.plane_remodel_time)
 
       let ii = 0
       for (let i = 0; i < this.plane_remodel_time.length; i++) {
@@ -409,7 +412,7 @@ export default {
           ii++
         }
       }
-      console.log("se_stacked_", this.se_stacked)
+      //console.log("se_stacked_", this.se_stacked)
 
       for (let q = 0; q < this.se_stacked.length; q++) {
         let jj = 0
@@ -438,7 +441,10 @@ export default {
       let compared_stacked_chart = echarts.init(
         document.getElementById("compared_stacked")
       )
-      compared_stacked_chart.resize() //自适应大小
+      // echarts自适应
+      window.addEventListener("resize", () => {
+        compared_stacked_chart.resize()
+      })
       compared_stacked_chart.setOption(this.set_Option_compared_stacked(), true)
     },
     //初始化 对比堆叠图
