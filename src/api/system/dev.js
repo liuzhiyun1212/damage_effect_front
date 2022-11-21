@@ -27,6 +27,7 @@ export function qualityHappenSum(query) {
     params: query
   })
 }
+
 // 季度质量问题发生时间筛选
 export function oneQuality(query) {
   return request({
@@ -35,6 +36,7 @@ export function oneQuality(query) {
     params: query
   })
 }
+
 // 年度质量问题发生时间统计结果
 export function yearHappenSum(query) {
   return request({
@@ -43,6 +45,7 @@ export function yearHappenSum(query) {
     params: query
   })
 }
+
 // 年度质量问题发生时间筛选
 export function oneYear(query) {
   return request({
@@ -51,6 +54,7 @@ export function oneYear(query) {
     params: query
   })
 }
+
 // 质量问题涉及到的机型总数
 export function sumByplaneType(query) {
   return request({
@@ -59,6 +63,7 @@ export function sumByplaneType(query) {
     params: query
   })
 }
+
 // 筛选质量问题涉及到的机型
 export function selectPlaneType(query) {
   return request({
@@ -67,6 +72,7 @@ export function selectPlaneType(query) {
     params: query
   })
 }
+
 // quality_problem详细
 export function getDev(id) {
   return request({

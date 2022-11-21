@@ -1,3 +1,4 @@
+<!-- 故障件名称随时间变化情况 年度 -->
 <template>
   <div>
     <div id="year" style="width: 100%; height: 200px"></div>
@@ -96,7 +97,7 @@ export default {
     // 年度总数
     yearHappenSum() {
       yearHappenSum(this.queryParams).then((response) => {
-        console.log(response)
+        //console.log(response)
         this.yearHappenList = response
         // this.selectList = this.yearHappenList;
         for (let i = 0; i < this.yearHappenList.length; i++) {
