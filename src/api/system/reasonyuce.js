@@ -79,3 +79,19 @@ export function proteam2() {
     method: 'get'
   })
 }
+
+//生产人员发生变化:1.不同生产人员生产的相同故障件中，某种故障模式质量问题数量存在较大差异
+export function properson1() {
+  return request({
+    url: '/system/reasonrule/properson1',
+    method: 'get'
+  })
+}
+
+//生产人员发生变化:2.大量生产新员工入职或老员工离职/换岗与质量问题数量变化时间一致或不超过一定范围
+export function properson2() {
+  return request({
+    url: '/system/reasonrule/properson2',
+    method: 'get'
+  })
+}
