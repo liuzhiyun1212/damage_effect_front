@@ -194,13 +194,29 @@ export default {
           const mc = this.faultStatisticsArray[index].modelCount;
           if (mc / this.qualityCountTotal > 0.1) {
             // console.log("大于：",mc);
-            this.qualityHigh[index] =
-              this.faultStatisticsArray[index].faultModel;
-            this.qualityHighCount[index] = mc;
-            this.qualityProportion[index] = mc / this.qualityCountTotal;
+              if (index!=0 &&this.qualityHigh[index-1]==null) {
+                this.qualityHigh[index-1] = this.faultStatisticsArray[index].faultModel;
+              this.qualityHighCount[index-1] = this.faultStatisticsArray[index].modelCount;
+              // this.qualityProportion[index-1] = mc / this.qualityCountTotal;
+              }else{
+                this.qualityHigh[index] = this.faultStatisticsArray[index].faultModel;
+              this.qualityHighCount[index] = this.faultStatisticsArray[index].modelCount;
+              // this.qualityProportion[index] = this.faultStatisticsArray[index].modelCount / this.qualityCountTotal;
+
+              }
+
           }
         }
         this.queryParams.faultModel = this.qualityHigh;
+
+        let sum = 0;
+        for(let i = 0; i < this.qualityHighCount.length; ++i) {
+            sum += this.qualityHighCount[i];
+        }
+        for (let index = 0; index < this.qualityHighCount.length; index++) {
+          this.qualityProportion[index] = this.qualityHighCount[index]/sum;
+          
+        }
 
         for (let index = 0; index < this.qualityHigh.length; index++) {
           var x = {
@@ -361,6 +377,9 @@ export default {
         ],
       };
       option && myChart.setOption(option);
+      window.addEventListener("resize", () => {
+        myChart.resize()
+      })
     },
 
     /** 查询成品件设计数据列表 */

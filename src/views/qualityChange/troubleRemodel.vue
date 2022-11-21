@@ -179,7 +179,7 @@ export default {
               },}
         );
         for (let u = 0; u < this.x.length; u++) {
-          this.se[i].data.push(i)
+          this.se[i].data.push(i);
         }
       };
       // for(let j=0;j<this.se.length;j++){
@@ -214,7 +214,9 @@ export default {
           text: '故障件改型情况'
         },
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          //鼠标悬浮不显示
+          showContent:false, 
         },
         /**图例 水平 */
        // legend: { orient: 'horizontal'},
