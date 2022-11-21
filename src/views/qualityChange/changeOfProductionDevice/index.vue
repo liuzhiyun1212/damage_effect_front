@@ -1,8 +1,9 @@
 <template>
     <div>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
-            <!-- <h2>质量问题发生机型随时间变化情况</h2> -->
-            <div ref="stackedLineChart" :style="{ width: '100%', height: '380px' }"></div>
+            <h2>故障件生产设备变更情况</h2>
+            <div ref="chart" :style="{ width: '100%', height: '380px' }"></div>
+            
         </el-card>
     </div>
 </template>
@@ -76,7 +77,7 @@ export default {
     },
     methods: {
         initChart() {
-            let getchart = echarts.init(this.$refs.stackedLineChart);
+            let getchart = echarts.init(this.$refs.chart);
             getchart.clear()
             getchart.setOption(this.option);
 
@@ -90,8 +91,8 @@ export default {
             getChartData().then(res => {
                 console.log(res);
                 let list = [];
-                list.push(res.data.faultNumObj)
                 list.push(res.data.produceNumObj)
+                list.push(res.data.faultNumObj)
                 this.option.series = list
                 this.option.yAxis.data = res.data.workerNameArray
                 this.initChart()
