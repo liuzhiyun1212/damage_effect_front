@@ -37,12 +37,12 @@
           </div>
         </el-card>
         <hr />
-        <el-card class="box-card" style="height: 350px;">
+        <el-card class="box-card" style="height: 450px;">
           <div slot="header" class="clearfix">
             <span>判断依据{{yiju}}</span>
           </div>
           <div class="body">
-            <div id="stackedLineChart" :style="{ width: '100%', height: '250px' }"></div>
+            <div id="stackedLineChart" :style="{ width: '100%', height: '350px' }"></div>
           </div>
         </el-card>
       </el-col>
