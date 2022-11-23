@@ -2544,7 +2544,7 @@ export default {
         var xdate1 = []
         for (let i = 0; i < xdate.length; i++){
           let a = i+1;
-          xdate1.push("生产人员"+a)
+          xdate1.push("生产设备"+a)
         }
         var fydata = new Array()
         var ydata = new Array()
