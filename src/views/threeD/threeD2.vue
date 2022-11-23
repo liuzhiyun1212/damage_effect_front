@@ -36,7 +36,7 @@
            <el-table-column label="机型" align="center" prop="planeType" />
         <el-table-column label="故障件型号" align="center" prop="finishedModel" />
         <el-table-column label="故障件名称" align="center" prop="finishedName" />
-        <el-table-column label="安装方法" align="center" prop="installMethod" />
+       <!-- <el-table-column label="安装方法" align="center" prop="installMethod" />-->
         <el-table-column label="质量问题数" align="center" prop="num" />
         <!--<el-table-column label="故障件" align="center">
           <template slot-scope="scope">
@@ -205,7 +205,8 @@ export default {
     gettable(){
       getana_install_way().then((response)=>{
         this.tabledata=response;
-        console.log(this.tabledata);
+        console.log("这是表格的数据");
+        console.log(response);
       })
     },
 
@@ -361,15 +362,13 @@ export default {
             itemStyle: {
               normal: {
                 color:function(params){  //根据不同数据显示不同颜色的标记
-                  console.log("------",params)
-                  console.log("------",install)
+                  console.log("------ppp",params.data[4])
+                  console.log("------iiiii",install)
                   for(let i=0;i<install.length;i++){
                     let mark=0;
-                    if(params.data[4]===install[i]){
+                    if(params.data[5]===install[i]){
                       /*test.push(colors[i]);*/
                       return colors[i];
-
-
                     }
                   }
                   /*if (params.data[3]=='TC-2--液压泵1') {
