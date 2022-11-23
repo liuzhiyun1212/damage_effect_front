@@ -17,6 +17,17 @@ export function get9(id) {
   })
 }
 
+export function Countqua() {
+  return request({
+    url: '/system/9/Countqua',
+    method: 'get'
+  })
+}
+
+
+
+
+
 // 新增9：装备使用数据
 export function add9(data) {
   return request({

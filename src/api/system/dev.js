@@ -27,6 +27,7 @@ export function qualityHappenSum(query) {
     params: query
   })
 }
+
 // 季度质量问题发生时间筛选
 export function oneQuality(query) {
   return request({
@@ -35,6 +36,7 @@ export function oneQuality(query) {
     params: query
   })
 }
+
 // 年度质量问题发生时间统计结果
 export function yearHappenSum(query) {
   return request({
@@ -43,6 +45,7 @@ export function yearHappenSum(query) {
     params: query
   })
 }
+
 // 年度质量问题发生时间筛选
 export function oneYear(query) {
   return request({
@@ -51,6 +54,7 @@ export function oneYear(query) {
     params: query
   })
 }
+
 // 质量问题涉及到的机型总数
 export function sumByplaneType(query) {
   return request({
@@ -59,6 +63,7 @@ export function sumByplaneType(query) {
     params: query
   })
 }
+
 // 筛选质量问题涉及到的机型
 export function selectPlaneType(query) {
   return request({
@@ -67,6 +72,7 @@ export function selectPlaneType(query) {
     params: query
   })
 }
+
 // quality_problem详细
 export function getDev(id) {
   return request({
@@ -118,12 +124,30 @@ export function selectFaultyCount() {
 }
 
 // 统计所有故障件
-export function selectAllFaulty() {
+  export function selectAllFaulty() {
+    return request({
+      url: '/system/dev/selectAllFaulty',
+      method: 'get'
+    })
+}
+
+
+//根据故障件种类统计数量
+export function selectPartsTypeCount() {
   return request({
-    url: '/system/dev/selectAllFaulty',
+    url: '/system/dev/selectPartsTypeCount',
     method: 'get'
   })
 }
+//根据故障件种类统计总数
+export function selectAllType() {
+  return request({
+    url: '/system/dev/selectAllType',
+    method: 'get'
+  })
+}
+
+
 
 // 生产班组变更情况
 export function selectByGradeFaultModel() {
@@ -178,6 +202,21 @@ export function selectDevByEnvironment() {
 export function selectQualityByEnvironment() {
   return request({
     url: '/system/dev/selectQualityByEnvironment',
+    method: 'get'
+  })
+}
+
+// 生产设备变更时间线
+export function timeProduceDeviceChanged() {
+  return request({
+    url: '/system/dev/timeProduceDeviceChanged',
+    method: 'get'
+  })
+}
+// 生产设备变更时间线
+export function selectByProduceDeviceChanged() {
+  return request({
+    url: '/system/dev/selectByProduceDeviceChanged',
     method: 'get'
   })
 }
