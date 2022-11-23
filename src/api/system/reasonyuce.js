@@ -79,3 +79,43 @@ export function proteam2() {
     method: 'get'
   })
 }
+
+//生产人员发生变化:1.不同生产人员生产的相同故障件中，某种故障模式质量问题数量存在较大差异
+export function properson1() {
+  return request({
+    url: '/system/reasonrule/properson1',
+    method: 'get'
+  })
+}
+
+//生产人员发生变化:2.大量生产新员工入职或老员工离职/换岗与质量问题数量变化时间一致或不超过一定范围
+export function properson2() {
+  return request({
+    url: '/system/reasonrule/properson2',
+    method: 'get'
+  })
+}
+
+//生产设备发生变化:1.不同生产设备生产的相同故障件中，某种故障模式质量问题数量存在较大差异
+export function promakedev1() {
+  return request({
+    url: '/system/reasonrule/promakedev1',
+    method: 'get'
+  })
+}
+
+//生产设备发生变化:2.生产线大量新设备开始使用时间与质量问题数量变化时间一致或不超过一定范围
+export function promakedev2() {
+  return request({
+    url: '/system/reasonrule/promakedev2',
+    method: 'get'
+  })
+}
+
+//生产设备发生变化:3.生产线进行升级或更换时间与质量问题数量变化时间一致或不超过一定范围
+export function promakedev3() {
+  return request({
+    url: '/system/reasonrule/promakedev3',
+    method: 'get'
+  })
+}
