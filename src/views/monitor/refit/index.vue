@@ -1,6 +1,17 @@
 <!-- 装备改型情况-->
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        装备改型情况
+      </p>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <!-- 改型时间线图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
