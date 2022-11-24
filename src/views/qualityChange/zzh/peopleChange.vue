@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
-      <div id="main" style="width: 100%; height: 400px">1111</div>
+      <p>故障件人员变更情况</p>
+      <div id="main" style="width: 100%; height: 400px"></div>
       <div id="timeLine" style="width: 100%; height: 600px"></div>
     </el-card>
   </div>
@@ -9,7 +10,7 @@
 
 <script>
 import * as echarts from "echarts"
-import {Countqua} from "../../../../src/api/system/9.js"
+import {Countqua} from "@/api/system/9"
 export default {
   name: "peopleChange",
   data() {
