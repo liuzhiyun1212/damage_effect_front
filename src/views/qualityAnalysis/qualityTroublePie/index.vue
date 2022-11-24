@@ -1,5 +1,16 @@
 <template>
   <div class="app-container">
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        质量问题高发故障模式
+      </p>
      <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
      
