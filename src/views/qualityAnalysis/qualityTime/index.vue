@@ -1,5 +1,16 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        质量问题发生统计
+      </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <el-tabs v-model="activeName">
       <el-tab-pane label="季度" name="quarter" :lazy="true">

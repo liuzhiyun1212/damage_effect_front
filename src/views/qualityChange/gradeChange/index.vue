@@ -149,7 +149,7 @@ export default {
                 });
                  //hhhhhhhhhh高度适应
                 var d =  document.getElementById("timeLine");
-                var height=this.yList.length*150;
+                var height=this.yList.length*100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText="height:"+height+"px";
                 //  this.timeGradeChanged();

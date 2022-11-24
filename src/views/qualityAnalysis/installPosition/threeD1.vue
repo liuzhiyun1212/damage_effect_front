@@ -1,5 +1,16 @@
 <template>
 <div>
+  <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件安装位置
+      </p>
   <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
   <div style="margin-bottom:20px;margin-left: 2%;width: 96%;height: 700px;background: #999; " >
     <div id="main" style="width: 100%;height: 100%;background: #999;"></div>

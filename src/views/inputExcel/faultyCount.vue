@@ -1,5 +1,17 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件名称
+      </p>
+    <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div id="quarter"
             style="width: 100%; height: 200px;"
           ></div>
@@ -51,6 +63,7 @@
             >
             </el-table-column>
           </el-table>
+        </el-card>
   </div>
 </template>
 
