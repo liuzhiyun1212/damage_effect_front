@@ -16,10 +16,14 @@
       <el-button
         type="primary"
         icon="el-icon-s-home"
-        @click="allInfo"
-        style="float: right; margin-right: 10px; margin-top: 8px"
+        @click="allInfo" style="margin-left: 20px;"
         >全部信息</el-button
       >
+      <el-tooltip placement="top">
+      <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
+      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+    </el-tooltip>
+      
     </div>
     <el-button type="primary" @click="selectInfo('0')"
       >1.较上一季度增加或减少50%以上</el-button

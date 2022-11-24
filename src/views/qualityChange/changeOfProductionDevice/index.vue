@@ -10,7 +10,7 @@
 
 <script>
 import echarts from "echarts";
-import { getChartData } from "../../../api/chart/useIntensity"
+import { getChartData } from "../../../api/chart/changeOfProductionDevice"
 import TimeLineChart from "./timeLineChart.vue"
 
 export default {

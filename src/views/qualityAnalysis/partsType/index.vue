@@ -1,5 +1,16 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件种类
+      </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
 <!--  <div>-->
 <!--    <h2>故障件种类</h2>-->

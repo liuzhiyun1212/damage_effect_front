@@ -1,5 +1,16 @@
 <template>
   <div class="app-container">
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        质量问题高发故障模式
+      </p>
      <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
      
@@ -197,11 +208,13 @@ export default {
               if (index!=0 &&this.qualityHigh[index-1]==null) {
                 this.qualityHigh[index-1] = this.faultStatisticsArray[index].faultModel;
               this.qualityHighCount[index-1] = this.faultStatisticsArray[index].modelCount;
-              // this.qualityProportion[index-1] = mc / this.qualityCountTotal;
+              //三个之间占比
+              this.qualityProportion[index-1] = mc / this.qualityCountTotal;
               }else{
                 this.qualityHigh[index] = this.faultStatisticsArray[index].faultModel;
               this.qualityHighCount[index] = this.faultStatisticsArray[index].modelCount;
-              // this.qualityProportion[index] = this.faultStatisticsArray[index].modelCount / this.qualityCountTotal;
+              //三个之间占比
+              this.qualityProportion[index] = this.faultStatisticsArray[index].modelCount / this.qualityCountTotal;
 
               }
 
@@ -213,10 +226,12 @@ export default {
         for(let i = 0; i < this.qualityHighCount.length; ++i) {
             sum += this.qualityHighCount[i];
         }
-        for (let index = 0; index < this.qualityHighCount.length; index++) {
-          this.qualityProportion[index] = this.qualityHighCount[index]/sum;
+
+        //占比 两个之间
+        // for (let index = 0; index < this.qualityHighCount.length; index++) {
+        //   this.qualityProportion[index] = this.qualityHighCount[index]/sum;
           
-        }
+        // }
 
         for (let index = 0; index < this.qualityHigh.length; index++) {
           var x = {
@@ -241,10 +256,10 @@ export default {
     },
 
     dealPieData() {
-      for (let index = 0; index < this.qualityHigh.length; index++) {
+      for (let index = 0; index < this.faultStatisticsArray.length; index++) {
         this.pieData.push({
-          value: this.qualityHighCount[index],
-          name: this.qualityHigh[index],
+          value: this.faultStatisticsArray[index].modelCount,
+          name: this.faultStatisticsArray[index].faultModel,
           label: {
             position: "inside",
             formatter: `{d}%`,
@@ -265,7 +280,7 @@ export default {
             symbol: "triangle",
             data: [
               {
-                name: "11",
+                name: "",
                 coord: [
                   this.xyObject[i].modifyTime,
                   this.xyObject[i].finishedName,
