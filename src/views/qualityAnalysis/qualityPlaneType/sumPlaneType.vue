@@ -1,5 +1,16 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        质量问题涉及到的机型
+      </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div
             id="plane"
@@ -15,8 +26,12 @@
             margin-left: 20px;
           "
         >
-        质量问题集中爆发的机型(若某机型质量问题发生数大于质量问题机型平均发生数50%，则质量问题在该机型上集中爆发)
+        质量问题集中爆发的机型
         </p>
+        <el-tooltip placement="top">
+      <div slot="content">若某机型质量问题发生数大于质量问题机型平均发生数50%，则质量问题在该机型上集中爆发</div>
+      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+    </el-tooltip>
         </div>
         <el-table :header-cell-style="{
             background: '#84BBFE',
@@ -124,7 +139,7 @@ export default {
                 axisLine: {
                 show: false
                 },
-                interval: 5,
+                interval: 2,
                 axisTick: {
                 show: false
                 },
@@ -145,7 +160,7 @@ export default {
                 barWidth: 20,
                 itemStyle: {
                   color: (params) => {
-                                if(params.data >= this.average*0.5){
+                                if(params.data >= Math.round(this.average*0.5)){
                                     return 'red';
                                 }else{
                                     return 'blue'

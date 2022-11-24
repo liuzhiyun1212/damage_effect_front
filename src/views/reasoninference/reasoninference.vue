@@ -105,6 +105,44 @@ export default {
     this.getchangeTree();
   },
   methods: {
+    extension(chart) {
+      // 注意这里，是以X轴显示内容过长为例，如果是y轴的话，需要把params.componentType == 'xAxis'改为yAxis
+      // 判断是否创建过div框,如果创建过就不再创建了
+      // 该div用来盛放文本显示内容的，方便对其悬浮位置进行处理
+      var elementDiv = document.getElementById('extension')
+      if (!elementDiv) {
+        var div = document.createElement('div')
+        div.setAttribute('id', 'extension')
+        div.style.display = 'block'
+        document.querySelector('html').appendChild(div)
+      }
+      chart.on('mouseover', function (params) {
+        if (params.componentType == 'yAxis') {
+          var elementDiv = document.querySelector('#extension')
+          //设置悬浮文本的位置以及样式
+          var elementStyle =
+            'position: absolute;z-index: 99999;color: #fff;font-size: 12px;padding: 5px;display: inline;border-radius: 4px;background-color: #303133;box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 8px'
+          elementDiv.style.cssText = elementStyle
+          elementDiv.innerHTML = params.value
+          document.querySelector('html').onmousemove = function (event) {
+            var elementDiv = document.querySelector('#extension')
+            var xx = event.pageX - 10
+            var yy = event.pageY + 15
+            // console.log('22', xx)
+            elementDiv.style.top = yy + 'px'
+            elementDiv.style.left = xx + 'px'
+          }
+        }
+      })
+      chart.on('mouseout', function (params) {
+        //注意这里，我是以X轴显示内容过长为例，如果是y轴的话，需要改为yAxis
+        if (params.componentType == 'yAxis') {
+          var elementDiv = document.querySelector('#extension')
+
+          elementDiv.style.cssText = 'display:none'
+        }
+      })
+    },
     getchangeTree() {
       changeDataTreeSelect().then(response => {
         this.changeOptions = response.data;
@@ -520,8 +558,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -531,6 +577,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruledevup2(){
@@ -869,8 +916,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -880,6 +935,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruledevcapup2(){
@@ -1230,8 +1286,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -1241,6 +1305,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruleprochaange2(){
@@ -1385,8 +1450,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -1396,6 +1469,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruleprochaange3(){
@@ -1544,8 +1618,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -1555,6 +1637,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruleprochaange4(){
@@ -1909,8 +1992,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -1920,6 +2011,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruleproteam2(){
@@ -2273,8 +2365,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -2284,6 +2384,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     ruleproperson2(){
@@ -2659,8 +2760,16 @@ export default {
           yAxis: {
             data: name,
             type: 'category',
+            scale: true,
+            triggerEvent: true,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              formatter: function (value) {
+                if (value.length > 3) {
+                  return `${value.slice(0, 3)}...`
+                }
+                return value
+              },
             },
           },
           series: oy,
@@ -2670,6 +2779,7 @@ export default {
         window.addEventListener('resize', () => {
           myChart.resize()
         })
+        this.extension(myChart);
       })
     },
     rulepromakedev2(){
