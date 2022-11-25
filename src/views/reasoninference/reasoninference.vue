@@ -675,7 +675,7 @@ export default {
         if(name.indexOf(this.dataList2[i].modelSeries) == -1){
           name.push(this.dataList2[i].modelSeries)
         }
-        md = {name:this.dataList2[i].modelSeries,id:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
+        md = {name:this.dataList2[i].modelSeries,time:date,num:this.dataList2[i].devHappennum}
         ndata.push(md)
       }
       var compare1 = function (x, y) {//比较函数
@@ -770,7 +770,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis: xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -1122,7 +1122,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -1818,7 +1818,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis: xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -2187,7 +2187,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -2578,7 +2578,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -2947,7 +2947,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -3145,7 +3145,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]){
+          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
