@@ -220,4 +220,31 @@ export function selectByProduceDeviceChanged() {
     method: 'get'
   })
 }
+// 
+export function selectState1() {
+  return request({
+    url: '/system/dev/selectState1',
+    method: 'get'
+  })
+}
+// // 大修状态的质量总数
+// export function selectQualityByState2() {
+//   return request({
+//     url: '/system/dev/selectQualityByState2',
+//     method: 'get'
+//   })
+// }
+// 其他状态质量总数
+export function selectQualityByState1() {
+  return request({
+    url: '/system/dev/selectQualityByState1',
+    method: 'get'
+  })
+}
+export function selectTroubleByState1() {
+  return request({
+    url: '/system/dev/selectTroubleByState1',
+    method: 'get'
+  })
+}
 

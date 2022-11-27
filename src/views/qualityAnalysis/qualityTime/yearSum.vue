@@ -13,11 +13,15 @@
       >
         年度质量问题发生统计
       </p>
+      <el-tooltip placement="top">
+      <div slot="content">1.较上一年度增加或减少50%以上2.连续两个年度增加或减少20%以上3.连续三个年度呈单调变化趋势</div>
+      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+    </el-tooltip>
       <el-button
         type="primary"
         icon="el-icon-s-home"
         @click="allInfo"
-        style="float: right; margin-right: 10px; margin-top: 8px"
+        style="margin-left: 20px;"
         >全部信息</el-button
       >
     </div>
