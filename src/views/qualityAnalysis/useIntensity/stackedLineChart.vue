@@ -107,6 +107,16 @@ export default {
 
                         return [x, y];
                     },
+                    formatter: params => {
+                        console.log(params);
+                        var res = `${params[0].name} <br/>`
+                        for (const item of params) {
+                            if (item.value !== 0) {
+                                res += `<span style="background: ${item.color}; height:10px; width: 10px; border-radius: 50%;display: inline-block;margin-right:10px;"></span> ${item.seriesName} ：${item.value}<br/>`
+                            }
+                        }
+                        return res
+                    },
                 },
                 legend: {
                     data: this.legend
