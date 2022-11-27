@@ -248,3 +248,30 @@ export function selectTroubleByState1() {
   })
 }
 
+// 质量问题故障模式随时间变化情况
+export function faultModelByQuarter() {
+  return request({
+    url: '/system/dev/faultModelByQuarter',
+    method: 'get'
+  })
+}
+export function faultModelByYear() {
+  return request({
+    url: '/system/dev/faultModelByYear',
+    method: 'get'
+  })
+}
+export function faultModelByQuarterSum() {
+  return request({
+    url: '/system/dev/faultModelByQuarterSum',
+    method: 'get'
+  })
+}
+export function faultModelByYearSum() {
+  return request({
+    url: '/system/dev/faultModelByYearSum',
+    method: 'get'
+  })
+}
+
+

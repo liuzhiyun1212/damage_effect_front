@@ -68,7 +68,7 @@
 
 <script>
 import * as echarts from "echarts"
-import { qualityHappenSum, oneQuality } from "@/api/system/dev"
+import {faultModelByQuarter,faultModelByQuarterSum} from '@/api/system/dev';
 export default {
   data() {
     return {
@@ -95,8 +95,8 @@ export default {
   },
   methods: {
     // 季度总数
-    qualityHappenSum() {
-      qualityHappenSum(this.queryParams).then((response) => {
+    faultModelByQuarterSum() {
+      faultModelByQuarterSum(this.queryParams).then((response) => {
         this.qualityHappenList = response
         // this.selectList = this.qualityHappenList;
         for (let i = 0; i < this.qualityHappenList.length; i++) {
@@ -112,8 +112,8 @@ export default {
       })
     },
     // 季度筛选
-    oneQuality() {
-      oneQuality(this.queryParams).then((response) => {
+    faultModelByQuarter() {
+      faultModelByQuarter(this.queryParams).then((response) => {
         this.allQualityList = response
         this.selectList = this.allQualityList
         // for(let i=0;i<this.allQualityList.length;i++){
@@ -159,7 +159,7 @@ export default {
     },
     allInfo() {
       this.queryParams.pageNum = 1
-      this.oneQuality()
+      this.faultModelByQuarter()
       //     qualityHappenSum(this.queryParams).then(response => {
       //     this.qualityHappenList = response;
       //     this.selectList = this.qualityHappenList;
@@ -248,8 +248,8 @@ export default {
     },
   },
   created() {
-    this.qualityHappenSum()
-    this.oneQuality()
+    this.faultModelByQuarterSum();
+    this.faultModelByQuarter();
   },
   mounted() {},
 }
