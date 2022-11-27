@@ -62,11 +62,11 @@
                     </el-table-column> -->
                     <el-table-column prop="eldTime" label="起始时间" align="center">
                     </el-table-column>
-                    <el-table-column prop="eldTimeNum" label="前一时间数量" align="center">
+                    <el-table-column prop="eldTimeNum" label="前一时期飞行小时" align="center">
                     </el-table-column>
                     <el-table-column prop="recentTime" label="结束时间" align="center">
                     </el-table-column>
-                    <el-table-column prop="recentTimeNum" label="后一时间数量" align="center">
+                    <el-table-column prop="recentTimeNum" label="后一时期飞行小时" align="center">
                     </el-table-column>
                     <el-table-column prop="checkCondition" label="符合的条件" align="center">
                     </el-table-column>
