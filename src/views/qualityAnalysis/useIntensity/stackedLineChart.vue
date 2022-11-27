@@ -1,5 +1,14 @@
 <template>
     <div>
+        <p style="
+                  font-family: Arial;
+                  font-size: 20px;
+                  font-weight: 600;
+                  display: inline-block;
+                  margin-left: 30px;
+                ">
+            质量问题涉及到的机型使用强度随时间变化情况
+        </p>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <div ref="stackedLineChart" :style="{ width: '100%', height: '180px' }"></div>
 
@@ -11,10 +20,15 @@
                     display: inline-block;
                     margin-left: 20px;
                 ">
-                    质量问题发生机型随时间变化情况
+                    质量问题涉及到的机型使用强度随时间变化情况
                 </p>
-                <el-button type="primary" icon="el-icon-s-home" @click="allCheck"
-                    style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button>
+                <el-button type="primary" icon="el-icon-s-home" @click="allCheck" style="margin-left: 20px;">全部信息
+                </el-button>
+                <el-tooltip placement="top">
+                    <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
+                    <i class="el-icon-question"
+                        style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+                </el-tooltip>
             </div>
 
             <div>
@@ -108,7 +122,7 @@ export default {
                         return [x, y];
                     },
                     formatter: params => {
-                        console.log(params);
+                        // console.log(params);
                         var res = `${params[0].name} <br/>`
                         for (const item of params) {
                             if (item.value !== 0) {
@@ -138,8 +152,7 @@ export default {
                     data: []
                 },
                 yAxis: {
-                    interval: 1,
-                    type: 'value'
+                    type: 'value',
                 },
                 series: [],
                 color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
