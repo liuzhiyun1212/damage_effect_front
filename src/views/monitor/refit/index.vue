@@ -2,16 +2,16 @@
 <template>
   <div>
     <p
-        style="
-          font-family: Arial;
-          font-size: 20px;
-          font-weight: 600;
-          display: inline-block;
-          margin-left: 30px;
-        "
-      >
-        装备改型情况
-      </p>
+      style="
+        font-family: Arial;
+        font-size: 20px;
+        font-weight: 600;
+        display: inline-block;
+        margin-left: 30px;
+      "
+    >
+      装备改型情况
+    </p>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <!-- 改型时间线图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -224,7 +224,8 @@ export default {
           type: "line",
           data: [],
           markPoint: {
-            symbolSize: 30,
+            symbol: "triangle",
+            symbolSize: 20,
             data: [],
           },
         })
@@ -232,11 +233,13 @@ export default {
           this.se_timeline[i].data.push(this.yData_timeline[i])
         }
         for (let y = 0; y < this.totalDataList2.length; y++) {
-          
           if (this.totalDataList2[y].modelSeries === this.yData_timeline[i]) {
             //console.log(this.totalDataList2[y]);
             let mkp = {
-              name: this.totalDataList2[y].planeType,
+              name:
+                this.totalDataList2[y].planeType +
+                " " +
+                this.dateFormat(this.totalDataList2[y].remodelDate),
               coord: [
                 this.dateFormat(this.totalDataList2[y].remodelDate),
                 this.yData_timeline[i],
@@ -276,16 +279,23 @@ export default {
         //   show: true,
         //   trigger: "item",
         // },
+        // tooltip: {
+        //   trigger: "axis", //'Temperature : <br/>{b} : {c}°C'
+        //   formatter: "{b}",
+        //   axisPointer: {
+        //     axis: "x",
+        //   },
+        // },
         tooltip: {
           trigger: "item",
         },
         xAxis: {
-          axisTick: { inside: true },
+          // axisTick: { inside: true },
           type: "category",
           boundaryGap: false,
           data: this.xData_timeline,
           axisLabel: {
-            show: false,
+            // show: false,
             interval: 0,
             rotate: 50,
           },
