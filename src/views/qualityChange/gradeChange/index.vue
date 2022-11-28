@@ -1,5 +1,17 @@
 <template>
   <div>
+    
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件生产班组变更情况
+      </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
         <div
             id="timeLine"
@@ -149,7 +161,7 @@ export default {
                 });
                  //hhhhhhhhhh高度适应
                 var d =  document.getElementById("timeLine");
-                var height=this.yList.length*150;
+                var height=this.yList.length*100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText="height:"+height+"px";
                 //  this.timeGradeChanged();
@@ -236,7 +248,7 @@ export default {
             var myChart = echarts.init(document.getElementById("timeLine"))
             var option = {
                 title: {
-                    text: '故障件生产班组变更情况'
+                    text: '故障件生产班组变更时间线'
                 },
     //             tooltip: {
     //                 trigger: 'axis',

@@ -1,6 +1,17 @@
 <!-- 装备改型情况-->
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        装备改型情况
+      </p>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <!-- 改型时间线图 -->
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -213,8 +224,7 @@ export default {
           type: "line",
           data: [],
           markPoint: {
-            symbolSize: 20,
-            symbol: "triangle",
+            symbolSize: 30,
             data: [],
           },
         })
@@ -222,9 +232,11 @@ export default {
           this.se_timeline[i].data.push(this.yData_timeline[i])
         }
         for (let y = 0; y < this.totalDataList2.length; y++) {
+          
           if (this.totalDataList2[y].modelSeries === this.yData_timeline[i]) {
+            //console.log(this.totalDataList2[y]);
             let mkp = {
-              name: this.yData_timeline[i],
+              name: this.totalDataList2[y].planeType,
               coord: [
                 this.dateFormat(this.totalDataList2[y].remodelDate),
                 this.yData_timeline[i],
@@ -255,14 +267,28 @@ export default {
       // 改型时间线折线图
       let option = {
         // tooltip: {
+        //   formatter: (param) => {
+        //     console.log("param",param);
+        //   },
+        //   //axisPointer: {
+        //   //   axis: "y",
+        //   // },
         //   show: true,
-        //   trigger: "axis",
+        //   trigger: "item",
         // },
+        tooltip: {
+          trigger: "item",
+        },
         xAxis: {
+          axisTick: { inside: true },
           type: "category",
           boundaryGap: false,
           data: this.xData_timeline,
-          axisLabel: { interval: 0, rotate: 50 },
+          axisLabel: {
+            show: false,
+            interval: 0,
+            rotate: 50,
+          },
         },
         yAxis: {
           type: "category",
@@ -451,13 +477,13 @@ export default {
     set_Option_compared_stacked() {
       // 对比堆叠图
       let option = {
-        // tooltip: {
-        //   show: true,
-        //   trigger: "axis",
-        //   axisPointer: {
-        //     type: "shadow",
-        //   },
-        // },
+        tooltip: {
+          show: true,
+          trigger: "item",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
         legend: {},
         xAxis: {
           type: "value",

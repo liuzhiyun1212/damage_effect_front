@@ -1,5 +1,17 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件名称
+      </p>
+    <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div id="quarter"
             style="width: 100%; height: 200px;"
           ></div>
@@ -21,7 +33,7 @@
             <!-- <div slot="content">多行信息<br/>第二行信息</div> -->
              <div slot="content">若某故障件名称质量问题发生数大于质量问题故障件名称平均发生数50%，则质量问题在该故障件名称上集中爆发。</div>
             <!-- <el-button icon="el-icon-question" circle></el-button> -->
-            <i class="el-icon-question"></i>
+            <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
         </el-tooltip>
         <!-- <el-button type="primary" icon="el-icon-s-home"  @click="allInfo" style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button> -->
         </div>
@@ -51,6 +63,7 @@
             >
             </el-table-column>
           </el-table>
+        </el-card>
   </div>
 </template>
 

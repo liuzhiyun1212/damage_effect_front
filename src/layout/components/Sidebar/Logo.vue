@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '若依管理系统',
+      title: '质量问题原因分析系统',
       logo: logoImg
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="year" style="width: 100%; height: 200px"></div>
+    <div id="quarter" style="width: 100%; height: 200px"></div>
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
       <p
         style="
@@ -11,28 +11,28 @@
           margin-left: 20px;
         "
       >
-        年度质量问题发生统计
+        季度质量问题发生统计
       </p>
-      <el-tooltip placement="top">
-      <div slot="content">1.较上一年度增加或减少50%以上2.连续两个年度增加或减少20%以上3.连续三个年度呈单调变化趋势</div>
-      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
-    </el-tooltip>
       <el-button
         type="primary"
         icon="el-icon-s-home"
-        @click="allInfo"
-        style="margin-left: 20px;"
+        @click="allInfo" style="margin-left: 20px;"
         >全部信息</el-button
       >
+      <el-tooltip placement="top">
+      <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
+      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+    </el-tooltip>
+      
     </div>
     <el-button type="primary" @click="selectInfo('0')"
-      >1.较上一年度增加或减少50%以上</el-button
+      >1.较上一季度增加或减少50%以上</el-button
     >
     <el-button type="primary" @click="selectInfo('1')"
-      >2.连续两个年度增加或减少20%以上</el-button
+      >2.连续两个季度增加或减少20%以上</el-button
     >
     <el-button type="primary" @click="selectInfo('2')"
-      >3.连续三个年度呈单调变化趋势</el-button
+      >3.连续三个季度呈单调变化趋势</el-button
     >
     <el-table
       :header-cell-style="{
@@ -53,7 +53,7 @@
       <el-table-column type="index"></el-table-column>
       <el-table-column
         prop="quarter"
-        label="年度"
+        label="季度"
         :show-overflow-tooltip="true"
         align="center"
       >
@@ -68,25 +68,20 @@
 
 <script>
 import * as echarts from "echarts"
-import {
-  qualityHappenSum,
-  oneQuality,
-  oneYear,
-  yearHappenSum,
-} from "@/api/system/dev"
+import {faultModelByQuarter,faultModelByQuarterSum} from '@/api/system/dev';
 export default {
   data() {
     return {
-      // 年度质量发生时间总数
-      yearHappenList: [],
-      // 年度筛选大列表
-      allYearList: [],
+      // 筛选大列表
+      allQualityList: [],
+      // 质量发生时间总数
+      qualityHappenList: [],
       // 表格判断条件list
       selectList: [],
-      // 年度柱状图
-      xYear: [],
-      yYear: [],
+      // 季度柱状图
+      xQuarter: [],
       xLength: null,
+      yQuarter: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -94,74 +89,88 @@ export default {
         troubleName: null,
         troubleIntroduction: null,
       },
+      // 柱状图选中柱子
+      selectedDataIndex: null,
     }
   },
   methods: {
-    // 年度总数
-    yearHappenSum() {
-      yearHappenSum(this.queryParams).then((response) => {
-        console.log(response)
-        this.yearHappenList = response
-        // this.selectList = this.yearHappenList;
-        for (let i = 0; i < this.yearHappenList.length; i++) {
-          this.xYear.push(
-            this.yearHappenList[i].quarter +
+    // 季度总数
+    faultModelByQuarterSum() {
+      faultModelByQuarterSum(this.queryParams).then((response) => {
+        this.qualityHappenList = response
+        // this.selectList = this.qualityHappenList;
+        for (let i = 0; i < this.qualityHappenList.length; i++) {
+          this.xQuarter.push(
+            this.qualityHappenList[i].quarter +
               ":" +
-              this.yearHappenList[i].condition
+              this.qualityHappenList[i].condition
           )
-          this.yYear.push(this.yearHappenList[i].sum)
-          this.xLength = this.yearHappenList[i].quarter.length
+          this.yQuarter.push(this.qualityHappenList[i].sum)
+          this.xLength = this.qualityHappenList[i].quarter.length
         }
-        // console.log("aaaaaaaaaaaaa",this.yearHappenList);
-        this.getYear()
+        this.chartView()
       })
     },
-    // 年度筛选
-    oneYear() {
-      oneYear(this.queryParams).then((response) => {
-        this.allYearList = response
-        this.selectList = this.allYearList
-        // console.log("aaaaaaaaaaaaa",this.allYearList);
+    // 季度筛选
+    faultModelByQuarter() {
+      faultModelByQuarter(this.queryParams).then((response) => {
+        this.allQualityList = response
+        this.selectList = this.allQualityList
+        // for(let i=0;i<this.allQualityList.length;i++){
+        //     this.selectList.push(...this.allQualityList[i]);
+        // }
+        // console.log("aaaaaaaaaaa",this.allQualityList);
       })
     },
     // 表格条件筛选
     selectInfo(n) {
       this.selectList = []
-      for (let i = 0; i < this.allYearList.length; i++) {
+      for (let i = 0; i < this.allQualityList.length; i++) {
         if (
-          (this.allYearList[i].condition === "1" ||
-            this.allYearList[i].condition === "1,2" ||
-            this.allYearList[i].condition === "1,2,3") &&
+          (this.allQualityList[i].condition === "1" ||
+            this.allQualityList[i].condition === "1,2" ||
+            this.allQualityList[i].condition === "1,2,3") &&
           n === "0"
         ) {
-          this.selectList.push(this.allYearList[i])
+          this.selectList.push(this.allQualityList[i])
         } else if (
-          (this.allYearList[i].condition === "2" ||
-            this.allYearList[i].condition === "2,3" ||
-            this.allYearList[i].condition === "1,2,3") &&
+          (this.allQualityList[i].condition === "2" ||
+            this.allQualityList[i].condition === "2,3" ||
+            this.allQualityList[i].condition === "1,2,3") &&
           n === "1"
         ) {
-          this.selectList.push(this.allYearList[i])
+          this.selectList.push(this.allQualityList[i])
         } else if (
-          (this.allYearList[i].condition === "3" ||
-            this.allYearList[i].condition === "2,3" ||
-            this.allYearList[i].condition === "1,2,3") &&
+          (this.allQualityList[i].condition === "3" ||
+            this.allQualityList[i].condition === "2,3" ||
+            this.allQualityList[i].condition === "1,2,3") &&
           n === "2"
         ) {
-          this.selectList.push(this.allYearList[i])
+          this.selectList.push(this.allQualityList[i])
         }
       }
+      // if(n==='0'){
+      //     this.selectList = this.allQualityList[0];
+      // }else if(n==='1'){
+      //     this.selectList = this.allQualityList[1];
+      // }else if(n==='2'){
+      //     this.selectList = this.allQualityList[2];
+      // }
     },
     allInfo() {
       this.queryParams.pageNum = 1
-      this.oneYear()
+      this.faultModelByQuarter()
+      //     qualityHappenSum(this.queryParams).then(response => {
+      //     this.qualityHappenList = response;
+      //     this.selectList = this.qualityHappenList;
+      // });
     },
-    getYear() {
-      var myChart = echarts.init(document.getElementById("year"))
+    chartView() {
+      var myChart = echarts.init(document.getElementById("quarter"))
       var option = {
         /*title: {
-                text: '维保计划按种类统计',
-            },*/
+                    text: '维保计划按种类统计',
+                },*/
         tooltip: {
           trigger: "axis",
           formatter: (param) => {
@@ -171,14 +180,20 @@ export default {
               )
             }
           },
+          // trigger: 'axis',
+          // formatter: "{b} : {c}",
+          // axisPointer: { // 坐标轴指示器，坐标轴触发有效
+          //     type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+          // }
         },
         xAxis: {
           type: "category",
-          data: this.xYear,
+          data: this.xQuarter,
           textStyle: {
             fontSize: 14,
           },
           axisLabel: {
+            rotate: 30, //文字旋转
             formatter: (params) => {
               return params.slice(0, this.xLength)
             },
@@ -209,7 +224,7 @@ export default {
             barWidth: 20,
             itemStyle: {
               color: (params) => {
-                // console.log("aaaaaa",params.name.slice(this.xLength+1)!=='null');
+                console.log(params)
                 if (params.name.slice(this.xLength + 1) !== "null") {
                   return "red"
                 }
@@ -221,7 +236,7 @@ export default {
               // { offset: 1, color: '#188df0' }
               // ])
             },
-            data: this.yYear,
+            data: this.yQuarter,
           },
         ],
       }
@@ -233,8 +248,8 @@ export default {
     },
   },
   created() {
-    this.yearHappenSum()
-    this.oneYear()
+    this.faultModelByQuarterSum();
+    this.faultModelByQuarter();
   },
   mounted() {},
 }

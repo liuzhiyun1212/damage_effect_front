@@ -220,4 +220,58 @@ export function selectByProduceDeviceChanged() {
     method: 'get'
   })
 }
+// 
+export function selectState1() {
+  return request({
+    url: '/system/dev/selectState1',
+    method: 'get'
+  })
+}
+// // 大修状态的质量总数
+// export function selectQualityByState2() {
+//   return request({
+//     url: '/system/dev/selectQualityByState2',
+//     method: 'get'
+//   })
+// }
+// 其他状态质量总数
+export function selectQualityByState1() {
+  return request({
+    url: '/system/dev/selectQualityByState1',
+    method: 'get'
+  })
+}
+export function selectTroubleByState1() {
+  return request({
+    url: '/system/dev/selectTroubleByState1',
+    method: 'get'
+  })
+}
+
+// 质量问题故障模式随时间变化情况
+export function faultModelByQuarter() {
+  return request({
+    url: '/system/dev/faultModelByQuarter',
+    method: 'get'
+  })
+}
+export function faultModelByYear() {
+  return request({
+    url: '/system/dev/faultModelByYear',
+    method: 'get'
+  })
+}
+export function faultModelByQuarterSum() {
+  return request({
+    url: '/system/dev/faultModelByQuarterSum',
+    method: 'get'
+  })
+}
+export function faultModelByYearSum() {
+  return request({
+    url: '/system/dev/faultModelByYearSum',
+    method: 'get'
+  })
+}
+
 

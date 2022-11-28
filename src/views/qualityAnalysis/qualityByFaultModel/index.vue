@@ -9,7 +9,7 @@
           margin-left: 30px;
         "
       >
-        质量问题发生统计
+      质量问题故障模式随时间变化情况
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <el-tabs v-model="activeName">
@@ -26,7 +26,7 @@
 
 <script>
   import * as echarts from 'echarts';
-import {qualityHappenSum,oneQuality,oneYear,yearHappenSum} from '@/api/system/dev';
+import {faultModelByQuarter,faultModelByYear} from '@/api/system/dev';
 import YearSum from "./yearSum.vue";
 import QuarterSum from "./quarterSum.vue";
 export default {
@@ -36,24 +36,16 @@ export default {
   data() {
     return {
       activeName:"quarter",
-      // 查询参数
-      queryParams: {
-              pageNum: 1,
-              pageSize: 5,
-              troubleName: null,
-              troubleIntroduction: null
-            },
       
       
     }
   },
   methods: {
-    
-    
+
   },
   created() {
     
-    // this.yearHappenSum();
+
     // this.oneYear();
   },
   mounted() {
