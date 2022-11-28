@@ -248,7 +248,7 @@ export function selectTroubleByState1() {
   })
 }
 
-// 质量问题故障模式随时间变化情况
+// 4.2.1.6质量问题故障模式随时间变化情况
 export function faultModelByQuarter() {
   return request({
     url: '/system/dev/faultModelByQuarter',
@@ -270,6 +270,20 @@ export function faultModelByQuarterSum() {
 export function faultModelByYearSum() {
   return request({
     url: '/system/dev/faultModelByYearSum',
+    method: 'get'
+  })
+}
+
+// 4.2.1.7质量问题发生地理环境
+export function sumByEnvironment() {
+  return request({
+    url: '/system/dev/sumByEnvironment',
+    method: 'get'
+  })
+}
+export function highSumByEnvironment() {
+  return request({
+    url: '/system/dev/highSumByEnvironment',
     method: 'get'
   })
 }

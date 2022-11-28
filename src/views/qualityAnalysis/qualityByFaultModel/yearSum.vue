@@ -199,9 +199,11 @@ export default {
         ],
         series: [
           {
-            type: "bar",
+            type: "line",
             showBackground: true,
-            barWidth: 20,
+            // barWidth: 20,
+            symbolSize: 10,
+            symbol: "triangle",
             itemStyle: {
               color: (params) => {
                 // console.log("aaaaaa",params.name.slice(this.xLength+1)!=='null');
