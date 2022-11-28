@@ -219,8 +219,10 @@ export default {
         ],
         series: [
           {
-            type: "bar",
+            type: "line",
             showBackground: true,
+            symbolSize: 10,
+            symbol: "triangle",
             barWidth: 20,
             itemStyle: {
               color: (params) => {
