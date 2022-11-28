@@ -302,7 +302,7 @@
         :limit="1"
         accept=".xlsx, .xls"
         :headers="upload.headers"
-        :action="upload.url6 + '?updateSupport=' + upload.updateSupport"
+        :action="upload.url7 + '?updateSupport=' + upload.updateSupport"
         :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress"
         :on-success="handleFileSuccess"
@@ -321,7 +321,7 @@
       </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFileForm">确 定</el-button>
-        <el-button @click="upload.open6 = false">取 消</el-button>
+        <el-button @click="upload.open7 = false">取 消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -463,6 +463,7 @@ export default {
       this.download('system/12/importTemplate', {
       }, `EquipmentUseData12${new Date().getTime()}.xlsx`)
     },
+
     /** 下载产品生产数量模板操作 */
     importTemplate5() {
       this.download('system/7/importTemplate', {
