@@ -193,6 +193,7 @@ export default {
             fontSize: 14,
           },
           axisLabel: {
+            rotate: 30, //文字旋转
             formatter: (params) => {
               return params.slice(0, this.xLength)
             },

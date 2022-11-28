@@ -119,3 +119,27 @@ export function promakedev3() {
     method: 'get'
   })
 }
+
+//测量设备发生变化:1.不同测量设备测量的相同故障件中，某种故障模式质量问题数量存在较大差异
+export function promeasuringdev1() {
+  return request({
+    url: '/system/reasonrule/promeasuringdev1',
+    method: 'get'
+  })
+}
+
+//测量设备发生变化:2.故障件生产中测量设备批量更换时间与质量问题数量变化时间一致或不超过一定范围
+export function promeasuringdev2() {
+  return request({
+    url: '/system/reasonrule/promeasuringdev2',
+    method: 'get'
+  })
+}
+
+//测量设备发生变化:3.故障件出厂检测的测量设备批量更换时间与质量问题数量变化时间一致或不超过一定范围
+export function promeasuringdev3() {
+  return request({
+    url: '/system/reasonrule/promeasuringdev3',
+    method: 'get'
+  })
+}

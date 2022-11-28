@@ -1,5 +1,14 @@
 <template>
     <div>
+        <p style="
+                  font-family: Arial;
+                  font-size: 20px;
+                  font-weight: 600;
+                  display: inline-block;
+                  margin-left: 30px;
+                ">
+            质量问题发生机型随时间变化情况 
+        </p>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <!-- <h2>质量问题发生机型随时间变化情况</h2> -->
             <div ref="stackedLineChart" :style="{ width: '100%', height: '180px' }"></div>
@@ -14,8 +23,11 @@
                 ">
                     质量问题发生机型随时间变化情况
                 </p>
-                <el-button type="primary" icon="el-icon-s-home" @click="allCheck"
-                    style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button>
+                <el-button type="primary" icon="el-icon-s-home" @click="allCheck" style="margin-left: 20px;">全部信息</el-button>
+                <el-tooltip placement="top">
+                    <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
+                    <i class="el-icon-question" style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+                </el-tooltip>
             </div>
 
             <div>
