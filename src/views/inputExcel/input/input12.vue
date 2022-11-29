@@ -14,43 +14,35 @@
     </el-row>
 
     <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="产品名称" align="center" prop="partsName" />
-      <el-table-column label="产品型号" align="center" prop="partsModel" />
-      <el-table-column label="出厂编号" align="center" prop="partsCode" />
-      <el-table-column label="出厂时间" align="center" prop="partsFactoryTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.partsFactoryTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="产品批次" align="center" prop="partsManufacture" />
-      <el-table-column label="制造班组" align="center" prop="partsMakeGroup" />
-      <el-table-column label="制造人员" align="center" prop="partsMakePeople" />
-      <el-table-column label="加工设备" align="center" prop="partsMakeQuipment" />
-      <el-table-column label="测量设备" align="center" prop="partsMeasuringQuipment" />
-      <el-table-column label="原材料来源" align="center" prop="rawMaterialPlace" />
-      <el-table-column label="零部件来源" align="center" prop="sparePartsPlace" />
-      <el-table-column label="生产工艺" align="center" prop="partsMakeWorkmanship" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:9:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:9:remove']"
-          >删除</el-button>
-        </template>
-      </el-table-column>
+
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column label="序号" align="center" prop="id" />
+        <el-table-column label="年月" align="center" prop="date" width="180">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.date, '{y}-{m}-{d}') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="机型" align="center" prop="planeType" />
+        <el-table-column label="部队" align="center" prop="troops" />
+        <el-table-column label="飞行小时" align="center" prop="flightHours" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['system:12:edit']"
+            >修改</el-button>
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['system:12:remove']"
+            >删除</el-button>
+          </template>
+        </el-table-column>
     </el-table>
 
     <pagination
@@ -61,7 +53,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改9：装备使用数据对话框 -->
+    <!-- 添加或修改12：装备使用数据对话框 -->
     <!--  装备使用数据导入  -->
     <el-dialog :title="upload.title" :visible.sync="upload.open4" width="400px" append-to-body>
       <el-upload
@@ -95,11 +87,11 @@
 </template>
 
 <script>
-import { list9, get9, del9, add9, update9 } from "@/api/system/9";
+import { list12, get12, del12, add12, update12 } from "@/api/system/12";
 import {getToken} from "@/utils/auth";
 
 export default {
-  name: "9",
+  name: "12",
   data() {
     return {
       // 用户导入参数
@@ -129,7 +121,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 9：装备使用数据表格数据
+      // 12：装备使用数据表格数据
       List: [],
       // 弹出层标题
       title: "",
@@ -188,10 +180,10 @@ export default {
       this.getList();
     },
 
-    /** 查询9：装备使用数据列表 */
+    /** 查询12：装备使用数据列表 */
     getList() {
       this.loading = true;
-      list9(this.queryParams).then(response => {
+      list12(this.queryParams).then(response => {
         this.List = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -242,16 +234,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加9：装备使用数据";
+      this.title = "添加12：装备使用数据";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      get9(id).then(response => {
+      get12(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改9：装备使用数据";
+        this.title = "修改12：装备使用数据";
       });
     },
     /** 提交按钮 */
@@ -259,13 +251,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            update9(this.form).then(response => {
+            update12(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            add9(this.form).then(response => {
+            add12(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -277,8 +269,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除9：装备使用数据编号为"' + ids + '"的数据项？').then(function() {
-        return del9(ids);
+      this.$modal.confirm('是否确认删除12：装备使用数据编号为"' + ids + '"的数据项？').then(function() {
+        return del12(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -286,9 +278,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/9/export', {
+      this.download('system/12/export', {
         ...this.queryParams
-      }, `9_${new Date().getTime()}.xlsx`)
+      }, `12_${new Date().getTime()}.xlsx`)
     }
   }
 };
