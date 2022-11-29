@@ -3,9 +3,9 @@
     <h2  style="
           font-family: Arial;
 
-          margin-left: 30px;
+          margin-left: 20px;
         ">故障件生产人员变更情况</h2>
-    <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+    <el-card style="width: 98%; margin-left: 20px; margin-top: 10px">
 
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
         <p
