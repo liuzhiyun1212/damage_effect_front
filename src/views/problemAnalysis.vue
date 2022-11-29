@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-card style="margin-left: 0.5%; width:99%; float:left">
+  <el-card style="margin-left: 0.5%; width:99%; height: 1200px; float:left">
    <!-- <p>质量问题发生时间</p>
     <p>质量问题涉及到的机型</p>
     <p>质量问题发生机型时间变化情况</p>
