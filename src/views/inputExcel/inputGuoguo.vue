@@ -325,7 +325,7 @@
 import { listAllDev, getDev, delDev, addDev, updateDev,importTemplate } from "@/api/system/dev";
 import { importDesignTemplate } from "@/api/system/design";
 import { importModifyTemplate } from "@/api/system/modify";
-import { importCreateTemplate } from "@/api/system/create";
+import { importManufacturingTemplate } from "@/api/system/data5";
 import { importModifyDataTemplate } from "@/api/system/modifyData";
 import { getToken } from "@/utils/auth";
 export default {
@@ -350,7 +350,7 @@ export default {
         // 上传的地址
         url3: process.env.VUE_APP_BASE_API + "/system/design/importData",
         url4: process.env.VUE_APP_BASE_API + "/system/modify/importData",
-        url5: process.env.VUE_APP_BASE_API + "/system/create/importData",
+        url5: process.env.VUE_APP_BASE_API + "/system/data5/importData",
         url6: process.env.VUE_APP_BASE_API + "/system/modifyData/importData"
       },
       // 遮罩层
@@ -453,8 +453,8 @@ export default {
     },
     /** 下载产品制造模板操作 */
     importTemplate5() {
-      this.download('system/create/importTemplate', {
-      }, `ProductCreate${new Date().getTime()}.xlsx`)
+      this.download('system/data5/importTemplate', {
+      }, `EquipmentManufacturingData5${new Date().getTime()}.xlsx`)
     },
     /** 下载产品制造变更模板操作 */
     importTemplate6() {
