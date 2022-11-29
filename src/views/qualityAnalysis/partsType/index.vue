@@ -28,13 +28,13 @@
       故障件种类
     </p>
     <el-tooltip placement="top">
-      <div slot="content">若某故障件种类质量问题发生数大于质量问题故障件名称平均发生数50%，则质量问题在该故障件种类上集中爆发。</div>
+      <div slot="content">若某故障件种类质量问题发生数大于质量问题故障件种类平均发生数50%，则质量问题在该故障件种类上集中爆发。</div>
       <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
     </el-tooltip>
   </div>
     <el-table
 
-      :data="qualityProblem1List"
+      :data="qualityProblem1List1"
       stripe
       height="250px"
       style="width: 100%;margin-top:0px !important"
@@ -62,12 +62,14 @@
 </template>
 <script>
 import * as echarts from 'echarts';
-import { selectPartsTypeCount} from '@/api/system/dev';
+import { selectPartsTypeCount,selectAllType} from '@/api/system/dev';
 export default {
   data() {
     return {
       // 表格判断条件list
       qualityProblem1List:[],
+      qualityProblem1List1:[],
+      qualityProblem1List2:[],
       // 柱状图
       xQuarter:[],
       yQuarter:[],
@@ -75,17 +77,12 @@ export default {
       TypeList:[],
       //所有故障件
       allFaultyList:[],
-      //故障件列表
-      faultyCountList:[],
       //平均数
       averageList:[],
       averageList1:[],
     }
   },
-  /*created() {
 
-    // this.selectAllType();
-  },*/
   methods: {
     selectPartsTypeCount(){
       selectPartsTypeCount().then(response => {
@@ -99,7 +96,13 @@ export default {
             this.averageList1[i]=this.qualityProblem1List[i].partsType
           }
         }
+        this.selectAllType();
         this.chartView();
+      });
+    },
+    selectAllType(){
+      selectAllType().then(response => {
+        this.qualityProblem1List1=response;
       });
     },
     chartView() {
@@ -148,7 +151,7 @@ export default {
             data: this.yQuarter,
             itemStyle: {
               color:(params) =>{
-                console.log(params)
+                // console.log(params)
                   if(this.averageList1.includes(params.name)) {
                     colorList[params.dataIndex] = 'red'
                   } else {

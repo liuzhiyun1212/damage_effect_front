@@ -1,18 +1,16 @@
 　<template>
-  <el-card shadow="always" class="box-card">
+  <el-card class="box-card">
   <div class="box">
-    <div class="item div1" onclick="window.open('../inputExcel/inputQuality')" >1质量问题数据</div>
-    <div class="item div2" onclick="window.open('../inputExcel/input/input2')">2装备设计/改型数据</div>
-    <div class="item div3" onclick="window.open('../inputExcel/input/input3')">3产品设计数据</div>
-    <div class="item div4" onclick="window.open('../inputExcel/input/input4')">4产品改型数据</div>
-    <div class="item div5" onclick="window.open('../inputExcel/input/input5')">5装备制造数据</div>
-<!--    <div class="item div6">6产品制造数据</div>-->
-    <div class="item div7" onclick="window.open('../inputExcel/input/input6')">7产品制造变更数据</div>
-    <div class="item div8" onclick="window.open('../inputExcel/input/input12')">12装备使用数据导入</div>
-    <div class="item div9" onclick="window.open('../inputExcel/input/input9')">9产品生产数量</div>
-    <div class="item div10" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
-    <div class="item div11" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
-
+    <div class="item div1 shou" onclick="window.open('../inputExcel/inputQuality')" >1质量问题数据</div>
+    <div class="item div2 shou" onclick="window.open('../inputExcel/input/input2')">2装备设计/改型数据</div>
+    <div class="item div3 shou" onclick="window.open('../inputExcel/input/input3')">3产品设计数据</div>
+    <div class="item div4 shou" onclick="window.open('../inputExcel/input/input4')">4产品改型数据</div>
+    <div class="item div5 shou" onclick="window.open('../inputExcel/input/input5')">5装备制造数据</div>
+    <div class="item div7 shou" onclick="window.open('../inputExcel/input/input6')">7产品制造变更数据</div>
+    <div class="item div8 shou" onclick="window.open('../inputExcel/input/input12')">12装备使用数据</div>
+    <div class="item div9 shou" onclick="window.open('../inputExcel/input/input9')">9产品生产数量</div>
+    <div class="item div10 shou" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
+    <div class="item div11 shou" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
   </div>
   </el-card>
 </template>
@@ -20,12 +18,12 @@
 .box {
   width: auto;
   height: auto;
-  /* background: #ccc; */
-  margin: 0 auto;
+  margin: auto;
   grid-gap: 5px;
   display: grid;
-  grid-template-columns: 120px 180px 180px 180px 180px;
-  grid-template-rows: 100px 100px 100px 100px 100px;
+  padding-right: 20px;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: 35% 35% 35% 35% 35%;
 }
 
 .item {
@@ -33,9 +31,15 @@
   box-sizing: border-box;
 }
 
+.el-card ::v-deep .el-card__body {
+  /*padding-top: 2px;*/
+  height: 700px;
+  background-color: powderblue;
+}
+
 .box-card {
   width: auto;
-  height: 450px;
+  height: auto;
 }
 
 .div1 {
@@ -129,4 +133,7 @@
   background: #20B2AA;
 }
 
+.shou {
+  cursor: pointer;
+}
 </style>
