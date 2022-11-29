@@ -1,7 +1,7 @@
 <!-- 故障件名称随时间变化情况 -->
 <template>
   <div>
-    <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+    <!-- <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <el-tabs v-model="activeName">
         <el-tab-pane label="季度" name="quarter" :lazy="true">
           <QuarterSum />
@@ -10,28 +10,38 @@
           <YearSum />
         </el-tab-pane>
       </el-tabs>
-    </el-card>
+    </el-card> -->
   </div>
 </template>
 
 <script>
 import * as echarts from "echarts"
-import YearSum from "./yearSum.vue"
-import QuarterSum from "./quarterSum.vue"
+// import YearSum from "./yearSum.vue"
+// import QuarterSum from "./quarterSum.vue"
+import {nameAndModelByYear,nameAndModelByQuarter,nameAndModelByYearSum,nameAndModelByQuarterSum} from '@/api/system/dev';
 export default {
-  components: {
-    YearSum,
-    QuarterSum,
-  },
+  // components: {
+  //   YearSum,
+  //   QuarterSum,
+  // },
   data() {
     return {
       activeName: "quarter",
     }
   },
-  methods: {},
+  methods: {
+    nameAndModelByYearSum(){
+      nameAndModelByYearSum().then(response => {     
+            });
+        },
+        nameAndModelByQuarterSum(){
+          nameAndModelByQuarterSum().then(response => {     
+            });
+        },
+  },
   created() {
-    // this.yearHappenSum();
-    // this.oneYear();
+    this.nameAndModelByYearSum();
+    this.nameAndModelByQuarterSum();
   },
   mounted() {
     // this.chartView();
