@@ -147,8 +147,8 @@ export default {
       this.upload.open6 = true;
     },
     importTemplate6() {
-      this.download('system/data/importTemplate', {
-      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
+      this.download('system/modifyData/importTemplate', {
+      }, `ProductModifyData${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
