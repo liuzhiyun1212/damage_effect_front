@@ -87,10 +87,10 @@ export default {
     // this.selectAllType();
   },
   methods: {
-
     selectPartsTypeCount(){
       selectPartsTypeCount().then(response => {
         this.qualityProblem1List = response;
+        console.log("this",this.qualityProblem1List)
         for(let i=0;i<this.qualityProblem1List.length;i++){
           this.xQuarter.push(this.qualityProblem1List[i].partsType)
           this.yQuarter.push(this.qualityProblem1List[i].partsCount)
