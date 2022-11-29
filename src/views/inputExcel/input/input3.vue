@@ -166,8 +166,8 @@ export default {
       this.upload.open3 = true;
     },
     importTemplate3() {
-      this.download('system/data/importTemplate', {
-      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
+      this.download('system/design/importTemplate', {
+      }, `ProductDesign${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
