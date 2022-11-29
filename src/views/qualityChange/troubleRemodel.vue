@@ -1,21 +1,32 @@
 <template>
-  <div class="app-container">
+  <div>
+    <p
+      style="
+        font-family: Arial;
+        font-size: 20px;
+        font-weight: 600;
+        display: inline-block;
+        margin-left: 30px;
+      "
+    >
+      故障件改型情况
+    </p>
      <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
-    <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
      
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
-      <p
-        style="
-          font-family: Arial;
-          font-size: 16px;
-          font-weight: 600;
-          display: inline-block;
-          margin-left: 20px;
-        "
-      >
-        故障件改型情况
-      </p>
+     <p
+          style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+        >
+          改型时间线
+        </p>
     </div>
+    <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
 
 
         <el-table 
@@ -219,7 +230,7 @@ export default {
       option = {
 
         title: {
-          text: '故障件改型情况'
+          // text: '故障件改型时间线'
         },
         tooltip: {
           
