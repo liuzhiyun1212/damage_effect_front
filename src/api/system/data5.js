@@ -42,3 +42,11 @@ export function delData5(id) {
     method: 'delete'
   })
 }
+
+// 下载导入模板
+export function importManufacturingTemplate() {
+  return request({
+    url: '/system/data5/importTemplate',
+    method: 'get'
+  })
+}
