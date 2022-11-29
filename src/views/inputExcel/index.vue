@@ -10,7 +10,7 @@
     <div class="item div6">6产品制造数据</div>
     <div class="item div7" >7产品制造变更数据</div>
     <div class="item div8" onclick="window.open('../inputExcel/input/input12')">8装备使用数据导入</div>
-    <div class="item div9" onclick="window.open('../inputExcel/input/input7')">9产品生产数量</div>
+    <div class="item div9" onclick="window.open('../inputExcel/input/input9')">9产品生产数量</div>
     <div class="item div10" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
     <div class="item div11" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
 

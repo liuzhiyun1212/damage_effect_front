@@ -18,18 +18,22 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
       <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品型号" align="center" prop="productModel" />
-      <el-table-column label="产品出厂编号" align="center" prop="productFactoryNumber" />
-      <el-table-column label="产品出厂时间" align="center" prop="productFactoryDate" width="180">
+      <el-table-column label="产品名称" align="center" prop="partsName" />
+      <el-table-column label="产品型号" align="center" prop="partsModel" />
+      <el-table-column label="出厂编号" align="center" prop="partsCode" />
+      <el-table-column label="出厂时间" align="center" prop="partsFactoryTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.productFactoryDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.partsFactoryTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品批次" align="center" prop="productBatch" />
-      <el-table-column label="产品制造班组" align="center" prop="productMakeGroup" />
-      <el-table-column label="产品制造人员" align="center" prop="productMakePeople" />
-      <el-table-column label="产品加工设备" align="center" prop="productProcessEquipment" />
+      <el-table-column label="产品批次" align="center" prop="partsManufacture" />
+      <el-table-column label="制造班组" align="center" prop="partsMakeGroup" />
+      <el-table-column label="制造人员" align="center" prop="partsMakePeople" />
+      <el-table-column label="加工设备" align="center" prop="partsMakeQuipment" />
+      <el-table-column label="测量设备" align="center" prop="partsMeasuringQuipment" />
+      <el-table-column label="原材料来源" align="center" prop="rawMaterialPlace" />
+      <el-table-column label="零部件来源" align="center" prop="sparePartsPlace" />
+      <el-table-column label="生产工艺" align="center" prop="partsMakeWorkmanship" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -37,14 +41,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:7:edit']"
+            v-hasPermi="['system:9:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:7:remove']"
+            v-hasPermi="['system:9:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -58,7 +62,7 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改7：产品生产数量对话框 -->
+    <!-- 添加或修改9：产品生产数量对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open5" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -91,11 +95,11 @@
 </template>
 
 <script>
-import { list7, get7, del7, add7, update7 } from "@/api/system/7";
+import { list9, get9, del9, add9, update9 } from "@/api/system/9";
 import {getToken} from "@/utils/auth";
 
 export default {
-  name: "7",
+  name: "9",
   data() {
     return {
       // 用户导入参数
@@ -111,7 +115,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url5: process.env.VUE_APP_BASE_API + "/system/7/importData",
+        url5: process.env.VUE_APP_BASE_API + "/system/9/importData",
       },
       // 遮罩层
       loading: true,
@@ -125,7 +129,7 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 7：产品生产数量表格数据
+      // 9：产品生产数量表格数据
       List: [],
       // 弹出层标题
       title: "",
@@ -157,12 +161,12 @@ export default {
   },
   methods: {
     handleImport5() {
-      this.upload.title = "装备设计/改型数据导入";
+      this.upload.title = "产品生产数量导入";
       this.upload.open5 = true;
     },
     importTemplate5() {
       this.download('system/data/importTemplate', {
-      }, `ProductQuantity7${new Date().getTime()}.xlsx`)
+      }, `PartsMakeNum9${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
@@ -176,13 +180,13 @@ export default {
       this.upload.open5 = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
-      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+      this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height:0vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
       this.getList();
     },
-    /** 查询7：产品生产数量列表 */
+    /** 查询9：产品生产数量列表 */
     getList() {
       this.loading = true;
-      list7(this.queryParams).then(response => {
+      list9(this.queryParams).then(response => {
         this.List = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -229,16 +233,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加7：产品生产数量";
+      this.title = "添加9：产品生产数量";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      get7(id).then(response => {
+      get9(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改7：产品生产数量";
+        this.title = "修改9：产品生产数量";
       });
     },
     /** 提交按钮 */
@@ -246,13 +250,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            update7(this.form).then(response => {
+            update9(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            add7(this.form).then(response => {
+            add9(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -264,8 +268,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除7：产品生产数量编号为"' + ids + '"的数据项？').then(function() {
-        return del7(ids);
+      this.$modal.confirm('是否确认删除9：产品生产数量编号为"' + ids + '"的数据项？').then(function() {
+        return del9(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -273,9 +277,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/7/export', {
+      this.download('system/9/export', {
         ...this.queryParams
-      }, `7_${new Date().getTime()}.xlsx`)
+      }, `9_${new Date().getTime()}.xlsx`)
     }
   }
 };
