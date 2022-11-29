@@ -36,6 +36,15 @@
         >装备使用数据导入</el-button>
       </el-col>
 
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          icon="el-icon-upload2"
+          size="mini"
+          @click="handleImport7"
+        >维修变更数据导入</el-button>
+      </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange" :height="'500px'">
@@ -169,7 +178,7 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 产品设计数据导入对话框 -->
+    <!-- 装备设计/改型数据导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open3" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -198,7 +207,7 @@
         <el-button @click="upload.open3 = false">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 产品改型数据导入对话框 -->
+<!--  装备使用数据导入  -->
     <el-dialog :title="upload.title" :visible.sync="upload.open4" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -227,7 +236,8 @@
         <el-button @click="upload.open4 = false">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 产品制造数据导入对话框 -->
+
+    <!-- 产品生产数量数据导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open5" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -256,7 +266,7 @@
         <el-button @click="upload.open5 = false">取 消</el-button>
       </div>
     </el-dialog>
-    <!-- 产品制造变更数据导入对话框 -->
+    <!-- 装备部署数据导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open6" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -285,6 +295,35 @@
         <el-button @click="upload.open6 = false">取 消</el-button>
       </div>
     </el-dialog>
+    <!-- 维修变更数据导入对话框 -->
+    <el-dialog :title="upload.title" :visible.sync="upload.open7" width="400px" append-to-body>
+      <el-upload
+        ref="upload"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="upload.url7 + '?updateSupport=' + upload.updateSupport"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :auto-upload="false"
+        drag
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip text-center" slot="tip">
+          <!--          <div class="el-upload__tip" slot="tip">
+                      <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
+                    </div>-->
+          <span>仅允许导入xls、xlsx格式文件。</span>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate7">下载模板</el-link>
+        </div>
+      </el-upload>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFileForm">确 定</el-button>
+        <el-button @click="upload.open7 = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -296,7 +335,7 @@ import { importCreateTemplate } from "@/api/system/create";
 import { importModifyDataTemplate } from "@/api/system/modifyData";
 import { getToken } from "@/utils/auth";
 export default {
-  name: "InputGuoguo",
+  name: "Input lfb",
   data() {
     return {
       // 用户导入参数
@@ -306,6 +345,7 @@ export default {
         open4: false,
         open5: false,
         open6: false,
+        open7: false,
         // 弹出层标题（用户导入）
         title: "",
         // 是否禁用上传
@@ -315,10 +355,11 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url3: process.env.VUE_APP_BASE_API + "/system/design/importData",
-        url4: process.env.VUE_APP_BASE_API + "/system/modify/importData",
-        url5: process.env.VUE_APP_BASE_API + "/system/create/importData",
-        url6: process.env.VUE_APP_BASE_API + "/system/modifyData/importData"
+        url3: process.env.VUE_APP_BASE_API + "/system/data/importData",
+        url4: process.env.VUE_APP_BASE_API + "/system/12/importData",
+        url5: process.env.VUE_APP_BASE_API + "/system/7/importData",
+        url6: process.env.VUE_APP_BASE_API + "/system/11/importData",
+        url7: process.env.VUE_APP_BASE_API + "/system/10/importData"
       },
       // 遮罩层
       loading: true,
@@ -393,41 +434,52 @@ export default {
       this.reset();
     },
     handleImport3() {
-      this.upload.title = "产品设计数据导入";
+      this.upload.title = "装备设计/改型数据导入";
       this.upload.open3 = true;
     },
     handleImport4() {
-      this.upload.title = "产品改型数据导入";
+      this.upload.title = "装备使用数据导入";
       this.upload.open4 = true;
     },
     handleImport5() {
-      this.upload.title = "产品制造数据导入";
+      this.upload.title = "产品生产数量数据导入";
       this.upload.open5 = true;
     },
     handleImport6() {
-      this.upload.title = "产品制造变更数据导入";
+      this.upload.title = "装备部署导入";
       this.upload.open6 = true;
     },
-    /** 下载产品设计模板操作 */
+    handleImport7() {
+      this.upload.title = "维修变更数据";
+      this.upload.open7 = true;
+    },
+    /** 下载装备设计/改型数据模板操作 */
     importTemplate3() {
-      this.download('system/design/importTemplate', {
-      }, `ProductDesign${new Date().getTime()}.xlsx`)
+      this.download('system/data/importTemplate', {
+      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
     },
-    /** 下载产品改型模板操作 */
+    /** 下载装备使用数据模板操作 */
     importTemplate4() {
-      this.download('system/modify/importTemplate', {
-      }, `ProductModify${new Date().getTime()}.xlsx`)
+      this.download('system/12/importTemplate', {
+      }, `EquipmentUseData12${new Date().getTime()}.xlsx`)
     },
-    /** 下载产品制造模板操作 */
+
+    /** 下载产品生产数量模板操作 */
     importTemplate5() {
-      this.download('system/create/importTemplate', {
-      }, `ProductCreate${new Date().getTime()}.xlsx`)
+      this.download('system/7/importTemplate', {
+      }, `ProductQuantity7${new Date().getTime()}.xlsx`)
     },
-    /** 下载产品制造变更模板操作 */
+    /** 下载装备部署模板操作 */
     importTemplate6() {
-      this.download('system/modifyData/importTemplate', {
-      }, `ProductModifyData${new Date().getTime()}.xlsx`)
+      this.download('system/11/importTemplate', {
+      }, `EquipmentDeploymentData11${new Date().getTime()}.xlsx`)
     },
+    /** 下载装备使用数据模板操作 */
+    importTemplate7() {
+      this.download('system/10/importTemplate', {
+      }, `RepairModifyData10${new Date().getTime()}.xlsx`)
+    },
+
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();

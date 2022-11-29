@@ -1,4 +1,3 @@
-<!-- 故障件名称随时间变化情况 年度 -->
 <template>
   <div>
     <div id="year" style="width: 100%; height: 200px"></div>
@@ -12,13 +11,27 @@
           margin-left: 20px;
         "
       >
-        年度质量问题发生统计
+        年度故障件名称发生统计
       </p>
+      <el-tooltip placement="top">
+        <div slot="content">
+          1.较上一年度增加或减少50%以上2.连续两个年度增加或减少20%以上3.连续三个年度呈单调变化趋势
+        </div>
+        <i
+          class="el-icon-question"
+          style="
+            float: right;
+            margin-right: 20px;
+            margin-top: 8px;
+            font-size: 40px;
+          "
+        ></i>
+      </el-tooltip>
       <el-button
         type="primary"
         icon="el-icon-s-home"
         @click="allInfo"
-        style="float: right; margin-right: 10px; margin-top: 8px"
+        style="margin-left: 20px"
         >全部信息</el-button
       >
     </div>
@@ -55,7 +68,7 @@
         align="center"
       >
       </el-table-column>
-      <el-table-column prop="sum" label="质量问题数量" align="center">
+      <el-table-column prop="sum" label="故障件名称数量" align="center">
       </el-table-column>
       <el-table-column prop="condition" label="满足条件" align="center">
       </el-table-column>
@@ -65,24 +78,20 @@
 
 <script>
 import * as echarts from "echarts"
-import {
-  qualityHappenSum,
-  oneQuality,
-  oneYear,
-  yearHappenSum,
-} from "@/api/system/dev"
+import { yearHappenSum, oneYear } from "@/api/system/dev"
+import { nameAndModelByYear, nameAndModelByYearSum } from "@/api/system/dev"
 export default {
   data() {
     return {
-      // 年度质量发生时间总数
-      yearHappenList: [],
       // 年度筛选大列表
       allYearList: [],
+      // 故障件名称总数
+      yearHappenList: [],
       // 表格判断条件list
       selectList: [],
       // 年度柱状图
       xYear: [],
-      yYear: [],
+      seYear: [],
       xLength: null,
       // 查询参数
       queryParams: {
@@ -94,10 +103,10 @@ export default {
     }
   },
   methods: {
-    // 年度总数
+    // 柱状图的实现
     yearHappenSum() {
-      yearHappenSum(this.queryParams).then((response) => {
-        //console.log(response)
+      nameAndModelByYearSum(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.yearHappenList = response
         // this.selectList = this.yearHappenList;
         for (let i = 0; i < this.yearHappenList.length; i++) {
@@ -106,62 +115,48 @@ export default {
               ":" +
               this.yearHappenList[i].condition
           )
-          this.yYear.push(this.yearHappenList[i].sum)
-          this.xLength = this.yearHappenList[i].quarter.length
+          this.seYear.push(this.yearHappenList[i].sum)
         }
-        // console.log("aaaaaaaaaaaaa",this.yearHappenList);
+        this.xLength = this.yearHappenList[0].quarter.length
+        // console.log("xYear", this.xYear)
+        // console.log("seYear", this.seYear)
+        // console.log("xLength", this.xLength)
         this.getYear()
       })
     },
     // 年度筛选
     oneYear() {
-      oneYear(this.queryParams).then((response) => {
+      nameAndModelByYear(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.allYearList = response
-        this.selectList = this.allYearList
-        // console.log("aaaaaaaaaaaaa",this.allYearList);
+        this.selectList = response
       })
     },
     // 表格条件筛选
     selectInfo(n) {
       this.selectList = []
-      for (let i = 0; i < this.allYearList.length; i++) {
-        if (
-          (this.allYearList[i].condition === "1" ||
-            this.allYearList[i].condition === "1,2" ||
-            this.allYearList[i].condition === "1,2,3") &&
-          n === "0"
-        ) {
-          this.selectList.push(this.allYearList[i])
-        } else if (
-          (this.allYearList[i].condition === "2" ||
-            this.allYearList[i].condition === "2,3" ||
-            this.allYearList[i].condition === "1,2,3") &&
-          n === "1"
-        ) {
-          this.selectList.push(this.allYearList[i])
-        } else if (
-          (this.allYearList[i].condition === "3" ||
-            this.allYearList[i].condition === "2,3" ||
-            this.allYearList[i].condition === "1,2,3") &&
-          n === "2"
-        ) {
-          this.selectList.push(this.allYearList[i])
+      for (let j = 0; j < 3; j++) {
+        if (n === j.toString()) {
+          for (let i = 0; i < this.allYearList.length; i++) {
+            if (
+              this.allYearList[i].condition.search((j + 1).toString()) !== -1
+            ) {
+              this.selectList.push(this.allYearList[i])
+            }
+          }
         }
       }
     },
     allInfo() {
-      this.queryParams.pageNum = 1
       this.oneYear()
     },
     getYear() {
       var myChart = echarts.init(document.getElementById("year"))
       var option = {
-        /*title: {
-                text: '维保计划按种类统计',
-            },*/
         tooltip: {
           trigger: "axis",
           formatter: (param) => {
+            // console.log(param);
             if (param[0].axisValueLabel.slice(this.xLength + 1) !== "null") {
               return (
                 "满足条件:" + param[0].axisValueLabel.slice(this.xLength + 1)
@@ -182,6 +177,7 @@ export default {
           },
         },
         yAxis: {
+          type: "value",
           axisLine: {
             show: false,
           },
@@ -206,7 +202,7 @@ export default {
             barWidth: 20,
             itemStyle: {
               color: (params) => {
-                // console.log("aaaaaa",params.name.slice(this.xLength+1)!=='null');
+                console.log(params)
                 if (params.name.slice(this.xLength + 1) !== "null") {
                   return "red"
                 }
@@ -218,7 +214,7 @@ export default {
               // { offset: 1, color: '#188df0' }
               // ])
             },
-            data: this.yYear,
+            data: this.seYear,
           },
         ],
       }

@@ -1,4 +1,3 @@
-<!-- 故障件名称随时间变化情况 季度 -->
 <template>
   <div>
     <div id="quarter" style="width: 100%; height: 200px"></div>
@@ -12,15 +11,29 @@
           margin-left: 20px;
         "
       >
-        季度质量问题发生统计
+        季度故障件名称发生统计
       </p>
       <el-button
         type="primary"
         icon="el-icon-s-home"
         @click="allInfo"
-        style="float: right; margin-right: 10px; margin-top: 8px"
+        style="margin-left: 20px"
         >全部信息</el-button
       >
+      <el-tooltip placement="top">
+        <div slot="content">
+          1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势
+        </div>
+        <i
+          class="el-icon-question"
+          style="
+            float: right;
+            margin-right: 20px;
+            margin-top: 8px;
+            font-size: 40px;
+          "
+        ></i>
+      </el-tooltip>
     </div>
     <el-button type="primary" @click="selectInfo('0')"
       >1.较上一季度增加或减少50%以上</el-button
@@ -55,7 +68,7 @@
         align="center"
       >
       </el-table-column>
-      <el-table-column prop="sum" label="质量问题数量" align="center">
+      <el-table-column prop="sum" label="不同故障件数量" align="center">
       </el-table-column>
       <el-table-column prop="condition" label="满足条件" align="center">
       </el-table-column>
@@ -66,19 +79,23 @@
 <script>
 import * as echarts from "echarts"
 import { qualityHappenSum, oneQuality } from "@/api/system/dev"
+import {
+  nameAndModelByQuarter,
+  nameAndModelByQuarterSum,
+} from "@/api/system/dev"
 export default {
   data() {
     return {
-      // 筛选大列表
+      // 季度筛选大列表
       allQualityList: [],
-      // 质量发生时间总数
+      // 故障件名称总数
       qualityHappenList: [],
       // 表格判断条件list
       selectList: [],
       // 季度柱状图
       xQuarter: [],
+      seQuarter: [],
       xLength: null,
-      yQuarter: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -86,14 +103,13 @@ export default {
         troubleName: null,
         troubleIntroduction: null,
       },
-      // 柱状图选中柱子
-      selectedDataIndex: null,
     }
   },
   methods: {
-    // 季度总数
+    // 柱状图的实现
     qualityHappenSum() {
-      qualityHappenSum(this.queryParams).then((response) => {
+      nameAndModelByQuarterSum(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.qualityHappenList = response
         // this.selectList = this.qualityHappenList;
         for (let i = 0; i < this.qualityHappenList.length; i++) {
@@ -102,84 +118,56 @@ export default {
               ":" +
               this.qualityHappenList[i].condition
           )
-          this.yQuarter.push(this.qualityHappenList[i].sum)
-          this.xLength = this.qualityHappenList[i].quarter.length
+          this.seQuarter.push(this.qualityHappenList[i].sum)
         }
-        this.chartView()
+        this.xLength = this.qualityHappenList[0].quarter.length
+        // console.log("xQuarter", this.xQuarter)
+        // console.log("seQuarter", this.seQuarter)
+        // console.log("xLength", this.xLength)
+        this.getQuality()
       })
     },
     // 季度筛选
     oneQuality() {
-      oneQuality(this.queryParams).then((response) => {
+      nameAndModelByQuarter(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.allQualityList = response
-        this.selectList = this.allQualityList
-        // for(let i=0;i<this.allQualityList.length;i++){
-        //     this.selectList.push(...this.allQualityList[i]);
-        // }
-        // console.log("aaaaaaaaaaa",this.allQualityList);
+        this.selectList = response
       })
     },
     // 表格条件筛选
     selectInfo(n) {
       this.selectList = []
-      for (let i = 0; i < this.allQualityList.length; i++) {
-        if (
-          (this.allQualityList[i].condition === "1" ||
-            this.allQualityList[i].condition === "1,2" ||
-            this.allQualityList[i].condition === "1,2,3") &&
-          n === "0"
-        ) {
-          this.selectList.push(this.allQualityList[i])
-        } else if (
-          (this.allQualityList[i].condition === "2" ||
-            this.allQualityList[i].condition === "2,3" ||
-            this.allQualityList[i].condition === "1,2,3") &&
-          n === "1"
-        ) {
-          this.selectList.push(this.allQualityList[i])
-        } else if (
-          (this.allQualityList[i].condition === "3" ||
-            this.allQualityList[i].condition === "2,3" ||
-            this.allQualityList[i].condition === "1,2,3") &&
-          n === "2"
-        ) {
-          this.selectList.push(this.allQualityList[i])
+      for (let j = 0; j < 3; j++) {
+        if (n === j.toString()) {
+          for (let i = 0; i < this.allQualityList.length; i++) {
+            if (
+              this.allQualityList[i].condition.search((j + 1).toString()) !== -1
+            ) {
+              this.selectList.push(this.allQualityList[i])
+            }
+          }
         }
       }
-      // if(n==='0'){
-      //     this.selectList = this.allQualityList[0];
-      // }else if(n==='1'){
-      //     this.selectList = this.allQualityList[1];
-      // }else if(n==='2'){
-      //     this.selectList = this.allQualityList[2];
-      // }
     },
-
+    // 显示所有表数据
     allInfo() {
-      this.queryParams.pageNum = 1
       this.oneQuality()
-      //     qualityHappenSum(this.queryParams).then(response => {
-      //     this.qualityHappenList = response;
-      //     this.selectList = this.qualityHappenList;
-      // });
     },
-    //渲染echarts
-    chartView() {
+    // 初始化图参数
+    getQuality() {
       var myChart = echarts.init(document.getElementById("quarter"))
       var option = {
-        // title: {
-        //   text: "维保计划按种类统计",
-        // },
         tooltip: {
           trigger: "axis",
           formatter: (param) => {
+            // console.log(param);
             if (param[0].axisValueLabel.slice(this.xLength + 1) !== "null") {
               return (
                 "满足条件:" + param[0].axisValueLabel.slice(this.xLength + 1)
               )
             }
           },
-          // trigger: 'axis',
           // formatter: "{b} : {c}",
           // axisPointer: { // 坐标轴指示器，坐标轴触发有效
           //     type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
@@ -192,12 +180,14 @@ export default {
             fontSize: 14,
           },
           axisLabel: {
+            rotate: 30, //文字旋转
             formatter: (params) => {
               return params.slice(0, this.xLength)
             },
           },
         },
         yAxis: {
+          type: "value",
           axisLine: {
             show: false,
           },
@@ -234,7 +224,7 @@ export default {
               // { offset: 1, color: '#188df0' }
               // ])
             },
-            data: this.yQuarter,
+            data: this.seQuarter,
           },
         ],
       }

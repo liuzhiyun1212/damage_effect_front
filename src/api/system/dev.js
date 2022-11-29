@@ -220,4 +220,96 @@ export function selectByProduceDeviceChanged() {
     method: 'get'
   })
 }
+// 
+export function selectState1() {
+  return request({
+    url: '/system/dev/selectState1',
+    method: 'get'
+  })
+}
+// // 大修状态的质量总数
+// export function selectQualityByState2() {
+//   return request({
+//     url: '/system/dev/selectQualityByState2',
+//     method: 'get'
+//   })
+// }
+// 其他状态质量总数
+export function selectQualityByState1() {
+  return request({
+    url: '/system/dev/selectQualityByState1',
+    method: 'get'
+  })
+}
+export function selectTroubleByState1() {
+  return request({
+    url: '/system/dev/selectTroubleByState1',
+    method: 'get'
+  })
+}
+
+// 4.2.1.6质量问题故障模式随时间变化情况
+export function faultModelByQuarter() {
+  return request({
+    url: '/system/dev/faultModelByQuarter',
+    method: 'get'
+  })
+}
+export function faultModelByYear() {
+  return request({
+    url: '/system/dev/faultModelByYear',
+    method: 'get'
+  })
+}
+export function faultModelByQuarterSum() {
+  return request({
+    url: '/system/dev/faultModelByQuarterSum',
+    method: 'get'
+  })
+}
+export function faultModelByYearSum() {
+  return request({
+    url: '/system/dev/faultModelByYearSum',
+    method: 'get'
+  })
+}
+
+// 4.2.1.7质量问题发生地理环境
+export function sumByEnvironment() {
+  return request({
+    url: '/system/dev/sumByEnvironment',
+    method: 'get'
+  })
+}
+export function highSumByEnvironment() {
+  return request({
+    url: '/system/dev/highSumByEnvironment',
+    method: 'get'
+  })
+}
+// 4.2.1.10故障件名称随时间变化情况
+export function nameAndModelByYear() {
+  return request({
+    url: '/system/dev/nameAndModelByYear',
+    method: 'get'
+  })
+}
+export function nameAndModelByQuarter() {
+  return request({
+    url: '/system/dev/nameAndModelByQuarter',
+    method: 'get'
+  })
+}
+export function nameAndModelByQuarterSum() {
+  return request({
+    url: '/system/dev/nameAndModelByQuarterSum',
+    method: 'get'
+  })
+}
+export function nameAndModelByYearSum() {
+  return request({
+    url: '/system/dev/nameAndModelByYearSum',
+    method: 'get'
+  })
+}
 

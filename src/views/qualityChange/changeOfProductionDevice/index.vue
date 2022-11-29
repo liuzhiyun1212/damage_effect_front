@@ -3,6 +3,17 @@
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <h2>故障件生产设备变更情况</h2>
             <div ref="chart" :style="{ width: '100%', height: '380px' }"></div>
+            <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+                <p style="
+                font-family: Arial;
+                font-size: 16px;
+                font-weight: 600;
+                display: inline-block;
+                margin-left: 20px;
+                ">
+                    故障件生产设备变更情况
+                </p>
+            </div>
             <TimeLineChart />
         </el-card>
     </div>
@@ -10,12 +21,12 @@
 
 <script>
 import echarts from "echarts";
-import { getChartData } from "../../../api/chart/useIntensity"
+import { getChartData } from "../../../api/chart/changeOfProductionDevice"
 import TimeLineChart from "./timeLineChart.vue"
 
 export default {
     name: "changeOfProductionDevice",
-    components: {TimeLineChart},
+    components: { TimeLineChart },
     data() {
         return {
             loading: false,
@@ -96,7 +107,7 @@ export default {
                 list.push(res.data.produceNumObj)
                 list.push(res.data.faultNumObj)
                 this.option.series = list
-                this.option.yAxis.data = res.data.workerNameArray
+                this.option.yAxis.data = res.data.equipmentNameArray
                 this.initChart()
             });
         },

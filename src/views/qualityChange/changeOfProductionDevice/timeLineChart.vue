@@ -49,7 +49,7 @@ export default {
                 this.xList = time1.filter(function (item, index) {
                     return time1.indexOf(item) === index;
                 });
-                //hhhhhhhhhh高度适应
+                //高度适应
                 var d = document.getElementById("timeLine");
                 var height = this.yList.length * 150;
                 //  d.setAttribute(height,height+"px");
@@ -71,8 +71,6 @@ export default {
         },
 
         dealRes(data) {
-            var l1 = [];
-
             var count = 0;
             for (var i = 0; i < data.length; i++) {
                 this.seriesData.push({
@@ -131,7 +129,7 @@ export default {
             var myChart = echarts.init(document.getElementById("timeLine"))
             var option = {
                 // title: {
-                //     text: '故障件生产班组变更情况'
+                //     text: '故障件生产班组变更时间线'
                 // },
                 //             tooltip: {
                 //                 trigger: 'axis',
@@ -140,18 +138,18 @@ export default {
                 // }
                 // },
                 legend: {},
-                toolbox: {
-                    show: true,
-                    feature: {
-                        dataZoom: {
-                            yAxisIndex: 'none'
-                        },
-                        dataView: { readOnly: false },
-                        magicType: { type: ['line', 'bar'] },
-                        restore: {},
-                        saveAsImage: {}
-                    }
-                },
+                // toolbox: {
+                //     show: true,
+                //     feature: {
+                //         dataZoom: {
+                //             yAxisIndex: 'none'
+                //         },
+                //         dataView: { readOnly: false },
+                //         magicType: { type: ['line', 'bar'] },
+                //         restore: {},
+                //         saveAsImage: {}
+                //     }
+                // },
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
@@ -159,7 +157,6 @@ export default {
                     axisLabel: {
                         formatter: params => {
                             return params.slice(0, 10);
-
                         }
                     },
                 },

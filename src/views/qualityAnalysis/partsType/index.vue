@@ -1,5 +1,16 @@
 <template>
   <div>
+    <p
+        style="
+          font-family: Arial;
+          font-size: 20px;
+          font-weight: 600;
+          display: inline-block;
+          margin-left: 30px;
+        "
+      >
+        故障件种类
+      </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
 <!--  <div>-->
 <!--    <h2>故障件种类</h2>-->
@@ -18,7 +29,7 @@
     </p>
     <el-tooltip placement="top">
       <div slot="content">若某故障件种类质量问题发生数大于质量问题故障件名称平均发生数50%，则质量问题在该故障件种类上集中爆发。</div>
-      <i class="el-icon-question"></i>
+      <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
     </el-tooltip>
   </div>
     <el-table
@@ -76,10 +87,10 @@ export default {
     // this.selectAllType();
   },
   methods: {
-
     selectPartsTypeCount(){
       selectPartsTypeCount().then(response => {
         this.qualityProblem1List = response;
+        console.log("this",this.qualityProblem1List)
         for(let i=0;i<this.qualityProblem1List.length;i++){
           this.xQuarter.push(this.qualityProblem1List[i].partsType)
           this.yQuarter.push(this.qualityProblem1List[i].partsCount)

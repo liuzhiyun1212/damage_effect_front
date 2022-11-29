@@ -9,6 +9,17 @@ export function listModifyData(query) {
   })
 }
 
+
+
+
+export function getPeoplechange() {
+  return request({
+    url: '/system/modifyData/getPeoplechange',
+    method: 'get',
+
+  })
+}
+
 // 查询产品制造变更数据详细
 export function getModifyData(id) {
   return request({
