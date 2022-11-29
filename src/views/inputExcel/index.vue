@@ -1,15 +1,14 @@
 　<template>
   <el-card shadow="always" class="box-card">
   <div class="box">
-    <div class="item div1" >
-      <el-button style="background-color: rgb(252, 0, 0); color:black;border-color: rgb(252, 0, 0)">1质量问题数据</el-button></div>
+    <div class="item div1" onclick="window.open('../inputExcel/inputQuality')" >1质量问题数据</div>
     <div class="item div2" onclick="window.open('../inputExcel/input/input2')">2装备设计/改型数据</div>
-    <div class="item div3">3产品设计数据</div>
-    <div class="item div4">4产品改型数据</div>
-    <div class="item div5">5装备制造数据</div>
-    <div class="item div6">6产品制造数据</div>
-    <div class="item div7" >7产品制造变更数据</div>
-    <div class="item div8" onclick="window.open('../inputExcel/input/input12')">8装备使用数据导入</div>
+    <div class="item div3" onclick="window.open('../inputExcel/input/input3')">3产品设计数据</div>
+    <div class="item div4" onclick="window.open('../inputExcel/input/input4')">4产品改型数据</div>
+    <div class="item div5" onclick="window.open('../inputExcel/input/input5')">5装备制造数据</div>
+<!--    <div class="item div6">6产品制造数据</div>-->
+    <div class="item div7" onclick="window.open('../inputExcel/input/input6')">7产品制造变更数据</div>
+    <div class="item div8" onclick="window.open('../inputExcel/input/input12')">12装备使用数据导入</div>
     <div class="item div9" onclick="window.open('../inputExcel/input/input9')">9产品生产数量</div>
     <div class="item div10" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
     <div class="item div11" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
@@ -50,7 +49,12 @@
 }
 
 .div2 {
-  line-height: 100px;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  /*grid-row-start: 2;*/
+  grid-row-end: 3;
+  line-height: 200px;
   text-align: center;
   background: rgb(252, 134, 0);
 }
@@ -79,24 +83,19 @@
 }
 
 .div5 {
-  grid-row-start: 2;
-  grid-row-end: 4;
-  line-height: 200px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  /*grid-row-start: 2;*/
+  /*grid-row-end: 4;*/
+  line-height: 100px;
   text-align: center;
   background: #E1E100;
 }
 
-.div6 {
-  grid-column-start: 2;
-  grid-column-end: 4;
-  line-height: 100px;
-  text-align: center;
-  background: #00E3E3;
-}
 .div7 {
-  grid-row-start: 4;
+  grid-row-start: 3;
   grid-row-end: 5;
-  line-height: 100px;
+  line-height: 200px;
   text-align: center;
   background: #84C1FF;
 }
