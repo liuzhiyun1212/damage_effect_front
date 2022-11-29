@@ -250,10 +250,12 @@ export default {
     },
   },
   created() {
+    
+  },
+  mounted() {
     this.faultModelByQuarterSum();
     this.faultModelByQuarter();
   },
-  mounted() {},
 }
 </script>
 
