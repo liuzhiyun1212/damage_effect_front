@@ -1,18 +1,18 @@
 　<template>
   <el-card shadow="always" class="box-card">
   <div class="box">
-    <div class="item div1">
+    <div class="item div1" >
       <el-button style="background-color: rgb(252, 0, 0); color:black;border-color: rgb(252, 0, 0)">1质量问题数据</el-button></div>
-    <div class="item div2">2装备设计/改型数据</div>
+    <div class="item div2" onclick="window.open('../inputExcel/input/input2')">2装备设计/改型数据</div>
     <div class="item div3">3产品设计数据</div>
     <div class="item div4">4产品改型数据</div>
     <div class="item div5">5装备制造数据</div>
     <div class="item div6">6产品制造数据</div>
-    <div class="item div7">7产品制造变更数据</div>
-    <div class="item div8">8产品技术状态变更</div>
-    <div class="item div9">9产品生产数量</div>
-    <div class="item div10">10维修变更数据</div>
-    <div class="item div11">11装备部署数据</div>
+    <div class="item div7" >7产品制造变更数据</div>
+    <div class="item div8" onclick="window.open('../inputExcel/input/input12')">8装备使用数据导入</div>
+    <div class="item div9" onclick="window.open('../inputExcel/input/input7')">9产品生产数量</div>
+    <div class="item div10" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
+    <div class="item div11" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
 
   </div>
   </el-card>
