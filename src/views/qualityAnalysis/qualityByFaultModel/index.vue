@@ -26,7 +26,6 @@
 
 <script>
   import * as echarts from 'echarts';
-import {faultModelByQuarter,faultModelByYear} from '@/api/system/dev';
 import YearSum from "./yearSum.vue";
 import QuarterSum from "./quarterSum.vue";
 export default {
@@ -36,8 +35,6 @@ export default {
   data() {
     return {
       activeName:"quarter",
-      
-      
     }
   },
   methods: {
