@@ -7,42 +7,45 @@
           type="primary"
           icon="el-icon-upload2"
           size="mini"
-          @click="handleImport4"
-        >装备使用数据导入</el-button>
+          @click="handleImport5"
+        >装备制造数据导入</el-button>
       </el-col>
+
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange">
-
-        <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="年月" align="center" prop="date" width="180">
-          <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.date, '{y}-{m}-{d}') }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="机型" align="center" prop="planeType" />
-        <el-table-column label="部队" align="center" prop="troops" />
-        <el-table-column label="飞行小时" align="center" prop="flightHours" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:12:edit']"
-            >修改</el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['system:12:remove']"
-            >删除</el-button>
-          </template>
-        </el-table-column>
+    <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="机型" align="center" prop="planeType" />
+      <el-table-column label="装备出厂编号" align="center" prop="devCode" />
+      <el-table-column label="类型" align="center" prop="type" />
+      <el-table-column label="生产/升级时间" align="center" prop="productionUpgradeTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.productionUpgradeTime, '{y}-{m}-{d}') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="装备制造单位" align="center" prop="devUnit" />
+      <el-table-column label="装备制造批次" align="center" prop="devManufacture" />
+      <el-table-column label="能力状态" align="center" prop="capabilityStatus" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:data5:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:data5:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -53,15 +56,13 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改12：装备使用数据对话框 -->
-    <!--  装备使用数据导入  -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open4" width="400px" append-to-body>
+    <el-dialog :title="upload.title" :visible.sync="upload.open5" width="400px" append-to-body>
       <el-upload
         ref="upload"
         :limit="1"
         accept=".xlsx, .xls"
         :headers="upload.headers"
-        :action="upload.url4 + '?updateSupport=' + upload.updateSupport"
+        :action="upload.url5 + '?updateSupport=' + upload.updateSupport"
         :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress"
         :on-success="handleFileSuccess"
@@ -71,33 +72,28 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <!--          <div class="el-upload__tip" slot="tip">
-                      <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-                    </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
-          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate4">下载模板</el-link>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate5">下载模板</el-link>
         </div>
       </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFileForm">确 定</el-button>
-        <el-button @click="upload.open4 = false">取 消</el-button>
+        <el-button @click="upload.open5 = false">取 消</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { list12, get12, del12, add12, update12 } from "@/api/system/12";
+import { listData5, getData5, delData5, addData5, updateData5 } from "@/api/system/data5";
 import {getToken} from "@/utils/auth";
-
 export default {
-  name: "12",
+  name: "Data5",
   data() {
     return {
-      // 用户导入参数
-        upload: {
+      upload: {
         // 是否显示弹出层（用户导入）
-        open4: false,
+        open5: false,
         // 弹出层标题（用户导入）
         title: "",
         // 是否禁用上传
@@ -107,7 +103,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url4: process.env.VUE_APP_BASE_API + "/system/12/importData",
+        url5: process.env.VUE_APP_BASE_API + "/system/data5/importData",
       },
       // 遮罩层
       loading: true,
@@ -121,48 +117,42 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 12：装备使用数据表格数据
-      List: [],
+      // 【请填写功能名称】表格数据
+      data5List: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
       queryParams: {
-      pageNum: 1,
+        pageNum: 1,
         pageSize: 10,
         planeType: null,
-        partsName: null,
-        partsModel: null,
-        partsCode: null,
-        partsFactoryTime: null,
-        partsManufacture: null,
-        partsMakeGroup: null,
-        partsMakePeople: null,
-        partsMakeQuipment: null,
-        partsMeasuringQuipment: null,
-        rawMaterialPlace: null,
-        sparePartsPlace: null,
-        partsMakeWorkmanship: null
-    },
-    // 表单参数
-    form: {},
-    // 表单校验
-    rules: {
-    }
-  };
+        devCode: null,
+        type: null,
+        productionUpgradeTime: null,
+        devUnit: null,
+        devManufacture: null,
+        capabilityStatus: null
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+      }
+    };
   },
   created() {
     this.getList();
   },
   methods: {
-    handleImport4() {
-      this.upload.title = "装备使用数据导入";
-      this.upload.open4 = true;
+    handleImport5() {
+      this.upload.title = "装备制造数据导入";
+      this.upload.open5 = true;
     },
-    importTemplate4() {
-      this.download('system/12/importTemplate', {
-      }, `EquipmentUseData12${new Date().getTime()}.xlsx`)
+    importTemplate5() {
+      this.download('system/data/importTemplate', {
+      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
@@ -173,18 +163,17 @@ export default {
     },
     // 产品设计文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open5 = false;
+      this.upload.open3 = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
       this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
       this.getList();
     },
-
-    /** 查询12：装备使用数据列表 */
+    /** 查询【请填写功能名称】列表 */
     getList() {
       this.loading = true;
-      list12(this.queryParams).then(response => {
-        this.List = response.rows;
+      listData5(this.queryParams).then(response => {
+        this.data5List = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -199,18 +188,12 @@ export default {
       this.form = {
         id: null,
         planeType: null,
-        partsName: null,
-        partsModel: null,
-        partsCode: null,
-        partsFactoryTime: null,
-        partsManufacture: null,
-        partsMakeGroup: null,
-        partsMakePeople: null,
-        partsMakeQuipment: null,
-        partsMeasuringQuipment: null,
-        rawMaterialPlace: null,
-        sparePartsPlace: null,
-        partsMakeWorkmanship: null
+        devCode: null,
+        type: null,
+        productionUpgradeTime: null,
+        devUnit: null,
+        devManufacture: null,
+        capabilityStatus: "0"
       };
       this.resetForm("form");
     },
@@ -234,16 +217,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加12：装备使用数据";
+      this.title = "添加【请填写功能名称】";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      get12(id).then(response => {
+      getData5(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改12：装备使用数据";
+        this.title = "修改【请填写功能名称】";
       });
     },
     /** 提交按钮 */
@@ -251,13 +234,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            update12(this.form).then(response => {
+            updateData5(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            add12(this.form).then(response => {
+            addData5(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -269,8 +252,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除12：装备使用数据编号为"' + ids + '"的数据项？').then(function() {
-        return del12(ids);
+      this.$modal.confirm('是否确认删除【请填写功能名称】编号为"' + ids + '"的数据项？').then(function() {
+        return delData5(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -278,10 +261,11 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/12/export', {
+      this.download('system/data5/export', {
         ...this.queryParams
-      }, `12_${new Date().getTime()}.xlsx`)
+      }, `data5_${new Date().getTime()}.xlsx`)
     }
   }
 };
 </script>
+

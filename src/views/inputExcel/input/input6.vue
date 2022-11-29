@@ -7,29 +7,25 @@
           type="primary"
           icon="el-icon-upload2"
           size="mini"
-          @click="handleImport5"
-        >产品生产数量导入</el-button>
+          @click="handleImport6"
+        >产品制作变更数据导入</el-button>
       </el-col>
 
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="modifyDataList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
-      <el-table-column label="机型" align="center" prop="planeType" />
       <el-table-column label="产品名称" align="center" prop="productName" />
       <el-table-column label="产品型号" align="center" prop="productModel" />
-      <el-table-column label="产品出厂编号" align="center" prop="productFactoryNumber" />
-      <el-table-column label="产品出厂时间" align="center" prop="productFactoryDate" width="180">
+      <el-table-column label="装备改型时间" align="center" prop="modifyTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.productFactoryDate, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.modifyTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="产品批次" align="center" prop="productBatch" />
-      <el-table-column label="产品制造班组" align="center" prop="productMakeGroup" />
-      <el-table-column label="产品制造人员" align="center" prop="productMakePeople" />
-      <el-table-column label="产品加工设备" align="center" prop="productProcessEquipment" />
+      <el-table-column label="变更类型" align="center" prop="modifyType" />
+      <el-table-column label="变更方式" align="center" prop="modifyMethod" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -37,14 +33,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:7:edit']"
+            v-hasPermi="['system:modifyData:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:7:remove']"
+            v-hasPermi="['system:modifyData:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -58,14 +54,13 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改7：产品生产数量对话框 -->
-    <el-dialog :title="upload.title" :visible.sync="upload.open5" width="400px" append-to-body>
+    <el-dialog :title="upload.title" :visible.sync="upload.open6" width="400px" append-to-body>
       <el-upload
         ref="upload"
         :limit="1"
         accept=".xlsx, .xls"
         :headers="upload.headers"
-        :action="upload.url5 + '?updateSupport=' + upload.updateSupport"
+        :action="upload.url6 + '?updateSupport=' + upload.updateSupport"
         :disabled="upload.isUploading"
         :on-progress="handleFileUploadProgress"
         :on-success="handleFileSuccess"
@@ -75,33 +70,28 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <!--          <div class="el-upload__tip" slot="tip">
-                      <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-                    </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
-          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate5">下载模板</el-link>
+          <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate6">下载模板</el-link>
         </div>
       </el-upload>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFileForm">确 定</el-button>
-        <el-button @click="upload.open5 = false">取 消</el-button>
+        <el-button @click="upload.open6 = false">取 消</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { list7, get7, del7, add7, update7 } from "@/api/system/7";
+import { listModifyData, getModifyData, delModifyData, addModifyData, updateModifyData } from "@/api/system/modifyData";
 import {getToken} from "@/utils/auth";
-
 export default {
-  name: "7",
+  name: "ModifyData",
   data() {
     return {
-      // 用户导入参数
       upload: {
         // 是否显示弹出层（用户导入）
-        open5: false,
+        open6: false,
         // 弹出层标题（用户导入）
         title: "",
         // 是否禁用上传
@@ -111,7 +101,7 @@ export default {
         // 设置上传的请求头部
         headers: { Authorization: "Bearer " + getToken() },
         // 上传的地址
-        url5: process.env.VUE_APP_BASE_API + "/system/7/importData",
+        url6: process.env.VUE_APP_BASE_API + "/system/modifyData/importData"
       },
       // 遮罩层
       loading: true,
@@ -125,44 +115,40 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 7：产品生产数量表格数据
-      List: [],
+      // 产品制造变更数据表格数据
+      modifyDataList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
       queryParams: {
-      pageNum: 1,
+        pageNum: 1,
         pageSize: 10,
-        planeType: null,
         productName: null,
         productModel: null,
-        productFactoryNumber: null,
-        productFactoryDate: null,
-        productBatch: null,
-        productMakeGroup: null,
-        productMakePeople: null,
-        productProcessEquipment: null
-    },
-    // 表单参数
-    form: {},
-    // 表单校验
-    rules: {
-    }
-  };
+        modifyTime: null,
+        modifyType: null,
+        modifyMethod: null
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+      }
+    };
   },
   created() {
     this.getList();
   },
   methods: {
-    handleImport5() {
-      this.upload.title = "装备设计/改型数据导入";
-      this.upload.open5 = true;
+    handleImport6() {
+      this.upload.title = "产品制造变更数据导入";
+      this.upload.open6 = true;
     },
-    importTemplate5() {
+    importTemplate6() {
       this.download('system/data/importTemplate', {
-      }, `ProductQuantity7${new Date().getTime()}.xlsx`)
+      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
@@ -173,17 +159,17 @@ export default {
     },
     // 产品设计文件上传成功处理
     handleFileSuccess(response, file, fileList) {
-      this.upload.open5 = false;
+      this.upload.open3 = false;
       this.upload.isUploading = false;
       this.$refs.upload.clearFiles();
       this.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
       this.getList();
     },
-    /** 查询7：产品生产数量列表 */
+    /** 查询产品制造变更数据列表 */
     getList() {
       this.loading = true;
-      list7(this.queryParams).then(response => {
-        this.List = response.rows;
+      listModifyData(this.queryParams).then(response => {
+        this.modifyDataList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -197,15 +183,11 @@ export default {
     reset() {
       this.form = {
         id: null,
-        planeType: null,
         productName: null,
         productModel: null,
-        productFactoryNumber: null,
-        productFactoryDate: null,
-        productBatch: null,
-        productMakeGroup: null,
-        productMakePeople: null,
-        productProcessEquipment: null
+        modifyTime: null,
+        modifyType: null,
+        modifyMethod: null
       };
       this.resetForm("form");
     },
@@ -229,16 +211,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加7：产品生产数量";
+      this.title = "添加产品制造变更数据";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      get7(id).then(response => {
+      getModifyData(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改7：产品生产数量";
+        this.title = "修改产品制造变更数据";
       });
     },
     /** 提交按钮 */
@@ -246,13 +228,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            update7(this.form).then(response => {
+            updateModifyData(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            add7(this.form).then(response => {
+            addModifyData(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -264,8 +246,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除7：产品生产数量编号为"' + ids + '"的数据项？').then(function() {
-        return del7(ids);
+      this.$modal.confirm('是否确认删除产品制造变更数据编号为"' + ids + '"的数据项？').then(function() {
+        return delModifyData(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
@@ -273,9 +255,9 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/7/export', {
+      this.download('system/modifyData/export', {
         ...this.queryParams
-      }, `7_${new Date().getTime()}.xlsx`)
+      }, `modifyData_${new Date().getTime()}.xlsx`)
     }
   }
 };

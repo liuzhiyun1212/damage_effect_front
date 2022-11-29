@@ -25,7 +25,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport5"
-        >产品制造数据导入</el-button>
+        >装备制造数据导入</el-button>
       </el-col>
 
       <el-col :span="1.5">
@@ -248,9 +248,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate4">下载模板</el-link>
         </div>
@@ -277,9 +274,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate5">下载模板</el-link>
         </div>
@@ -306,9 +300,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate6">下载模板</el-link>
         </div>
@@ -318,6 +309,7 @@
         <el-button @click="upload.open6 = false">取 消</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -325,7 +317,7 @@
 import { listAllDev, getDev, delDev, addDev, updateDev,importTemplate } from "@/api/system/dev";
 import { importDesignTemplate } from "@/api/system/design";
 import { importModifyTemplate } from "@/api/system/modify";
-import { importCreateTemplate } from "@/api/system/create";
+import { importManufacturingTemplate } from "@/api/system/data5";
 import { importModifyDataTemplate } from "@/api/system/modifyData";
 import { getToken } from "@/utils/auth";
 export default {
@@ -350,7 +342,7 @@ export default {
         // 上传的地址
         url3: process.env.VUE_APP_BASE_API + "/system/design/importData",
         url4: process.env.VUE_APP_BASE_API + "/system/modify/importData",
-        url5: process.env.VUE_APP_BASE_API + "/system/create/importData",
+        url5: process.env.VUE_APP_BASE_API + "/system/data5/importData",
         url6: process.env.VUE_APP_BASE_API + "/system/modifyData/importData"
       },
       // 遮罩层
@@ -399,7 +391,7 @@ export default {
         repairedFactory: null,
         repairedStaff: null
       },
-      
+
       // 表单参数
       form: {},
       // 表单校验
@@ -434,7 +426,7 @@ export default {
       this.upload.open4 = true;
     },
     handleImport5() {
-      this.upload.title = "产品制造数据导入";
+      this.upload.title = "装备制造数据导入";
       this.upload.open5 = true;
     },
     handleImport6() {
@@ -453,14 +445,15 @@ export default {
     },
     /** 下载产品制造模板操作 */
     importTemplate5() {
-      this.download('system/create/importTemplate', {
-      }, `ProductCreate${new Date().getTime()}.xlsx`)
+      this.download('system/data5/importTemplate', {
+      }, `EquipmentManufacturingData5${new Date().getTime()}.xlsx`)
     },
     /** 下载产品制造变更模板操作 */
     importTemplate6() {
       this.download('system/modifyData/importTemplate', {
       }, `ProductModifyData${new Date().getTime()}.xlsx`)
     },
+
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();
