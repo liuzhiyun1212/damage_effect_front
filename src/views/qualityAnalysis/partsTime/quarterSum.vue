@@ -78,7 +78,6 @@
 
 <script>
 import * as echarts from "echarts"
-import { qualityHappenSum, oneQuality } from "@/api/system/dev"
 import {
   nameAndModelByQuarter,
   nameAndModelByQuarterSum,
@@ -235,11 +234,10 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     this.qualityHappenSum()
     this.oneQuality()
   },
-  mounted() {},
 }
 </script>
 

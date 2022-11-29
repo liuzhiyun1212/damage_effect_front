@@ -78,7 +78,6 @@
 
 <script>
 import * as echarts from "echarts"
-import { yearHappenSum, oneYear } from "@/api/system/dev"
 import { nameAndModelByYear, nameAndModelByYearSum } from "@/api/system/dev"
 export default {
   data() {
@@ -225,11 +224,10 @@ export default {
       })
     },
   },
-  created() {
+  mounted() {
     this.yearHappenSum()
     this.oneYear()
   },
-  mounted() {},
 }
 </script>
 
