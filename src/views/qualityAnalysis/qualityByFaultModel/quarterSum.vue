@@ -220,6 +220,7 @@ export default {
         series: [
           {
             type: "line",
+            smooth: true,
             showBackground: true,
             symbolSize: 10,
             symbol: "triangle",
