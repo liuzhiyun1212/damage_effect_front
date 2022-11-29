@@ -1,6 +1,17 @@
 <!-- 故障件名称随时间变化情况 -->
 <template>
   <div>
+    <p
+      style="
+        font-family: Arial;
+        font-size: 20px;
+        font-weight: 600;
+        display: inline-block;
+        margin-left: 30px;
+      "
+    >
+      故障件名称随时间变化情况
+    </p>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <el-tabs v-model="activeName">
         <el-tab-pane label="季度" name="quarter" :lazy="true">
@@ -15,7 +26,6 @@
 </template>
 
 <script>
-import * as echarts from "echarts"
 import YearSum from "./yearSum.vue"
 import QuarterSum from "./quarterSum.vue"
 export default {
@@ -26,6 +36,13 @@ export default {
   data() {
     return {
       activeName: "quarter",
+      // 查询参数
+      // queryParams: {
+      //   pageNum: 1,
+      //   pageSize: 5,
+      //   troubleName: null,
+      //   troubleIntroduction: null,
+      // },
     }
   },
   methods: {},
