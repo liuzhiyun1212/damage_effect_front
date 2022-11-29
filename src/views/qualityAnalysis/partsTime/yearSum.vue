@@ -79,6 +79,7 @@
 <script>
 import * as echarts from "echarts"
 import { yearHappenSum, oneYear } from "@/api/system/dev"
+import { nameAndModelByYear, nameAndModelByYearSum } from "@/api/system/dev"
 export default {
   data() {
     return {
@@ -104,8 +105,8 @@ export default {
   methods: {
     // 柱状图的实现
     yearHappenSum() {
-      yearHappenSum(this.queryParams).then((response) => {
-        // console.log("yearHappenSum", response)
+      nameAndModelByYearSum(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.yearHappenList = response
         // this.selectList = this.yearHappenList;
         for (let i = 0; i < this.yearHappenList.length; i++) {
@@ -125,8 +126,8 @@ export default {
     },
     // 年度筛选
     oneYear() {
-      oneYear(this.queryParams).then((response) => {
-        // console.log("oneYear", response)
+      nameAndModelByYear(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.allYearList = response
         this.selectList = response
       })

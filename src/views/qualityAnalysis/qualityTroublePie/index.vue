@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <p
         style="
           font-family: Arial;

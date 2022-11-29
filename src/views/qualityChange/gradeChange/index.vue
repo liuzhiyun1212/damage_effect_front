@@ -185,9 +185,9 @@ export default {
         getChart(){
             var myChart = echarts.init(document.getElementById("duibi"))
             var option = {
-                title: {
-                    text: '故障件涉及生产班组对比堆叠图'
-                },
+                // title: {
+                //     text: '故障件涉及生产班组对比堆叠图'
+                // },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -247,9 +247,9 @@ export default {
             let dataGet = this.yList
             var myChart = echarts.init(document.getElementById("timeLine"))
             var option = {
-                title: {
-                    text: '故障件生产班组变更时间线'
-                },
+                // title: {
+                //     text: '故障件生产班组变更时间线'
+                // },
     //             tooltip: {
     //                 trigger: 'axis',
     // axisPointer: {

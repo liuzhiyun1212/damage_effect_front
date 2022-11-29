@@ -79,6 +79,10 @@
 <script>
 import * as echarts from "echarts"
 import { qualityHappenSum, oneQuality } from "@/api/system/dev"
+import {
+  nameAndModelByQuarter,
+  nameAndModelByQuarterSum,
+} from "@/api/system/dev"
 export default {
   data() {
     return {
@@ -104,8 +108,8 @@ export default {
   methods: {
     // 柱状图的实现
     qualityHappenSum() {
-      qualityHappenSum(this.queryParams).then((response) => {
-        // console.log("qualityHappenSum", response)
+      nameAndModelByQuarterSum(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.qualityHappenList = response
         // this.selectList = this.qualityHappenList;
         for (let i = 0; i < this.qualityHappenList.length; i++) {
@@ -125,8 +129,8 @@ export default {
     },
     // 季度筛选
     oneQuality() {
-      oneQuality(this.queryParams).then((response) => {
-        // console.log("oneQuality", response)
+      nameAndModelByQuarter(this.queryParams).then((response) => {
+        // console.log("nameAndModelByQuarter", response)
         this.allQualityList = response
         this.selectList = response
       })

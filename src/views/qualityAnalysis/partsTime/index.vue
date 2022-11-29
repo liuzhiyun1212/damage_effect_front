@@ -10,7 +10,7 @@
         margin-left: 30px;
       "
     >
-      故障件名称随时间变化情况
+      故障件名称随时间变化情况统计
     </p>
     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
       <el-tabs v-model="activeName">
@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import YearSum from "./yearSum.vue"
 import QuarterSum from "./quarterSum.vue"
+import YearSum from "./yearSum.vue"
 export default {
   components: {
     YearSum,
@@ -36,24 +36,11 @@ export default {
   data() {
     return {
       activeName: "quarter",
-      // 查询参数
-      // queryParams: {
-      //   pageNum: 1,
-      //   pageSize: 5,
-      //   troubleName: null,
-      //   troubleIntroduction: null,
-      // },
     }
   },
   methods: {},
-  created() {
-    // this.yearHappenSum();
-    // this.oneYear();
-  },
-  mounted() {
-    // this.chartView();
-    // this.getYear();
-  },
+  created() {},
+  mounted() {},
 }
 </script>
 
