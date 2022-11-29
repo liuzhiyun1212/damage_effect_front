@@ -151,8 +151,8 @@ export default {
       this.upload.open5 = true;
     },
     importTemplate5() {
-      this.download('system/data/importTemplate', {
-      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
+      this.download('system/data5/importTemplate', {
+      }, `EquipmentManufacturingData5${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();

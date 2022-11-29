@@ -104,7 +104,14 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
 
-<style scoped>
-
+//   /deep/ .el-tabs--left .el-tabs__item.is-left {
+//     text-align: left;
+// }
+</style>
+<style>
+.el-tabs--left .el-tabs__item.is-left {
+    text-align: left;
+}
 </style>

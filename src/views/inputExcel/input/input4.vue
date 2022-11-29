@@ -151,8 +151,8 @@ export default {
       this.upload.open4 = true;
     },
     importTemplate4() {
-      this.download('system/data/importTemplate', {
-      }, `EquipmentDesignData${new Date().getTime()}.xlsx`)
+      this.download('system/modify/importTemplate', {
+      }, `ProductModify${new Date().getTime()}.xlsx`)
     },
     submitFileForm() {
       this.$refs.upload.submit();
