@@ -177,7 +177,7 @@ export default {
                 color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
             };
             //this.getHeight(myChart,option);
-            myChart.setOption(option);
+            this.$nextTick(myChart.setOption(option));
             // console.log(this.seriesData);
             // echarts自适应
             window.addEventListener("resize", () => {

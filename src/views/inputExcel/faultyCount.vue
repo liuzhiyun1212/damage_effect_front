@@ -12,7 +12,7 @@
         故障件名称
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
-    <div id="quarter"
+    <div id="partsname"
             style="width: 100%; height: 200px;"
           ></div>
           <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -112,26 +112,26 @@ export default {
         // 故障件型号-名称
         selectFaultyCount(){
             selectFaultyCount().then(response => {
-                debugger
+
                 this.faultyCountList = [],
                 this.faultyList = [],
                 this.faultyCountList = response;
                 console.log("问题爆发",this.faultyCountList);
-                this.selectList = this.faultyCountList  
+                this.selectList = this.faultyCountList
                 for(let i=0;i<this.faultyCountList.length;i++){
                     this.faultyList.push(this.faultyCountList[i].partsModelName)
                 }
-                console.log(this.faultyList);    
-                this.selectAllFaulty();      
+                console.log(this.faultyList);
+                this.selectAllFaulty();
             });
         },
-        
+
         selectAllFaulty(){
             selectAllFaulty().then(response => {
                 this.xQuarter = [],
                 this.yQuarter = [],
                 this.allFaultyList = response;
-                
+
                 console.log("全部",this.allFaultyList);
                 for(let i=0;i<this.allFaultyList.length;i++){
                     this.xQuarter.push(this.allFaultyList[i].partsModelName)
@@ -142,7 +142,7 @@ export default {
             });
         },
         chartView() {
-            var myChart = echarts.init(document.getElementById("quarter"))
+            var myChart = echarts.init(document.getElementById("partsname"))
             var colorList = [];
             var option = {
                 tooltip: {
@@ -189,7 +189,7 @@ export default {
                             // debugger
                         // if(params.dataIndex == this.selectedDataIndex) {
                             if(this.faultyList.includes(params.name)) {
-                                
+
                                 colorList[params.dataIndex] = 'red'
                             } else {
                                 colorList[params.dataIndex] = 'blue'
@@ -213,7 +213,7 @@ export default {
         // this.selectAllFaulty();
     },
     mounted() {
-        
+
     },
 }
 </script>

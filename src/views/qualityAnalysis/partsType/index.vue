@@ -15,7 +15,7 @@
 <!--  <div>-->
 <!--    <h2>故障件种类</h2>-->
 <!--  </div>-->
-  <div id="quarter" style="width: 100%; height: 300px;"> </div>
+  <div id="test"  style="width: 100%; height: 300px;"> </div>
   <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
     <p
       style="
@@ -33,7 +33,7 @@
     </el-tooltip>
   </div>
     <el-table
-      v-loading="loading"
+
       :data="qualityProblem1List"
       stripe
       height="250px"
@@ -82,10 +82,10 @@ export default {
       averageList1:[],
     }
   },
-  created() {
-    this.selectPartsTypeCount();
+  /*created() {
+
     // this.selectAllType();
-  },
+  },*/
   methods: {
     selectPartsTypeCount(){
       selectPartsTypeCount().then(response => {
@@ -103,7 +103,7 @@ export default {
       });
     },
     chartView() {
-      var myChart = echarts.init(document.getElementById("quarter"))
+      var myChart = echarts.init(document.getElementById("test"))
       var colorList = [];
       var option = {
         tooltip: {
@@ -170,12 +170,20 @@ export default {
       };
       myChart.setOption(option);
       // echarts自适应
+      console.log(myChart);
+      console.log(option);
       window.addEventListener("resize", () => {
         myChart.resize();
       });
     },
   },
-  mounted() {
+  created() {
+    this.$nextTick(()=>{
+      this.selectPartsTypeCount();
+
+    })
+
+
   },
 
 }

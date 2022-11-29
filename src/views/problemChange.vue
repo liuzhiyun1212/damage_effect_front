@@ -18,7 +18,7 @@
         <el-tab-pane :lazy="true" label="装备能力提升情况" ></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件改型情况"><partsChange /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产班组变更情况"><partsGroupchange /></el-tab-pane>
-        <el-tab-pane :lazy="true" label="故障件人员变更情况">质量问题故障模式</el-tab-pane>
+        <el-tab-pane :lazy="true" label="故障件人员变更情况"><partsMakepeople/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产设备变更情况"><partsMakeequip /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件测量设备变更情况">质量问题发生地理环境</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件原材料变更情况">故障件种类</el-tab-pane>
@@ -50,10 +50,11 @@ import equipmentchange from "./monitor/refit/index.vue";
 import partsChange from "./qualityChange/troubleRemodel";
 import partsGroupchange from "./qualityChange/gradeChange/index";
 import partsMakeequip from "./qualityChange/changeOfProductionDevice/index"
+import partsMakepeople from "./qualityChange/zzh/peopleChange";
 export default {
 
   name: "problemChange",
-  components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip},
+  components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople},
   data() {
     return {
       tabPosition: 'left',

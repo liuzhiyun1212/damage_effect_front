@@ -51,7 +51,7 @@
       </el-table-column>
     </el-table>
   </el-card>
-  <el-dialog :title="title" :visible.sync="open" height="1000px" width="75%" append-to-body>
+  <el-dialog :title="title" :visible.sync="open" height="1000px" width="75%" style="padding-top: -10px;" append-to-body>
     <el-table :header-cell-style="{
           background: '#84BBFE',
           color: '#fff',
@@ -63,7 +63,7 @@
         }"
               :header-row-style="{
           height: '20',
-        }"  :data="this.windata"  style="height:auto;margin-top: 20px;margin-left:10%;width:80%">
+        }"  :data="this.windata"  style="height:auto;margin-top:-10px;margin-left:10%;width:80%">
       <el-table-column label="序号" align="center" type="index" />
          <el-table-column label="故障件型号" align="center" prop="finishedModel" />
          <el-table-column label="故障件名称" align="center" prop="finishedName" />

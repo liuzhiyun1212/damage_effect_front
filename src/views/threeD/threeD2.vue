@@ -2,7 +2,7 @@
   <div>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
       <div style="margin-bottom:120px;margin-left: 2%;width: 96%;height: 700px;background: #999; " >
-        <div id="main" style="width: 100%;height: 100%;"></div>
+        <div id="main2" style="width: 100%;height: 100%;"></div>
         <div id="legend" style="margin-bottom:10px;width: 100%;height: 100px;background:#998866"></div>
       </div>
       <div style="margin-top:10px;width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -211,7 +211,7 @@ export default {
     },
 
     initChart() {
-      var myChart = echarts.init(document.getElementById('main'));
+      var myChart = echarts.init(document.getElementById('main2'));
       myChart.setOption(this.setOption());
       console.log(this.setOption());
     },

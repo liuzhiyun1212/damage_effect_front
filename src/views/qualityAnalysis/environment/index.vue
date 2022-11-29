@@ -13,7 +13,7 @@
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div
-            id="plane"
+            id="environment"
             style="width: 100%; height: 200px;"
           ></div>
           <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -105,14 +105,14 @@ export default {
         });
         },
         getChart(){
-            var myChart = echarts.init(document.getElementById("plane"))
+            var myChart = echarts.init(document.getElementById("environment"))
           var option = {
             /*title: {
                 text: '维保计划按种类统计',
             },*/
             tooltip: {
                 trigger: 'axis',
-                formatter:  (param)=> { 
+                formatter:  (param)=> {
                             if(param[0].data >= this.average*0.5){
                             return param[0].name + "质量问题集中爆发";
                         }
@@ -155,7 +155,7 @@ export default {
                                 }else{
                                     return 'blue'
                                 }
-                        
+
                         }
                     // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     // { offset: 0, color: '#83bff6' },
@@ -171,7 +171,7 @@ export default {
                 }
             ]
             };
-      myChart.setOption(option);
+         myChart.setOption(option);
         // echarts自适应
         window.addEventListener("resize", () => {
           myChart.resize();

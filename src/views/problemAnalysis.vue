@@ -25,7 +25,7 @@
       <el-tab-pane label="故障件名称" :lazy="true"><FaultyCount></FaultyCount></el-tab-pane>
       <el-tab-pane label="故障件随时间变化情况" :lazy="true"><PartsTime></PartsTime></el-tab-pane>
       <el-tab-pane label="质故障件安装位置" :lazy="true"><ThreeD1></ThreeD1></el-tab-pane>
-      <el-tab-pane label="故障件安装方法" :lazy="true"><ThreeD2></ThreeD2></el-tab-pane>
+      <el-tab-pane label="故障件安装方法" :lazy="true"></el-tab-pane>
     </el-tabs>
   </el-card>
  <!-- <el-card style="margin-left: 15%; width:84%; height:800px;margin-top: 20px;">

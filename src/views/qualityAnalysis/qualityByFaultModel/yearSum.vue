@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="year" style="width: 100%; height: 200px"></div>
+    <div id="problem_model_year" style="width: 100%; height: 200px"></div>
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
       <p
         style="
@@ -152,7 +152,7 @@ export default {
       this.faultModelByYear()
     },
     getYear() {
-      var myChart = echarts.init(document.getElementById("year"))
+      var myChart = echarts.init(document.getElementById("problem_model_year"))
       var option = {
         /*title: {
                 text: '维保计划按种类统计',

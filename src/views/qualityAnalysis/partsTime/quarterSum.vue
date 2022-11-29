@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="quarter" style="width: 100%; height: 200px"></div>
+    <div id="parts_name_time_quarter" style="width: 100%; height: 200px"></div>
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
       <p
         style="
@@ -156,7 +156,7 @@ export default {
     },
     // 初始化图参数
     getQuality() {
-      var myChart = echarts.init(document.getElementById("quarter"))
+      var myChart = echarts.init(document.getElementById("parts_name_time_quarter"))
       var option = {
         tooltip: {
           trigger: "axis",

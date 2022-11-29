@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="quarter" style="width: 100%; height: 200px"></div>
+    <div id="problem_model_quarter" style="width: 100%; height: 200px"></div>
     <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
       <p
         style="
@@ -23,7 +23,7 @@
       <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
       <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
     </el-tooltip>
-      
+
     </div>
     <el-button type="primary" @click="selectInfo('0')"
       >1.较上一季度增加或减少50%以上</el-button
@@ -166,7 +166,7 @@ export default {
       // });
     },
     chartView() {
-      var myChart = echarts.init(document.getElementById("quarter"))
+      var myChart = echarts.init(document.getElementById("problem_model_quarter"))
       var option = {
         /*title: {
                     text: '维保计划按种类统计',
@@ -242,7 +242,7 @@ export default {
           },
         ],
       }
-      myChart.setOption(option)
+      myChart.setOption(option);
       // echarts自适应
       window.addEventListener("resize", () => {
         myChart.resize()
@@ -250,7 +250,7 @@ export default {
     },
   },
   created() {
-    
+
   },
   mounted() {
     this.faultModelByQuarterSum();
