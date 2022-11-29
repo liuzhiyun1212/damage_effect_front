@@ -68,12 +68,7 @@
 
 <script>
 import * as echarts from "echarts"
-import {
-  qualityHappenSum,
-  oneQuality,
-  oneYear,
-  yearHappenSum,
-} from "@/api/system/dev"
+import {faultModelByYear,faultModelByYearSum} from "@/api/system/dev"
 export default {
   data() {
     return {
@@ -98,8 +93,8 @@ export default {
   },
   methods: {
     // 年度总数
-    yearHappenSum() {
-      yearHappenSum(this.queryParams).then((response) => {
+    faultModelByYearSum() {
+      faultModelByYearSum(this.queryParams).then((response) => {
         console.log(response)
         this.yearHappenList = response
         // this.selectList = this.yearHappenList;
@@ -117,8 +112,8 @@ export default {
       })
     },
     // 年度筛选
-    oneYear() {
-      oneYear(this.queryParams).then((response) => {
+    faultModelByYear() {
+      faultModelByYear(this.queryParams).then((response) => {
         this.allYearList = response
         this.selectList = this.allYearList
         // console.log("aaaaaaaaaaaaa",this.allYearList);
@@ -154,7 +149,7 @@ export default {
     },
     allInfo() {
       this.queryParams.pageNum = 1
-      this.oneYear()
+      this.faultModelByYear()
     },
     getYear() {
       var myChart = echarts.init(document.getElementById("year"))
@@ -204,9 +199,11 @@ export default {
         ],
         series: [
           {
-            type: "bar",
+            type: "line",
             showBackground: true,
-            barWidth: 20,
+            // barWidth: 20,
+            symbolSize: 10,
+            symbol: "triangle",
             itemStyle: {
               color: (params) => {
                 // console.log("aaaaaa",params.name.slice(this.xLength+1)!=='null');
@@ -233,8 +230,8 @@ export default {
     },
   },
   created() {
-    this.yearHappenSum()
-    this.oneYear()
+    this.faultModelByYearSum()
+    this.faultModelByYear()
   },
   mounted() {},
 }

@@ -9,7 +9,7 @@
           margin-left: 30px;
         "
       >
-        质量问题涉及到的机型
+        质量问题发生地理环境
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div
@@ -26,10 +26,10 @@
             margin-left: 20px;
           "
         >
-        质量问题集中爆发的机型
+        质量问题高发地理环境
         </p>
         <el-tooltip placement="top">
-      <div slot="content">若某机型质量问题发生数大于质量问题机型平均发生数50%，则质量问题在该机型上集中爆发</div>
+      <div slot="content">若某地理环境质量问题发生数大于质量问题地理环境平均发生数50%，则质量问题在该地理环境集中爆发</div>
       <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
     </el-tooltip>
         </div>
@@ -48,7 +48,7 @@
             <el-table-column type="index"></el-table-column>
             <el-table-column
               prop="quarter"
-              label="质量问题高发机型"
+              label="质量问题高发地理环境"
               :show-overflow-tooltip="true" align="center"
 
             >
@@ -60,19 +60,18 @@
             </el-table-column>
           </el-table>
     </el-card>
-        
   </div>
 </template>
 
 <script>
  import * as echarts from 'echarts';
-import {sumByplaneType,selectPlaneType} from '@/api/system/dev';
+import {highSumByEnvironment,sumByEnvironment} from '@/api/system/dev';
 export default {
-    data() {
+    data () {
         return {
-            // 机型总列表
+            // 地理环境总列表
             allList:[],
-            // 筛选机型
+            // 筛选地理环境
             planeList:[],
             // 表格判断条件list
             selectList:[],
@@ -81,19 +80,12 @@ export default {
             yPlane:[],
             xLength:null,
             average:0,
-            // 查询参数
-            queryParams: {
-                    pageNum: 1,
-                    pageSize: 5,
-                    troubleName: null,
-                    troubleIntroduction: null
-                    },
         }
     },
     methods: {
-        sumByplaneType(){
-            sumByplaneType(this.queryParams).then(response => {
-            this.allList = response;
+        sumByEnvironment(){
+            sumByEnvironment(this.queryParams).then(response => {
+                this.allList = response;
             var count=0;
             for(let i=0;i<this.allList.length;i++){
                 this.xPlane.push(this.allList[i].quarter)
@@ -102,16 +94,14 @@ export default {
                 this.average = count/this.allList.length;
                 this.getChart();
         }
-        
         this.xLength = this.allList.length;
         });
         },
-        // 筛选机型超过平均的50%
-        selectPlaneType(){
-            selectPlaneType(this.queryParams).then(response => {
+        highSumByEnvironment(){
+            highSumByEnvironment(this.queryParams).then(response => {
                 this.planeList = response;
                 this.selectList = this.planeList;
-                console.log("xxxxxxxxxxx",this.planeList);
+                // console.log("xxxxxxxxxxx",this.planeList);
         });
         },
         getChart(){
@@ -189,11 +179,8 @@ export default {
         },
     },
     created() {
-        this.sumByplaneType();
-        this.selectPlaneType();
-    },
-    mounted() {
-        
+        this.sumByEnvironment();
+        this.highSumByEnvironment();
     },
 
 }

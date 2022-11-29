@@ -1,5 +1,14 @@
 <template>
     <div>
+        <p style="
+                  font-family: Arial;
+                  font-size: 20px;
+                  font-weight: 600;
+                  display: inline-block;
+                  margin-left: 30px;
+                ">
+            质量问题发生机型随时间变化情况 
+        </p>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <!-- <h2>质量问题发生机型随时间变化情况</h2> -->
             <div ref="stackedLineChart" :style="{ width: '100%', height: '180px' }"></div>
@@ -14,8 +23,11 @@
                 ">
                     质量问题发生机型随时间变化情况
                 </p>
-                <el-button type="primary" icon="el-icon-s-home" @click="allCheck"
-                    style="float: right; margin-right: 10px; margin-top: 8px">全部信息</el-button>
+                <el-button type="primary" icon="el-icon-s-home" @click="allCheck" style="margin-left: 20px;">全部信息</el-button>
+                <el-tooltip placement="top">
+                    <div slot="content">1.较上一季度增加或减少50%以上2.连续两个季度增加或减少20%以上3.连续三个季度呈单调变化趋势</div>
+                    <i class="el-icon-question" style="float: right; margin-right: 20px; margin-top: 8px; font-size: 40px;"></i>
+                </el-tooltip>
             </div>
 
             <div>
@@ -75,7 +87,7 @@ export default {
     name: "aircraftTypeAndTime",
     data() {
         return {
-            loading:false,
+            loading: false,
             option: {
                 tooltip: {
                     trigger: 'axis',
@@ -112,6 +124,16 @@ export default {
 
                         return [x, y];
                     },
+                    formatter: params => {
+                        console.log(params);
+                        var res = `${params[0].name} <br/>`
+                        for (const item of params) {
+                            if (item.value !== 0) {
+                                res += `<span style="background: ${item.color}; height:10px; width: 10px; border-radius: 50%;display: inline-block;margin-right:10px;"></span> ${item.seriesName} ：${item.value}<br/>`
+                            }
+                        }
+                        return res
+                    },
                 },
                 legend: {
                     data: this.legend
@@ -136,11 +158,9 @@ export default {
                     interval: 1,
                     type: 'value'
                 },
-                series: []
+                series: [],
+                color: ['#5470c6', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75'],
             },
-            color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
-            // legend: ['Email', 'Union Ads', 'Video Ads', 'Direct', 'Search Engine'],
-            xData: ['2022第一季度', '2022第二季度', '2022第三季度'],
             tableData: [
                 {
                     aircraftType: '',
