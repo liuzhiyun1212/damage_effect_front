@@ -148,14 +148,13 @@ export default {
       for (let index = 0; index < this.productChange.length; index++) {
         if (this.productChange[index-flag].productModel+this.productChange[index-flag].productName ==this.y[index-flag-1]) {
           flag =flag+1;
-          console.log("faefa",flag);
         }
         else{
           this.y[index-flag] = this.productChange[index-flag].productModel+this.productChange[index-flag].productName;
 
         }    
       }
-      console.log("y222:",this.y);
+      console.log("y:",this.y);
       this.initChart();
     },
 
@@ -168,6 +167,7 @@ export default {
           name: this.productChange[i].productModel,
           type: "line",
           data: [],
+          
           markPoint: {
             symbolSize: 20,
             symbol: 'triangle',
@@ -222,10 +222,20 @@ export default {
           text: '故障件改型情况'
         },
         tooltip: {
-          trigger: 'item',
-          //鼠标悬浮不显示
-          showContent:false, 
+          
+          trigger: 'axis',
+          formatter:"{b}",
+          axisPointer: {
+            axis:"x",
+            type: 'line' // 'shadow' as default; can also be 'line' or 'shadow'
+          }
         },
+        
+        // tooltip: {
+        //   trigger: 'item',
+        //   //鼠标悬浮不显示
+        //   showContent:false, 
+        // },
         /**图例 水平 */
        // legend: { orient: 'horizontal'},
         //右工具
