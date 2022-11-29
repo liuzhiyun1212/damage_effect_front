@@ -26,7 +26,7 @@
         </el-tooltip>
 
       </div>
-      <div id="timeLine" style="width: 100%; height: 450px"></div>
+      <div id="people_timeLine" style="width: 100%; height: 450px"></div>
         <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
           <p
             style="
@@ -47,7 +47,7 @@
           </el-tooltip>
 
         </div>
-      <div id="main" style="width: 100%; height: 450px"></div>
+      <div id="duibi" style="width: 100%; height: 450px"></div>
 
         <!--<iframe src="//player.bilibili.com/player.html?aid=978257347&bvid=BV1p44y1L7zG&cid=489572698&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 -->
@@ -95,14 +95,14 @@ export default {
 
     // 高度适应 改型时间线
     getHeight_timeline() {
-      var id__timeline = document.getElementById("timeLine")
+      var id__timeline = document.getElementById("people_timeLine")
       var height__timeline = this.se.length * 80
       //d.setAttribute(height,height+"px");
       id__timeline.style.cssText = "height:" + height__timeline + "px"
     },
     // 高度适应 对比堆叠图
     getHeight_stacked() {
-      var id__stacked = document.getElementById("main")
+      var id__stacked = document.getElementById("duibi")
       var height__stacked = this.yList.length * 40
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
@@ -136,8 +136,8 @@ export default {
 
 
     initChart() {
-      var myChart = echarts.init(document.getElementById('main'));
-      var myChart2 = echarts.init(document.getElementById('timeLine'));
+      var myChart = echarts.init(document.getElementById('duibi'));
+      var myChart2 = echarts.init(document.getElementById('people_timeLine'));
       myChart.setOption(this.setOption());
       myChart2.setOption(this.setOption2(),true);
 

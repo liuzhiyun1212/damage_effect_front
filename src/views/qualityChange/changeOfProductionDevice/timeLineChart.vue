@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="timeLine" style="width: 100%; height: 300px;"></div>
+        <div id="group_timeLine" style="width: 100%; height: 300px;"></div>
     </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
                     return time1.indexOf(item) === index;
                 });
                 //高度适应
-                var d = document.getElementById("timeLine");
+                var d = document.getElementById("group_timeLine");
                 var height = this.yList.length * 150;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText = "height:" + height + "px";
@@ -126,7 +126,7 @@ export default {
         // 时间线
         getTime() {
             let dataGet = this.yList
-            var myChart = echarts.init(document.getElementById("timeLine"))
+            var myChart = echarts.init(document.getElementById("group_timeLine"))
             var option = {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
