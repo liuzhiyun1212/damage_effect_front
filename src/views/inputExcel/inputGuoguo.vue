@@ -25,7 +25,7 @@
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport5"
-        >产品制造数据导入</el-button>
+        >装备制造数据导入</el-button>
       </el-col>
 
       <el-col :span="1.5">
@@ -248,9 +248,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate4">下载模板</el-link>
         </div>
@@ -277,9 +274,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate5">下载模板</el-link>
         </div>
@@ -306,9 +300,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-<!--          <div class="el-upload__tip" slot="tip">
-            <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-          </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate6">下载模板</el-link>
         </div>
@@ -318,6 +309,7 @@
         <el-button @click="upload.open6 = false">取 消</el-button>
       </div>
     </el-dialog>
+
   </div>
 </template>
 
@@ -399,7 +391,7 @@ export default {
         repairedFactory: null,
         repairedStaff: null
       },
-      
+
       // 表单参数
       form: {},
       // 表单校验
@@ -434,7 +426,7 @@ export default {
       this.upload.open4 = true;
     },
     handleImport5() {
-      this.upload.title = "产品制造数据导入";
+      this.upload.title = "装备制造数据导入";
       this.upload.open5 = true;
     },
     handleImport6() {
@@ -461,6 +453,7 @@ export default {
       this.download('system/modifyData/importTemplate', {
       }, `ProductModifyData${new Date().getTime()}.xlsx`)
     },
+
     // 提交上传文件
     submitFileForm() {
       this.$refs.upload.submit();
