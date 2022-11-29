@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-card style="margin-left: 0.5%; width:99%; float:left">
+  <el-card style="margin-left: 0.5%; width:99%; float:left;">
    <!-- <p>质量问题发生时间</p>
     <p>质量问题涉及到的机型</p>
     <p>质量问题发生机型时间变化情况</p>
@@ -14,7 +14,7 @@
     <p>质故障件安装位置</p>
     <p>故障件安装方法</p>-->
     <el-tabs :tab-position="tabPosition" v-model="activeName">
-      <el-tab-pane label="质量问题发生时间" :lazy="true"><QualityTime></QualityTime></el-tab-pane>
+      <el-tab-pane label="质量问题发生时间" :label-position="labelPosition" :lazy="true"><QualityTime></QualityTime></el-tab-pane>
       <el-tab-pane label="质量问题涉及到的机型" :lazy="true"><QualityPlaneType/></el-tab-pane>
       <el-tab-pane label="质量问题发生机型时间变化情况" :lazy="true"><AircraftTypeWithTime/></el-tab-pane>
       <el-tab-pane label="质量问题涉及到的机型使用强度随时间变换情况" :lazy="true"><UseIntensity/></el-tab-pane>
@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       // activeName:"second",
+      labelPosition:'left',
       tabPosition: 'left',
       data: [{
         label: '一级 1',
@@ -104,7 +105,15 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
 
-<style scoped>
-
+//   /deep/ .el-tabs--left .el-tabs__item.is-left {
+//     text-align: left;
+// }
 </style>
+<style>
+.el-tabs--left .el-tabs__item.is-left {
+    text-align: left;
+}
+</style>
+
