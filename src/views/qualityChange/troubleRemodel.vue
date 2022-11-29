@@ -144,10 +144,18 @@ export default {
 
     },
     getY(){
+      let flag =0;
       for (let index = 0; index < this.productChange.length; index++) {
-        this.y[index] = this.productChange[index].productModel+this.productChange[index].productName;
+        if (this.productChange[index-flag].productModel+this.productChange[index-flag].productName ==this.y[index-flag-1]) {
+          flag =flag+1;
+          console.log("faefa",flag);
+        }
+        else{
+          this.y[index-flag] = this.productChange[index-flag].productModel+this.productChange[index-flag].productName;
+
+        }    
       }
-      console.log("y:",this.y);
+      console.log("y222:",this.y);
       this.initChart();
     },
 

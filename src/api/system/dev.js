@@ -287,5 +287,29 @@ export function highSumByEnvironment() {
     method: 'get'
   })
 }
-
+// 4.2.1.10故障件名称随时间变化情况
+export function nameAndModelByYear() {
+  return request({
+    url: '/system/dev/nameAndModelByYear',
+    method: 'get'
+  })
+}
+export function nameAndModelByQuarter() {
+  return request({
+    url: '/system/dev/nameAndModelByQuarter',
+    method: 'get'
+  })
+}
+export function nameAndModelByQuarterSum() {
+  return request({
+    url: '/system/dev/nameAndModelByQuarterSum',
+    method: 'get'
+  })
+}
+export function nameAndModelByYearSum() {
+  return request({
+    url: '/system/dev/nameAndModelByYearSum',
+    method: 'get'
+  })
+}
 
