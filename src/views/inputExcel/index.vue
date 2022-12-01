@@ -2,15 +2,15 @@
   <el-card class="box-card">
   <div class="box">
     <div class="item div1 shou" onclick="window.open('../inputExcel/inputQuality')" >1质量问题数据</div>
-    <div class="item div2 shou" onclick="window.open('../inputExcel/input/input2')">2装备设计/改型数据</div>
-    <div class="item div3 shou" onclick="window.open('../inputExcel/input/input3')">3产品设计数据</div>
-    <div class="item div4 shou" onclick="window.open('../inputExcel/input/input4')">4产品改型数据</div>
-    <div class="item div5 shou" onclick="window.open('../inputExcel/input/input5')">5装备制造数据</div>
-    <div class="item div7 shou" onclick="window.open('../inputExcel/input/input6')">7产品制造变更数据</div>
-    <div class="item div8 shou" onclick="window.open('../inputExcel/input/input12')">12装备使用数据</div>
-    <div class="item div9 shou" onclick="window.open('../inputExcel/input/input9')">9产品生产数量</div>
-    <div class="item div10 shou" onclick="window.open('../inputExcel/input/input10')">10维修变更数据</div>
-    <div class="item div11 shou" onclick="window.open('../inputExcel/input/input11')">11装备部署数据</div>
+    <div class="item div2 shou" onclick="window.open('../inputExcel/input2')">2装备设计/改型数据</div>
+    <div class="item div3 shou" onclick="window.open('../inputExcel/input3')">3产品设计数据</div>
+    <div class="item div4 shou" onclick="window.open('../inputExcel/input4')">4产品改型数据</div>
+    <div class="item div5 shou" onclick="window.open('../inputExcel/input5')">5装备制造数据</div>
+    <div class="item div7 shou" onclick="window.open('../inputExcel/input6')">7产品制造变更数据</div>
+    <div class="item div8 shou" onclick="window.open('../inputExcel/input12')">12装备使用数据</div>
+    <div class="item div9 shou" onclick="window.open('../inputExcel/input9')">9产品生产数量</div>
+    <div class="item div10 shou" onclick="window.open('../inputExcel/input10')">10维修变更数据</div>
+    <div class="item div11 shou" onclick="window.open('../inputExcel/input11')">11装备部署数据</div>
   </div>
   </el-card>
 </template>
