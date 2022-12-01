@@ -557,26 +557,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].planeType) == -1){
+          xdate.push(this.dataList1[i].planeType)
         }
-        md = {name:date,id:this.dataList1[i].planeType,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].planeType,time:this.dataList1[i].planeType,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("型号"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -831,7 +820,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis: xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -1183,7 +1172,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -1277,26 +1266,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].planeType) == -1){
+          xdate.push(this.dataList1[i].planeType)
         }
-        md = {name:date,id:this.dataList1[i].planeType,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].planeType,time:this.dataList1[i].planeType,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("型号"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -1445,26 +1423,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList2[i].devHappenTime) == -1){
-          xdate.push(this.dataList2[i].devHappenTime)
+        if(xdate.indexOf(this.dataList2[i].installMethod) == -1){
+          xdate.push(this.dataList2[i].installMethod)
         }
-        md = {name:date,time:this.dataList2[i].devHappenTime,id:this.dataList2[i].installMethod,num:this.dataList2[i].devHappennum}
+        md = {name:date,time:this.dataList2[i].installMethod,id:this.dataList2[i].installMethod,num:this.dataList2[i].devHappennum}
         ndata.push(md)
       }
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("安装方法"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -1879,7 +1846,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis: xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -1974,27 +1941,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].partsMakeGroup) == -1){
+          xdate.push(this.dataList1[i].partsMakeGroup)
         }
-        md = {name:date,id:this.dataList1[i].partsMakeGroup,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].partsMakeGroup,time:this.dataList1[i].partsMakeGroup,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("生产班组"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -2248,7 +2203,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -2343,27 +2298,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].partsMakePeople) == -1){
+          xdate.push(this.dataList1[i].partsMakePeople)
         }
-        md = {name:date,id:this.dataList1[i].partsMakePeople,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].partsMakePeople,time:this.dataList1[i].partsMakePeople,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("生产人员"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -2639,7 +2582,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -2734,27 +2677,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].partsMakeQuipment) == -1){
+          xdate.push(this.dataList1[i].partsMakeQuipment)
         }
-        md = {name:date,id:this.dataList1[i].partsMakeQuipment,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].partsMakeQuipment,time:this.dataList1[i].partsMakeQuipment,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("生产设备"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -3008,7 +2939,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -3206,7 +3137,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -3301,27 +3232,15 @@ export default {
         if(name.indexOf(date) == -1){
           name.push(date)
         }
-        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
-          xdate.push(this.dataList1[i].devHappenTime)
+        if(xdate.indexOf(this.dataList1[i].partsMeasuringQuipment) == -1){
+          xdate.push(this.dataList1[i].partsMeasuringQuipment)
         }
-        md = {name:date,id:this.dataList1[i].partsMeasuringQuipment,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        md = {name:date,id:this.dataList1[i].partsMeasuringQuipment,time:this.dataList1[i].partsMeasuringQuipment,num:this.dataList1[i].devHappennum}
         ndata.push(md)
       }
-
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("测量设备"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
@@ -3575,7 +3494,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }
@@ -3773,7 +3692,7 @@ export default {
         var a1 = ""
         var a2 = []
         for (let i1 = 0; i1 < ndata1.length; i1++){
-          if(ndata1[i1].name==name[i]&&xdate.indexOf(ndata1[i1].time)!=xdate.length-1){
+          if(ndata1[i1].name==name[i]){
             a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
             a2.push(a1)
           }

@@ -200,6 +200,7 @@ export default {
         series: [
           {
             type: "line",
+            smooth: true,
             showBackground: true,
             // barWidth: 20,
             symbolSize: 10,
