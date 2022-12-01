@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             // 班组名称列表
-            gradelList:[],
+            gradeList:[],
             // 时间线列表
             allList:[],
             // 质量总数
@@ -69,16 +69,22 @@ export default {
         // 对比堆叠图高度适应
 
         // 故障件生产班组变更情况
-        selectByGradeFaultModel(){
-            selectByGradeFaultModel(this.queryParams).then(response => {
-                this.gradeList = response;
-                this.getChart();
-        });
-        },
+        // selectByGradeFaultModel(){
+        //     selectByGradeFaultModel(this.queryParams).then(response => {
+        //         this.gradeList = response;
+        //         this.getChart();
+        // });
+        // },
+
         // 生产班组统计质量问题总数
         qualitySumByGrade(){
             qualitySumByGrade(this.queryParams).then(response => {
-                this.qualityList = response;
+                for(let i=0;i<response.length;i++){
+                  this.qualityList.push(response[i].sum);
+                  this.gradeList.push(response[i].quarter);
+                }
+                
+                console.log("2222",response);
                 this.getChart();
                 // console.log("2222",this.qualityList);
         });
@@ -86,7 +92,9 @@ export default {
         // 生产班组统计产品总数
         productSumByGrade(){
             productSumByGrade(this.queryParams).then(response => {
-                this.productList = response;
+                for(let i=0;i<response.length;i++){
+                  this.productList.push(response[i].sum);
+                }
                 this.getChart();
         });
         },
@@ -305,7 +313,7 @@ export default {
         }
     },
   created() {
-    this.selectByGradeFaultModel()
+    // this.selectByGradeFaultModel()
     this.qualitySumByGrade()
     this.productSumByGrade()
     this.selectByGradeChanged()

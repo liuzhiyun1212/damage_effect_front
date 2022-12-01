@@ -312,4 +312,22 @@ export function nameAndModelByYearSum() {
     method: 'get'
   })
 }
+export function selectByFaultModelMake() {
+  return request({
+    url: '/system/dev/selectByFaultModelMake',
+    method: 'get'
+  })
+}
 
+export function selectQualityByMakeWorkmanship() {
+  return request({
+    url: '/system/dev/selectQualityByMakeWorkmanship',
+    method: 'get'
+  })
+}
+export function selectProductByMakeWorkmanship() {
+  return request({
+    url: '/system/dev/selectProductByMakeWorkmanship',
+    method: 'get'
+  })
+}

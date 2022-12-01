@@ -13,7 +13,7 @@
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
     <div
-            id="duibi"
+            id="state"
             style="width: 100%; height: 400px;"
           ></div>
     </el-card> 
@@ -76,7 +76,7 @@ export default {
     // 对比堆叠图
     // 对比堆叠图
     getChart(){
-            var myChart = echarts.init(document.getElementById("duibi"))
+            var myChart = echarts.init(document.getElementById("state"))
             var option = {
                 title: {
                     text: '装备状态变更对比堆叠图'
