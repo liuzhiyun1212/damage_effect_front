@@ -2,7 +2,7 @@
     <div>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <h2>故障件生产设备变更情况</h2>
-            <div ref="chart" :style="{ width: '100%', height: '380px' }"></div>
+            <TimeLineChart />
             <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
                 <p style="
                 font-family: Arial;
@@ -14,7 +14,7 @@
                     故障件生产设备变更情况
                 </p>
             </div>
-            <TimeLineChart />
+            <div ref="chart" :style="{ width: '100%', height: '380px' }"></div>
         </el-card>
     </div>
 </template>

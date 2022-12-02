@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div id="group_timeLine" style="width: 100%; height: 300px;"></div>
+        <div ref="device_time_line" ></div>
     </div>
 </template>
 
@@ -14,8 +14,6 @@ export default {
     data() {
         //这里存放数据
         return {
-            // 班组名称列表
-            gradelList: [],
             // 时间线列表
             allList: [],
             // 质量总数
@@ -23,18 +21,16 @@ export default {
             // 生产总数
             productList: [],
             xList: [],
-            yGrade: [],
             yList: [],
             seriesData: [],
             // 时间线显示列表
             timeData: [],
-            // yList2:[],
         };
     },
 
     //方法集合
     methods: {
-        // 故障件生产班组变更
+        // 故障件生产设备变更
         selectByProduceDeviceChanged() {
             selectByProduceDeviceChanged(this.queryParams).then(response => {
                 let arr = [];
@@ -50,7 +46,7 @@ export default {
                     return time1.indexOf(item) === index;
                 });
                 //高度适应
-                var d = document.getElementById("group_timeLine");
+                var d = this.$refs.device_time_line;
                 var height = this.yList.length * 150;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText = "height:" + height + "px";
@@ -126,7 +122,7 @@ export default {
         // 时间线
         getTime() {
             let dataGet = this.yList
-            var myChart = echarts.init(document.getElementById("group_timeLine"))
+            var myChart = echarts.init(this.$refs.device_time_line)
             var option = {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
@@ -186,7 +182,6 @@ export default {
         }
     },
 
-    //生命周期 - 挂载完成（可以访问DOM元素）
     mounted() {
         this.selectByProduceDeviceChanged()
         this.timeProduceDeviceChanged()
