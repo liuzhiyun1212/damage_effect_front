@@ -1577,27 +1577,44 @@ export default {
           name.push(date)
         }
         xx = this.dataList3[i].installWhere.split('/')
-        x = '（'+xx[0]+'，'+xx[1]+'，'+xx[2]+'）'
+        let xx1 = ""
+        let xx2 = ""
+        switch (xx[1]) {
+          case "1":
+            xx1 = "上"
+            break
+          case "2":
+            xx1 = "中"
+            break
+          case "3":
+            xx1 = "下"
+            break
+          default:
+            xx1 = ""
+        }
+        switch (xx[2]) {
+          case "1":
+            xx2 = "左"
+            break
+          case "2":
+            xx2 = "中"
+            break
+          case "3":
+            xx2 = "右"
+            break
+          default:
+            xx2 = ""
+        }
+        x = '（'+xx[0]+'框，'+xx1+'，'+xx2+'）'
         if(xdate.indexOf(this.dataList3[i].devHappenTime) == -1){
           xdate.push(this.dataList3[i].devHappenTime)
         }
         md = {name:date,id:x,time:this.dataList3[i].devHappenTime,num:this.dataList3[i].devHappennum}
         ndata.push(md)
       }
-      var compare1 = function (x, y) {//比较函数
-        if (x < y) {
-          return -1;
-        } else if (x > y) {
-          return 1;
-        } else {
-          return 0;
-        }
-      }
-      xdate.sort(compare1)
       var xdate1 = []
       for (let i = 0; i < xdate.length; i++){
-        let a = i+1;
-        xdate1.push("安装位置"+a)
+        xdate1.push(xdate[i])
       }
       var fydata = new Array()
       var ydata = new Array()
