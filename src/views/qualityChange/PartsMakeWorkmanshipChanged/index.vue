@@ -9,69 +9,81 @@
           margin-left: 30px;
         "
       >
-        装备使用环境变更情况
+      装备生产工艺变更情况
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
-    <div
-            id="huanjing"
+        <div
+            id="timeLine"
+            style="width: 100%; height: 300px;"
+          ></div>
+          <div
+            id="shengchanbanzu"
             style="width: 100%; height: 400px;"
           ></div>
-    </el-card>      
-    </div>
+          
+          
+    </el-card>
+  </div>
 </template>
 
 <script>
- import * as echarts from 'echarts';
-import {selectEnvironment,selectDevByEnvironment,selectQualityByEnvironment} from '@/api/system/dev';
+import * as echarts from "echarts"
+import {
+    selectByFaultModelMake,selectQualityByMakeWorkmanship,selectProductByMakeWorkmanship
+} from "@/api/system/dev"
 export default {
     data () {
         return {
-            // 使用环境
-            enList:[],
-            // 装备总数
-            devList:[],
-            // 质量问题总数
-            qList:[],
+            // 班组名称列表
+            makeWorkmanshipList:[],
+            // 时间线列表
+            allList:[],
+            // 质量总数
+            qualityList:[],
+            // 生产总数
+            productList:[],
+            xList:[],
+            yGrade:[],
+            yList:[],
+            seriesData:[],
+            // 时间线显示列表
+            timeData:[],
         }
     },
     methods: {
-        // 统计高发故障模式环境装备数量
-        selectDevByEnvironment(){
-            selectDevByEnvironment(this.queryParams).then(response => {
+        // // 高发故障模式的生产工艺
+        // selectByFaultModelMake(){
+        //     selectByFaultModelMake(this.queryParams).then(response => {
+        //         this.makeWorkmanshipList = response;
+        //         this.getChart();
+        // });
+        // },
+        // 质量问题总数
+        selectQualityByMakeWorkmanship(){
+            selectQualityByMakeWorkmanship(this.queryParams).then(response => {
                 for(let i=0;i<response.length;i++){
-                    this.enList.push(response[i].quarter);
-                    this.devList.push(response[i].sum);
+                    this.makeWorkmanshipList.push(response[i].quarter);
+                    this.qualityList.push(response[i].sum);
                 }
-                
-                //hhhhhhhhhh高度适应
-                var d =  document.getElementById("timeLine");
-                var height=this.enList.length*150;
-                //  d.setAttribute(height,height+"px");
-                d.style.cssText="height:"+height+"px";
-                //  this.timeGradeChanged();
-                this.getTime();
-                this.getHeight();
                 this.getChart();
-                
         });
         },
-        // 统计高发故障模式环境质量问题数量
-        selectQualityByEnvironment(){
-            selectQualityByEnvironment(this.queryParams).then(response => {
-                console.log("xxxxxxx",response);
+        // 产品总数
+        selectProductByMakeWorkmanship(){
+            selectProductByMakeWorkmanship(this.queryParams).then(response => {
                 for(let i=0;i<response.length;i++){
-                    this.qList.push(response[i].sum);
+                    this.productList.push(response[i].sum);
                 }
-            this.getChart();
-            });
+                this.getChart();
+        });
         },
-        // 对比堆叠图
-        getChart(){
-            var myChart = echarts.init(document.getElementById("huanjing"))
+                // 对比堆叠图
+                getChart(){
+            var myChart = echarts.init(document.getElementById("shengchanbanzu"))
             var option = {
-                title: {
-                    text: '高发故障模式环境对比堆叠图'
-                },
+                // title: {
+                //     text: '故障件涉及生产班组对比堆叠图'
+                // },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -91,11 +103,11 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: this.enList
+                    data: this.makeWorkmanshipList
                 },
                 series: [
                     {
-                    name: '装备数量',
+                    name: '产品数量',
                     type: 'bar',
                     stack: 'total',
                     label: {
@@ -104,7 +116,7 @@ export default {
                     emphasis: {
                         focus: 'series'
                     },
-                    data: this.devList
+                    data: this.productList
                     },
                     {
                     name: '质量问题总数',
@@ -116,7 +128,7 @@ export default {
                     emphasis: {
                         focus: 'series'
                     },
-                    data: this.qList
+                    data: this.qualityList
                     }
                 ]
                 };
@@ -128,11 +140,10 @@ export default {
             },
     },
     created() {
-        // this.selectEnvironment();
-        this.selectDevByEnvironment();
-        this.selectQualityByEnvironment()
+        // this.selectByFaultModelMake();
+        this.selectQualityByMakeWorkmanship();
+        this.selectProductByMakeWorkmanship();
     },
-
 }
 </script>
 

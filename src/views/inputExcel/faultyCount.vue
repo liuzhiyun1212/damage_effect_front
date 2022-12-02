@@ -54,12 +54,12 @@
             </el-table-column>
             <el-table-column
               prop="partsCount"
-              label="问题发生数"
+              label="故障件发生数"
             >
             </el-table-column>
             <el-table-column
               prop="partsProportion"
-              label="百分比"
+              label="故障件发生数占比"
             >
             </el-table-column>
           </el-table>
@@ -112,7 +112,6 @@ export default {
         // 故障件型号-名称
         selectFaultyCount(){
             selectFaultyCount().then(response => {
-
                 this.faultyCountList = [],
                 this.faultyList = [],
                 this.faultyCountList = response;
@@ -152,6 +151,9 @@ export default {
                         type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                     }
                 },
+              grid:{
+                y:"10%"
+              },
                 xAxis: {
                     type: 'category',
                     data: this.xQuarter,
@@ -163,7 +165,7 @@ export default {
                     axisLine: {
                     show: false
                     },
-                    interval: 1,
+                    interval: 2,
                     axisTick: {
                     show: false
                     },
@@ -197,9 +199,18 @@ export default {
                             return colorList[params.dataIndex]
                         }
                     },
+                    label: {
+                      show: true,     //开启显示
+                      position: 'inside',    //在上方显示
+                      textStyle: {        //数值样式
+                        color: 'white',
+                        fontSize: 14
+                      }
+                    },
                     data: this.yQuarter
                     }
                 ]
+
                 };
             myChart.setOption(option);
             // echarts自适应

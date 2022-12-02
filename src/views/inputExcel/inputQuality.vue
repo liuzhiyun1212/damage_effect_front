@@ -516,7 +516,7 @@ export default {
       this.reset();
     },
     handleImport() {
-      this.upload.title = "用户导入";
+      this.upload.title = "质量问题数据导入";
       this.upload.open = true;
     },
     /** 下载模板操作 */

@@ -18,12 +18,6 @@ export function faultStatistics(query) {
   })
 }
 
-
-
-
-
-
-
 // 查询质量问题数据详细
 export function getQualityProblem1(id) {
   return request({

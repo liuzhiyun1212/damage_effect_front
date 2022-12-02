@@ -113,7 +113,7 @@ export default {
             tooltip: {
                 trigger: 'axis',
                 formatter:  (param)=> {
-                            if(param[0].data >= this.average*0.5){
+                            if(param[0].data > this.average*0.5){
                             return param[0].name + "质量问题集中爆发";
                         }
                     }
@@ -150,7 +150,7 @@ export default {
                 barWidth: 20,
                 itemStyle: {
                   color: (params) => {
-                                if(params.data >= Math.round(this.average*0.5)){
+                                if(params.data > Math.round(this.average*0.5)){
                                     return 'red';
                                 }else{
                                     return 'blue'
