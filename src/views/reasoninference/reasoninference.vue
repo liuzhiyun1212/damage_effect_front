@@ -1606,10 +1606,10 @@ export default {
             xx2 = ""
         }
         x = '（'+xx[0]+'框，'+xx1+'，'+xx2+'）'
-        if(xdate.indexOf(this.dataList3[i].devHappenTime) == -1){
-          xdate.push(this.dataList3[i].devHappenTime)
+        if(xdate.indexOf(x) == -1){
+          xdate.push(x)
         }
-        md = {name:date,id:x,time:this.dataList3[i].devHappenTime,num:this.dataList3[i].devHappennum}
+        md = {name:date,id:x,time:x,num:this.dataList3[i].devHappennum}
         ndata.push(md)
       }
       var xdate1 = []
