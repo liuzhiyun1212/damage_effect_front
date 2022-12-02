@@ -20,7 +20,7 @@
         <el-tab-pane :lazy="true" label="故障件生产班组变更情况"><partsGroupchange /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件人员变更情况"><partsMakepeople/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产设备变更情况"><partsMakeequip /></el-tab-pane>
-        <el-tab-pane :lazy="true" label="故障件测量设备变更情况">质量问题发生地理环境</el-tab-pane>
+        <el-tab-pane :lazy="true" label="故障件测量设备变更情况"><measuringDeviceStackChart/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件原材料变更情况">故障件种类</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备所用零件变更情况">故障件名称</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备生产工艺变更情况"><partsMakeWorkmanshipChanged></partsMakeWorkmanshipChanged></el-tab-pane>
@@ -54,11 +54,21 @@ import partsMakepeople from "@/views/qualityChange/zzh/peopleChange";
 import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmanshipChanged/index.vue";
 import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue";
 import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue";
+import measuringDeviceStackChart from "@/views/qualityChange/changeOfMeasuringDevice/index.vue";
+
 export default {
 
   name: "problemChange",
-  components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople,partsMakeWorkmanshipChanged,
-    devStateChanged,environmentChanged
+  components: {
+    equipmentchange,
+    partsChange,
+    partsGroupchange,
+    partsMakeequip,
+    partsMakepeople,
+    partsMakeWorkmanshipChanged,
+    devStateChanged,
+    environmentChanged,
+    measuringDeviceStackChart
   },
   data() {
     return {
