@@ -23,14 +23,14 @@
         <el-tab-pane :lazy="true" label="故障件测量设备变更情况">质量问题发生地理环境</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件原材料变更情况">故障件种类</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备所用零件变更情况">故障件名称</el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备生产工艺变更情况">故障件随时间变化情况</el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备生产工艺变更情况"><partsMakeWorkmanshipChanged></partsMakeWorkmanshipChanged></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修班组变更情况">质故障件安装位置</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修人员变更情况">故障件安装方法</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修设备变更情况">故障件安装方法</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修工艺变更情况">故障件安装方法</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备使用强度变更情况">故障件安装方法</el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备装备状态更情况">故障件安装方法</el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备使用环境更情况">故障件安装方法</el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备装备状态更情况"><devStateChanged></devStateChanged></el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备使用环境更情况"><environmentChanged></environmentChanged></el-tab-pane>
       </el-tabs>
     </el-card>
     <!-- <el-card style="margin-left: 15%; width:84%; height:800px;margin-top: 20px;">
@@ -46,15 +46,20 @@
 
 <script>
 
-import equipmentchange from "./monitor/refit/index.vue";
-import partsChange from "./qualityChange/troubleRemodel";
-import partsGroupchange from "./qualityChange/gradeChange/index";
-import partsMakeequip from "./qualityChange/changeOfProductionDevice/index"
-import partsMakepeople from "./qualityChange/zzh/peopleChange";
+import equipmentchange from "@/views/monitor/refit/index.vue";
+import partsChange from "@/views/qualityChange/troubleRemodel";
+import partsGroupchange from "@/views/qualityChange/gradeChange/index";
+import partsMakeequip from "@/views/qualityChange/changeOfProductionDevice/index"
+import partsMakepeople from "@/views/qualityChange/zzh/peopleChange";
+import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmanshipChanged/index.vue";
+import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue";
+import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue";
 export default {
 
   name: "problemChange",
-  components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople},
+  components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople,partsMakeWorkmanshipChanged,
+    devStateChanged,environmentChanged
+  },
   data() {
     return {
       tabPosition: 'left',
@@ -62,7 +67,14 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
 
-<style scoped>
-
+//   /deep/ .el-tabs--left .el-tabs__item.is-left {
+//     text-align: left;
+// }
+</style>
+<style>
+.el-tabs--left .el-tabs__item.is-left {
+    text-align: left;
+}
 </style>
