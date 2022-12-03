@@ -6,3 +6,10 @@ import request from '@/utils/request'
       method: 'get'
     })
   }
+
+  export function getMeasuringDeviceChartList() {
+    return request({
+      url: '/qualityChange/changeOfMeasuringDevice/getMeasuringDeviceChart',
+      method: 'get'
+    })
+  }
