@@ -81,16 +81,17 @@ export default {
         this.data1 = response.rows
         // console.log("data1", this.data1)
         listAllModifyData().then((response) => {
-          this.data6 = response
+          this.data6 = response.rows
           // console.log("data6", this.data6)
 
           this.dealY()
           this.dealX()
           this.dealSe()
 
-          // console.log("xData_timeline" ,this.xData_timeline)
-          // console.log("yData_timeline" ,this.yData_timeline)
-          // console.log("se_timeline" ,this.se_timeline)
+          // console.log("parts", this.parts)
+          // console.log("xData_timeline", this.xData_timeline)
+          // console.log("yData_timeline", this.yData_timeline)
+          // console.log("se_timeline", this.se_timeline)
 
           this.getHeight_timeline()
           this.init_Chart_MaterialChange_timeline()
@@ -117,6 +118,7 @@ export default {
             this.parts[j].modify.push(modifyT)
           }
         }
+        // console.log("parts", this.parts)
         // 处理X轴
         if (this.data6[i].modifyType === "原材料来源变更") {
           // 去重
@@ -136,8 +138,7 @@ export default {
         }
       }
       this.xData_timeline.sort()
-      // console.log("parts", this.parts)
-      // console.log("xData_timeline" ,this.xData_timeline)
+      // console.log("xData_timeline", this.xData_timeline)
       //处理Y轴 删除空白节点
       for (let p = 0; p < this.parts.length; p++) {
         if (this.parts[p].modify.length === 0) {
@@ -151,7 +152,7 @@ export default {
           }
         }
       }
-      console.log("yData_timeline", this.yData_timeline)
+      // console.log("yData_timeline", this.yData_timeline)
     },
     // 处理Y
     dealY() {
@@ -208,7 +209,7 @@ export default {
     },
     // 处理Se
     dealSe() {
-      console.log("parts", this.parts)
+      // console.log("parts", this.parts)
       // 处理se显示横线
       for (let i = 0; i < this.yData_timeline.length; i++) {
         let se = {
@@ -260,7 +261,7 @@ export default {
         }
       }
 
-      console.log("se_timeline", this.se_timeline)
+      // console.log("se_timeline", this.se_timeline)
     },
 
     //初始化 变更时间线折线图
