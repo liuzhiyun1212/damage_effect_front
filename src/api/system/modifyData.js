@@ -61,3 +61,11 @@ export function importModifyDataTemplate() {
     method: 'get'
   })
 }
+
+// 获取装备零部件来源变更时间
+export function listPartsManufactureChange() {
+  return request({
+    url: '/system/modifyData/listPartsManufactureChange',
+    method: 'get',
+  })
+}

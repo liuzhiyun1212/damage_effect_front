@@ -53,3 +53,11 @@ export function del9(id) {
     method: 'delete'
   })
 }
+
+// 下载导入模板
+export function importTemplate() {
+  return request({
+    url: '/system/9/importTemplate',
+    method: 'get'
+  })
+}
