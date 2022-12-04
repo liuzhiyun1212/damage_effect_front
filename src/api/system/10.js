@@ -9,6 +9,14 @@ export function list10(query) {
   })
 }
 
+export function repairPeople() {
+  return request({
+    url: '/system/10/repairPeople',
+    method: 'get',
+  })
+}
+
+
 // 查询【请填写功能名称】详细
 export function get10(id) {
   return request({

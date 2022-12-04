@@ -8,7 +8,7 @@
 
 <script>
 import {oneQuality,oneYear,selectPlaneType,faultStatistics,faultModelByYearSum,faultModelByQuarterSum,
-    highSumByEnvironment,selectFaultyCount,nameAndModelByQuarter,nameAndModelByYear} from '@/api/system/dev';
+    highSumByEnvironment,selectFaultyCount,selectAllType,nameAndModelByQuarter,nameAndModelByYear} from '@/api/system/dev';
 import { getCheckList} from "@/api/chart/aircraftTypeWithTime";
 import { getCheckList as useIntensity} from "@/api/chart/useIntensity";
 import {pointCount} from "@/api/system/design.js"
@@ -95,7 +95,12 @@ export default {
             });
     },
     // 4.2.1.8
-
+    selectAllType(){
+        selectAllType(this.queryParams).then(response => {
+            this.count8 = response.length;
+                console.log(this.count8);
+            });
+    },
     // 4.2.1.9
     selectFaultyCount(){
         selectFaultyCount(this.queryParams).then(response => {
@@ -120,7 +125,7 @@ export default {
     pointCount(){
         pointCount(this.queryParams).then(response => {
             this.count11 = response.length;
-                console.log(this.count11);
+                // console.log(this.count11);
             });
     },
     },
@@ -139,6 +144,7 @@ export default {
         this.nameAndModelByQuarter();
         this.nameAndModelByYear();
         this.pointCount();
+        this.selectAllType();
     },
 }
 </script>
