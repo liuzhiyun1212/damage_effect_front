@@ -96,7 +96,7 @@ export default {
     partsMakeWorkmanshipChanged,
     devStateChanged,
     environmentChanged,
-    partsMaterialChange,,equipmentAbilityenhancement
+    partsMaterialChange,equipmentAbilityenhancement
   },
   data() {
     return {
