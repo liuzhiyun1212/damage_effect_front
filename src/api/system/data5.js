@@ -8,6 +8,21 @@ export function listData5(query) {
     params: query
   })
 }
+//4.2.2.2折线图
+export function getEquipmentability() {
+  return request({
+    url: '/system/data5/getEquipmentability',
+    method: 'get',
+  })
+}
+//4.2.2.2对比图
+export function getEquipmentabilitycompare() {
+  return request({
+    url: '/system/data5/getEquipmentabilitycompare',
+    method: 'get',
+  })
+}
+
 
 // 查询【请填写功能名称】详细
 export function getData5(id) {

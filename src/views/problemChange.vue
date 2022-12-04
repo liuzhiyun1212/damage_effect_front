@@ -15,7 +15,7 @@
        <p>故障件安装方法</p>-->
       <el-tabs :tab-position="tabPosition"  :lazy="true">
         <el-tab-pane :lazy="true" label="装备改型情况"><equipmentchange /></el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备能力提升情况" ></el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备能力提升情况" ><equipmentAbilityenhancement/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件改型情况"><partsChange /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产班组变更情况"><partsGroupchange /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件人员变更情况"><partsMakepeople/></el-tab-pane>
@@ -54,11 +54,12 @@ import partsMakepeople from "@/views/qualityChange/zzh/peopleChange";
 import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmanshipChanged/index.vue";
 import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue";
 import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue";
+import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilityenhancement/index.vue";
 export default {
 
   name: "problemChange",
   components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople,partsMakeWorkmanshipChanged,
-    devStateChanged,environmentChanged
+    devStateChanged,environmentChanged,equipmentAbilityenhancement
   },
   data() {
     return {
