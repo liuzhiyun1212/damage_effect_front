@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
+        <div ref="measuring_device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
     </div>
 </template>
 
 <script>
 import * as echarts from "echarts"
 
-import { selectByProduceDeviceChanged, timeProduceDeviceChanged } from "@/api/system/dev"
+import { selectByMeasuringDeviceChanged, timeMeasuringDeviceChanged } from "@/api/system/dev"
 
 export default {
     name: 'timeLineChart',
@@ -31,8 +31,8 @@ export default {
     //方法集合
     methods: {
         // 故障件生产设备变更
-        selectByProduceDeviceChanged() {
-            selectByProduceDeviceChanged(this.queryParams).then(response => {
+        selectByMeasuringDeviceChanged() {
+            selectByMeasuringDeviceChanged(this.queryParams).then(response => {
                 let arr = [];
                 let time1 = [];
                 for (let i = 0; i < response.length; i++) {
@@ -46,7 +46,7 @@ export default {
                     return time1.indexOf(item) === index;
                 });
                 //高度适应
-                var d = this.$refs.device_time_line;
+                var d = this.$refs.measuring_device_time_line;
                 var height = this.yList.length * 100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText = "height:" + height + "px";
@@ -55,12 +55,11 @@ export default {
         },
 
         // 时间线统计列表
-        timeProduceDeviceChanged() {
-            timeProduceDeviceChanged(this.queryParams).then(response => {
-                console.log("timeProduceDeviceChanged", response);
+        timeMeasuringDeviceChanged() {
+            timeMeasuringDeviceChanged(this.queryParams).then(response => {
                 this.allList = response;
                 this.dealRes(this.allList);
-                this.selectByProduceDeviceChanged();
+                this.selectByMeasuringDeviceChanged();
                 // this.getHeight();
                 this.getTime();
                 // console.log("1111111",this.allList);
@@ -68,7 +67,6 @@ export default {
         },
 
         dealRes(data) {
-            console.log("dealRes",data);
             var count = 0;
             for (var i = 0; i < data.length; i++) {
                 this.seriesData.push({
@@ -114,17 +112,15 @@ export default {
                     }
                 }
             }
-            //   console.log(count);
             for (let j = 0; j < this.seriesData.length; j++) {
                 for (let i = 0; i < count; i++) this.seriesData[j].data.push(j)
             }
-            console.log("11111111", this.allList)
         },
 
         // 时间线
         getTime() {
             let dataGet = this.yList
-            var myChart = echarts.init(this.$refs.device_time_line)
+            var myChart = echarts.init(this.$refs.measuring_device_time_line)
             var option = {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
@@ -162,7 +158,7 @@ export default {
                     type: 'value',
                     interval: 1,
                     axisLabel: {
-                        margin: 20,
+                        margin: 15,
                         formatter: function (val, index) {
                             return dataGet[val];
                         },
@@ -185,8 +181,8 @@ export default {
     },
 
     mounted() {
-        this.selectByProduceDeviceChanged()
-        this.timeProduceDeviceChanged()
+        this.selectByMeasuringDeviceChanged()
+        this.timeMeasuringDeviceChanged()
     },
 }
 </script>

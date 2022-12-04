@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
-            <h2>故障件生产设备变更情况</h2>
+            <h2>故障件测量设备变更情况</h2>
             <TimeLineChart />
             <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
                 <p style="
@@ -11,17 +11,17 @@
                 display: inline-block;
                 margin-left: 20px;
                 ">
-                    故障件生产设备变更情况
+                    故障件测量设备变更情况
                 </p>
             </div>
-            <div ref="production_device_stack_chart" :style="{ width: '100%', height: '380px' }"></div>
+            <div ref="measuring_device_stack_chart" :style="{ width: '100%', height: '380px' }"></div>
         </el-card>
     </div>
 </template>
 
 <script>
 import echarts from "echarts";
-import { getChartData } from "../../../api/chart/changeOfProductionDevice"
+import { getMeasuringDeviceChartList } from "../../../api/chart/changeOfProductionDevice"
 import TimeLineChart from "./timeLineChart.vue"
 
 export default {
@@ -59,38 +59,11 @@ export default {
                 },
                 series: [],
             },
-            xData: [
-                {
-                    name: '设备生产数',
-                    type: 'bar',
-                    stack: 'total',
-                    label: {
-                        show: true
-                    },
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [2, 1, 3, 2, 2, 3, 3]
-                },
-                {
-                    name: '故障发生数',
-                    type: 'bar',
-                    stack: 'total',
-                    label: {
-                        show: true
-                    },
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    data: [2, 1, 2, 1, 1, 2, 1]
-                },
-            ],
-            yData: ['工人1', '工人2', '工人3', '工人4', '工人5', '工人6', '工人7']
         }
     },
     methods: {
         initChart() {
-            let getchart = echarts.init(this.$refs.production_device_stack_chart);
+            let getchart = echarts.init(this.$refs.measuring_device_stack_chart);
             getchart.clear()
             getchart.setOption(this.option);
 
@@ -101,7 +74,7 @@ export default {
         },
 
         getChartData() {
-            getChartData().then(res => {
+            getMeasuringDeviceChartList().then(res => {
                 console.log(res);
                 let list = [];
                 list.push(res.data.produceNumObj)
