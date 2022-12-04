@@ -220,6 +220,22 @@ export function selectByProduceDeviceChanged() {
     method: 'get'
   })
 }
+
+// 测量设备变更时间线
+export function timeMeasuringDeviceChanged() {
+  return request({
+    url: '/system/dev/timeMeasuringDeviceChanged',
+    method: 'get'
+  })
+}
+// 测量设备变更时间线
+export function selectByMeasuringDeviceChanged() {
+  return request({
+    url: '/system/dev/selectByMeasuringDeviceChanged',
+    method: 'get'
+  })
+}
+
 // 
 export function selectState1() {
   return request({
@@ -331,3 +347,16 @@ export function selectProductByMakeWorkmanship() {
     method: 'get'
   })
 }
+
+export function faultStatistics() {
+  return request({
+    url: '/system/dev/faultStatistics',
+    method: 'get'
+  })
+}
+// export function analysisCount() {
+//   return request({
+//     url: '/system/dev/analysisCount',
+//     method: 'get'
+//   })
+// }

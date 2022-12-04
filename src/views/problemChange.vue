@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card style="margin-left: 0.5%; width:99%; height: 1200px; float:left">
+    <el-card style="margin-left: 0.5%; width: 99%; height: 1200px; float: left">
       <!-- <p>质量问题发生时间</p>
        <p>质量问题涉及到的机型</p>
        <p>质量问题发生机型时间变化情况</p>
@@ -39,16 +39,13 @@
        > </iframe>
 
      </el-card>-->
-
-
   </div>
 </template>
 
 <script>
-
-import equipmentchange from "@/views/monitor/refit/index.vue";
-import partsChange from "@/views/qualityChange/troubleRemodel";
-import partsGroupchange from "@/views/qualityChange/gradeChange/index";
+import equipmentchange from "@/views/monitor/refit/index.vue"
+import partsChange from "@/views/qualityChange/troubleRemodel"
+import partsGroupchange from "@/views/qualityChange/gradeChange/index"
 import partsMakeequip from "@/views/qualityChange/changeOfProductionDevice/index"
 import partsMakepeople from "@/views/qualityChange/zzh/peopleChange";
 import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmanshipChanged/index.vue";
@@ -56,26 +53,24 @@ import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue";
 import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue";
 import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilityenhancement/index.vue";
 export default {
-
   name: "problemChange",
   components:{equipmentchange,partsChange,partsGroupchange,partsMakeequip,partsMakepeople,partsMakeWorkmanshipChanged,
     devStateChanged,environmentChanged,equipmentAbilityenhancement
   },
   data() {
     return {
-      tabPosition: 'left',
+      tabPosition: "left",
     }
-  }
+  },
 }
 </script>
 <style lang="scss" scoped>
-
 //   /deep/ .el-tabs--left .el-tabs__item.is-left {
 //     text-align: left;
 // }
 </style>
 <style>
 .el-tabs--left .el-tabs__item.is-left {
-    text-align: left;
+  text-align: left;
 }
 </style>

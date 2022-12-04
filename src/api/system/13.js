@@ -1,52 +1,44 @@
 import request from '@/utils/request'
 
 // 查询【请填写功能名称】列表
-export function list10(query) {
+export function list13(query) {
   return request({
-    url: '/system/10/list',
+    url: '/system/13/list',
     method: 'get',
     params: query
   })
 }
 
-export function repairPeople() {
-  return request({
-    url: '/system/10/repairPeople',
-    method: 'get',
-  })
-}
-
-
 // 查询【请填写功能名称】详细
-export function get10(id) {
+export function get13(id) {
   return request({
-    url: '/system/10/' + id,
+    url: '/system/13/' + id,
     method: 'get'
   })
 }
 
 // 新增【请填写功能名称】
-export function add10(data) {
+export function add13(data) {
   return request({
-    url: '/system/10',
+    url: '/system/13',
     method: 'post',
     data: data
   })
 }
 
 // 修改【请填写功能名称】
-export function update10(data) {
+export function update13(data) {
   return request({
-    url: '/system/10',
+    url: '/system/13',
     method: 'put',
     data: data
   })
 }
 
 // 删除【请填写功能名称】
-export function del10(id) {
+export function del13(id) {
   return request({
-    url: '/system/10/' + id,
+    url: '/system/13/' + id,
     method: 'delete'
   })
 }
