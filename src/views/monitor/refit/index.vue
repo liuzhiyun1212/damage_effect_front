@@ -119,7 +119,7 @@ export default {
     //获取数据 渲染 改型时间线折线图
     getData2() {
       listDataAll().then((response) => {
-        //console.log("data2", response)
+        // console.log("data2", response)
         for (let i = 0; i < response.length; i++) {
           let markX = 0
           let markY = 0
