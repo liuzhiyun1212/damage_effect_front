@@ -25,65 +25,35 @@
           改型时间线
         </p>
       </div>
-      <div id="echart-line" :style="{ width: '100%', height: '400px' }"></div>
+      <div id="trouble-time" :style="{ width: '100%', height: '400px' }"></div>
 
-      <el-table
-        :header-cell-style="{
-          background: '#84BBFE',
-          color: '#fff',
-          fontSize: '14px',
-          textAlign: 'center',
-          fontWeight: '600',
-          fontFamily: '黑体',
-          padding: '0',
-        }"
-        :header-row-style="{
-          height: '20',
-        }"
-        :data="productChange"
-        @selection-change="handleSelectionChange"
-        style="height: auto; margin-top: 20px; width: 99%"
-      >
-        <el-table-column type="index" align="center" label="序号" width="50" />
-        <el-table-column
-          label="故障件型号"
-          align="center"
-          prop="productModel"
-        ></el-table-column>
-        <el-table-column
-          label="故障件名称"
-          align="center"
-          prop="productName"
-        ></el-table-column>
-        <el-table-column label="改型时间" align="center" prop="modifyTime">
-        </el-table-column>
-        <!-- <el-table-column label="质量问题标题" align="center" prop="title" />
-      <el-table-column label="故障件种类" align="center" prop="partsType" />
-      <el-table-column label="故障件名称" align="center" prop="partsName" />
-      <el-table-column label="故障模式" align="center" prop="faultModel" /> -->
-      </el-table>
+      <!-- 对比堆叠图 -->
+      <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+          <p
+            style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+          >
+            对比堆叠图
+          </p>
+        </div>
+      <div id="trouble-num" :style="{ width: '100%', height: '400px' }"></div>
+
+     
     </el-card>
 
-    <pagination
-      v-show="total > 0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    
   </div>
 </template>
 
 <script>
-import {
-  listModify,
-  getModify,
-  delModify,
-  addModify,
-  updateModify,
-  listProductChange,
-} from "@/api/system/modify";
+import {listProductChange} from "@/api/system/modify";
 import * as echarts from "echarts";
+import {numQuality, numFault} from "@/api/system/9";
 
 export default {
   name: "Modify",
@@ -94,46 +64,45 @@ export default {
       x: [],
       y: [],
 
-      // 遮罩层
-      loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
-      // 显示搜索条件
-      showSearch: true,
-      // 总条数
-      total: 0,
-      // 产品改型数据表格数据
-      modifyList: [],
-      // 弹出层标题
-      title: "",
-      // 是否显示弹出层
-      open: false,
-      // 查询参数
-      queryParams: {
-        pageNum: 1,
-        pageSize: 10,
-        planeType: null,
-        productType: null,
-        productName: null,
-        productModel: null,
-        modifyTime: null,
-        modifyMeasures: null,
-      },
-      // 表单参数
-      form: {},
-      // 表单校验
-      rules: {},
+      //堆叠图data
+      yList:[],
+      faultNum:[],
+      qualityNum:[],
+
+
     };
   },
-  created() {},
+  created() {
+    
+  },
   mounted() {
+    //对比堆叠图数据函数
+    this.tsNumQuality();
+    
     this.testChange();
   },
   methods: {
+    tsNumQuality(){
+      numQuality().then(res=>{
+        for (let i = 0; i< res.length; i++) {
+
+          this.yList[i] = res[i].partsModel+res[i].partsName;
+          this.qualityNum[i] = res[i].partsNum;
+        }
+        console.log("ylist:",this.yList);
+        console.log("qualityNum:",this.qualityNum);
+      })
+
+    numFault().then(re=>{
+      for (let i = 0; i< re.length; i++) {
+          this.faultNum[i] = re[i].partsNum;
+        }
+        console.log("faultNum:",this.faultNum);
+    })
+      
+    },
+
+
     getX() {
       for (let index = 0; index < this.productChange.length; index++) {
         this.x[index] = this.productChange[index].modifyTime;
@@ -142,21 +111,20 @@ export default {
       console.log("x:", this.x);
       this.dealRes();
     },
+
     getY() {
-      let flag = 0;
-      for (let index = 0; index < this.productChange.length; index++) {
-        if (
-          this.productChange[index - flag].productModel +
-            this.productChange[index - flag].productName ==
-          this.y[index - flag - 1]
-        ) {
-          flag = flag + 1;
-        } else {
-          this.y[index - flag] =
-            this.productChange[index - flag].productModel +
-            this.productChange[index - flag].productName;
+      //去重
+      for (let i = 0; i <  this.productChange.length; i++) {
+          let mark = 0;
+          for (let j = 0; j <  this.productChange.length; j++) {
+            if (this.productChange[i].productModel+this.productChange[i].productName === this.y[j]) {
+              mark = -1;
+            }
+          }
+          if (mark === 0) {
+            this.y.push(this.productChange[i].productModel+this.productChange[i].productName);
+          }
         }
-      }
       console.log("y:", this.y);
       this.initChart();
     },
@@ -201,17 +169,21 @@ export default {
     },
 
     testChange() {
+      
       listProductChange().then((res) => {
         this.productChange = res;
         console.log("productChange1:", this.productChange);
         this.getX();
         this.getY();
       });
+      
     },
 
     initChart() {
-      var chartDom = document.getElementById("echart-line");
+      var chartDom = document.getElementById("trouble-time");
+      var chartDom2 = document.getElementById("trouble-num");
       var myChart = echarts.init(chartDom);
+      var myChart2 = echarts.init(chartDom2);
       var option;
       option = {
         title: {
@@ -260,116 +232,72 @@ export default {
         },
         series: this.se,
       };
+
+      var option2;
+      option2= {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            // Use axis to trigger tooltip
+            type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+          }
+        },
+        legend: {},
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value'
+        },
+        yAxis: {
+          type: 'category',
+          data: this.yList//['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        series: [
+          {
+            name: '故障件生产数量',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.faultNum//[320, 302, 301, 334, 390, 330, 320]
+          },
+
+          {
+            name: '质量问题数',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.qualityNum//[120, 132, 101, 134, 90, 230, 210]
+          },
+
+        ]
+      };
       option && myChart.setOption(option);
+      option2 && myChart2.setOption(option2);
       // echarts自适应
       window.addEventListener("resize", () => {
         myChart.resize();
       });
+
+      window.addEventListener("resize", () => {
+        myChart2.resize();
+      });
     },
 
-    /** 查询产品改型数据列表 */
-    getList() {
-      this.loading = true;
-      listModify(this.queryParams).then((response) => {
-        this.modifyList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
-    },
-    // 取消按钮
-    cancel() {
-      this.open = false;
-      this.reset();
-    },
-    // 表单重置
-    reset() {
-      this.form = {
-        id: null,
-        planeType: null,
-        productType: null,
-        productName: null,
-        productModel: null,
-        modifyTime: null,
-        modifyMeasures: null,
-      };
-      this.resetForm("form");
-    },
-    /** 搜索按钮操作 */
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
-    },
-    /** 重置按钮操作 */
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
-    },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map((item) => item.id);
-      this.single = selection.length !== 1;
-      this.multiple = !selection.length;
-    },
-    /** 新增按钮操作 */
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "添加产品改型数据";
-    },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids;
-      getModify(id).then((response) => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改产品改型数据";
-      });
-    },
-    /** 提交按钮 */
-    submitForm() {
-      this.$refs["form"].validate((valid) => {
-        if (valid) {
-          if (this.form.id != null) {
-            updateModify(this.form).then((response) => {
-              this.$modal.msgSuccess("修改成功");
-              this.open = false;
-              this.getList();
-            });
-          } else {
-            addModify(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
-              this.open = false;
-              this.getList();
-            });
-          }
-        }
-      });
-    },
-    /** 删除按钮操作 */
-    handleDelete(row) {
-      const ids = row.id || this.ids;
-      this.$modal
-        .confirm('是否确认删除产品改型数据编号为"' + ids + '"的数据项？')
-        .then(function () {
-          return delModify(ids);
-        })
-        .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("删除成功");
-        })
-        .catch(() => {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download(
-        "system/modify/export",
-        {
-          ...this.queryParams,
-        },
-        `modify_${new Date().getTime()}.xlsx`
-      );
-    },
+    
   },
 };
 </script>

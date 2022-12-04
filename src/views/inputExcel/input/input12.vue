@@ -1,6 +1,36 @@
 <template>
   <div class="app-container">
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="部队" prop="troops">
+        <el-input
+          v-model="queryParams.troops"
+          placeholder="请输入部队"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="飞行小时" prop="flightHours">
+        <el-input
+          v-model="queryParams.flightHours"
+          placeholder="请输入飞行小时"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -13,18 +43,18 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
 
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="序号" align="center" prop="id" />
-        <el-table-column label="年月" align="center" prop="date" width="180">
+        <el-table-column label="年月" align="center" prop="date" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.date, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="机型" align="center" prop="planeType" />
-        <el-table-column label="部队" align="center" prop="troops" />
-        <el-table-column label="飞行小时" align="center" prop="flightHours" />
+        <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+        <el-table-column label="部队" align="center" prop="troops" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+        <el-table-column label="飞行小时" align="center" prop="flightHours" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
@@ -117,6 +147,8 @@ export default {
       single: true,
       // 非多个禁用
       multiple: true,
+      // 默认排序
+      defaultSort: {prop:"date", order: 'descending'},
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -132,18 +164,8 @@ export default {
       pageNum: 1,
         pageSize: 10,
         planeType: null,
-        partsName: null,
-        partsModel: null,
-        partsCode: null,
-        partsFactoryTime: null,
-        partsManufacture: null,
-        partsMakeGroup: null,
-        partsMakePeople: null,
-        partsMakeQuipment: null,
-        partsMeasuringQuipment: null,
-        rawMaterialPlace: null,
-        sparePartsPlace: null,
-        partsMakeWorkmanship: null
+        troops : null,
+        flightHours :null,
     },
     // 表单参数
     form: {},
@@ -198,19 +220,10 @@ export default {
     reset() {
       this.form = {
         id: null,
+        pageSize: 10,
         planeType: null,
-        partsName: null,
-        partsModel: null,
-        partsCode: null,
-        partsFactoryTime: null,
-        partsManufacture: null,
-        partsMakeGroup: null,
-        partsMakePeople: null,
-        partsMakeQuipment: null,
-        partsMeasuringQuipment: null,
-        rawMaterialPlace: null,
-        sparePartsPlace: null,
-        partsMakeWorkmanship: null
+        troops : null,
+        flightHours :null,
       };
       this.resetForm("form");
     },
@@ -222,7 +235,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -243,7 +257,7 @@ export default {
       get12(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改12：装备使用数据";
+        this.title = "装备使用数据";
       });
     },
     /** 提交按钮 */
@@ -269,12 +283,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除12：装备使用数据编号为"' + ids + '"的数据项？').then(function() {
-        return del12(ids);
+      const name = row.planeType;
+      this.$modal.confirm('是否确认删除装备使用数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {

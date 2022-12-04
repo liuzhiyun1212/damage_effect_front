@@ -9,6 +9,21 @@ export function list9(query) {
   })
 }
 
+export function numQuality() {
+  return request({
+    url: '/system/9/numQuality',
+    method: 'get',
+  })
+}
+
+export function numFault() {
+  return request({
+    url: '/system/9/numFault',
+    method: 'get',
+  })
+}
+
+
 // 查询9：装备使用数据详细
 export function get9(id) {
   return request({
