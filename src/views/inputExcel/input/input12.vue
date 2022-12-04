@@ -16,7 +16,7 @@
     <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange">
 
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column label="年月" align="center" prop="date" width="180">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.date, '{y}-{m}-{d}') }}</span>
@@ -27,6 +27,13 @@
         <el-table-column label="飞行小时" align="center" prop="flightHours" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleDetail(scope.row)"
+              v-hasPermi="['system:12:edit']"
+            >详情</el-button>
             <el-button
               size="mini"
               type="text"
@@ -53,7 +60,58 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改12：装备使用数据对话框 -->
+    <!-- 装备使用数据修改对话框 -->
+    <el-dialog :title="title" :visible.sync="open1" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="年月" prop="date">
+          <el-date-picker clearable
+                          v-model="form.date"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择年月">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" />
+        </el-form-item>
+        <el-form-item label="部队" prop="troops">
+          <el-input v-model="form.troops" placeholder="请输入部队" />
+        </el-form-item>
+        <el-form-item label="飞行小时" prop="flightHours">
+          <el-input v-model="form.flightHours" placeholder="请输入飞行小时" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!-- 装备使用数据详情对话框 -->
+    <el-dialog :title="title" :visible.sync="open2" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="年月" prop="date">
+          <el-date-picker clearable
+                          v-model="form.date"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择年月" readonly="readonly">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="部队" prop="troops">
+          <el-input v-model="form.troops" placeholder="请输入部队" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="飞行小时" prop="flightHours">
+          <el-input v-model="form.flightHours" placeholder="请输入飞行小时" readonly="readonly"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+<!--        <el-button type="primary" @click="submitForm">确 定</el-button>-->
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
     <!--  装备使用数据导入  -->
     <el-dialog :title="upload.title" :visible.sync="upload.open4" width="400px" append-to-body>
       <el-upload
@@ -126,7 +184,8 @@ export default {
       // 弹出层标题
       title: "",
       // 是否显示弹出层
-      open: false,
+      open1: false,
+      open2: false,
       // 查询参数
       queryParams: {
       pageNum: 1,
@@ -191,7 +250,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
+      this.open1 = false;
+      this.open2 = false;
       this.reset();
     },
     // 表单重置
@@ -236,14 +296,24 @@ export default {
       this.open = true;
       this.title = "添加12：装备使用数据";
     },
+    /** 详情按钮操作 */
+    handleDetail(row) {
+      this.reset();
+      const id = row.id || this.ids
+      get12(id).then(response => {
+        this.form = response.data;
+        this.open2 = true;
+        this.title = "装备使用数据详情";
+      });
+    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       get12(id).then(response => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改12：装备使用数据";
+        this.open1 = true;
+        this.title = "装备使用数据修改";
       });
     },
     /** 提交按钮 */
@@ -253,13 +323,13 @@ export default {
           if (this.form.id != null) {
             update12(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
-              this.open = false;
+              this.open1 = false;
               this.getList();
             });
           } else {
             add12(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
-              this.open = false;
+              this.open1 = false;
               this.getList();
             });
           }
@@ -285,3 +355,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.myTable{
+  width: 100%;
+  height: 50%;
+}
+
+</style>

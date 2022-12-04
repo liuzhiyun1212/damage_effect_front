@@ -14,9 +14,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange" class="myTable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column label="机型" align="center" prop="planeType" />
       <el-table-column label="装备出厂编号" align="center" prop="devCode" />
       <el-table-column label="类型" align="center" prop="type" />
@@ -30,6 +30,13 @@
       <el-table-column label="能力状态" align="center" prop="capabilityStatus" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleDetail(scope.row)"
+            v-hasPermi="['system:data5:edit']"
+          >详细</el-button>
           <el-button
             size="mini"
             type="text"
@@ -55,7 +62,79 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <!-- 添加或修改装备制造数据对话框 -->
+    <el-dialog :title="title" :visible.sync="open1" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" />
+        </el-form-item>
+        <el-form-item label="装备出厂编号" prop="devCode">
+          <el-input v-model="form.devCode" placeholder="请输入装备出厂编号" />
+        </el-form-item>
+        <el-form-item label="类型" prop="type">
+          <el-input v-model="form.devCode" placeholder="请输入类型" />
+        </el-form-item>
+        <el-form-item label="生产/升级时间" prop="productionUpgradeTime">
+          <el-date-picker clearable
+                          v-model="form.productionUpgradeTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择生产/升级时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="装备制造单位" prop="devUnit">
+          <el-input v-model="form.devUnit" placeholder="请输入装备制造单位" />
+        </el-form-item>
+        <el-form-item label="装备制造批次" prop="devManufacture">
+          <el-input v-model="form.devManufacture" placeholder="请输入装备制造批次" />
+        </el-form-item>
+        <el-form-item label="能力状态" prop="capabilityStatus">
+          <el-input v-model="form.capabilityStatus" placeholder="capabilityStatus" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
 
+    <!-- 装备制造数据详情对话框 -->
+    <el-dialog :title="title" :visible.sync="open2" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="装备出厂编号" prop="devCode">
+          <el-input v-model="form.devCode" placeholder="请输入装备出厂编号" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="类型" prop="type">
+          <el-input v-model="form.devCode" placeholder="请输入类型" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="生产/升级时间" prop="productionUpgradeTime">
+          <el-date-picker clearable
+                          v-model="form.productionUpgradeTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择生产/升级时间" readonly="readonly">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="装备制造单位" prop="devUnit">
+          <el-input v-model="form.devUnit" placeholder="请输入装备制造单位" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="装备制造批次" prop="devManufacture">
+          <el-input v-model="form.devManufacture" placeholder="请输入装备制造批次" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="能力状态" prop="capabilityStatus">
+          <el-input v-model="form.capabilityStatus" placeholder="capabilityStatus" readonly="readonly"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+<!--        <el-button type="primary" @click="submitForm">确 定</el-button>-->
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 装备制造数据导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open5" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -122,7 +201,8 @@ export default {
       // 弹出层标题
       title: "",
       // 是否显示弹出层
-      open: false,
+      open1: false,
+      open2: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -180,7 +260,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
+      this.open1 = false;
+      this.open2 = false;
       this.reset();
     },
     // 表单重置
@@ -219,14 +300,24 @@ export default {
       this.open = true;
       this.title = "添加【请填写功能名称】";
     },
+    /** 详情按钮操作 */
+    handleDetail(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getData5(id).then(response => {
+        this.form = response.data;
+        this.open2 = true;
+        this.title = "装备制造数据详情";
+      });
+    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       getData5(id).then(response => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改【请填写功能名称】";
+        this.open1 = true;
+        this.title = "装备制造数据修改";
       });
     },
     /** 提交按钮 */
@@ -236,13 +327,13 @@ export default {
           if (this.form.id != null) {
             updateData5(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
-              this.open = false;
+              this.open1 = false;
               this.getList();
             });
           } else {
             addData5(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
-              this.open = false;
+              this.open1 = false;
               this.getList();
             });
           }
@@ -268,4 +359,11 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.myTable{
+  width: 100%;
+  height: 50%;
+}
+
+</style>
 

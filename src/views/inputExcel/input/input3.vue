@@ -13,9 +13,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="designList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="designList" @selection-change="handleSelectionChange" class="myTable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column label="机型" align="center" prop="planeType" />
       <el-table-column label="成品件种类" align="center" prop="finishedType" />
       <el-table-column label="成品件名称" align="center" prop="finishedName" />
@@ -25,16 +25,25 @@
       <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
       <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
       <el-table-column label="成品件安装方法" align="center" prop="installMethod" />
-      <el-table-column label="原材料" align="center" prop="rawMaterial" />
-      <el-table-column label="零部件" align="center" prop="spareParts" />
-      <el-table-column label="成品件改型时间" align="center" prop="modifyTime" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.modifyTime, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="成品件改型措施" align="center" prop="modifyMeasures" />
+<!--      <el-table-column label="原材料" align="center" prop="rawMaterial" />-->
+<!--      <el-table-column label="零部件" align="center" prop="spareParts" />-->
+<!--      <el-table-column label="成品件改型时间" align="center" prop="modifyTime" width="180">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.modifyTime, '{y}-{m}-{d}') }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--      <el-table-column label="成品件改型措施" align="center" prop="modifyMeasures" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleDetail(scope.row)"
+            v-hasPermi="['system:design:edit']"
+          >详情</el-button>
+
           <el-button
             size="mini"
             type="text"
@@ -61,7 +70,7 @@
       @pagination="getList"
     />
 
-
+    <!-- 用户导入对话框 -->
     <el-dialog :title="upload.title" :visible.sync="upload.open3" width="400px" append-to-body>
       <el-upload
         ref="upload"
@@ -88,6 +97,114 @@
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFileForm">确 定</el-button>
         <el-button @click="upload.open3 = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 产品设计详情对话框 -->
+    <el-dialog :title="title" :visible.sync="open2" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品件种类" prop="finishedType">
+          <el-input v-model="form.finishedType" placeholder="请输入成品件种类" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品件名称" prop="finishedName">
+          <el-input v-model="form.finishedName" placeholder="请输入成品件名称" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品件型号" prop="finishedModel">
+          <el-input v-model="form.finishedModel" placeholder="成品件型号" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品件制造单位" prop="finishedManufacturer">
+          <el-input v-model="form.finishedManufacturer" placeholder="请输入成品件制造单位" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="框" prop="frame">
+          <el-input v-model="form.frame" placeholder="请输入框" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="上中下" prop="upperMiddleLower">
+          <el-input v-model="form.upperMiddleLower" placeholder="请输入上中下" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="左中右" prop="leftMiddleRight">
+          <el-input v-model="form.leftMiddleRight" placeholder="请输入左中右" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品安装方法" prop="installMethod">
+          <el-input v-model="form.installMethod" placeholder="请输入成品安装方法" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="原材料" prop="rawMaterial">
+          <el-input v-model="form.rawMaterial" placeholder="原材料" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="零部件" prop="spareParts">
+          <el-input v-model="form.spareParts" placeholder="请输入零部件" readonly="readonly"/>
+        </el-form-item>
+        <el-form-item label="成品改型时间" prop="modifyTime">
+          <el-date-picker clearable
+                          v-model="form.modifyTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择成品改型时间" readonly="readonly">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="成品改型措施" prop="modifyMeasures">
+          <el-input v-model="form.modifyMeasures" placeholder="请输入改型措施" readonly="readonly"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+<!--        <el-button type="primary" @click="submitForm">确 定</el-button>-->
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 产品设计修改对话框 -->
+    <el-dialog :title="title" :visible.sync="open1" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="140px">
+        <el-form-item label="机型" prop="planeType">
+          <el-input v-model="form.planeType" placeholder="请输入机型" />
+        </el-form-item>
+        <el-form-item label="成品件种类" prop="finishedType">
+          <el-input v-model="form.finishedType" placeholder="请输入成品件种类" />
+        </el-form-item>
+        <el-form-item label="成品件名称" prop="finishedName">
+          <el-input v-model="form.finishedName" placeholder="请输入成品件名称" />
+        </el-form-item>
+        <el-form-item label="成品件型号" prop="finishedModel">
+          <el-input v-model="form.finishedModel" placeholder="成品件型号" />
+        </el-form-item>
+        <el-form-item label="成品件制造单位" prop="finishedManufacturer">
+          <el-input v-model="form.finishedManufacturer" placeholder="请输入成品件制造单位" />
+        </el-form-item>
+        <el-form-item label="框" prop="frame">
+          <el-input v-model="form.frame" placeholder="请输入框" />
+        </el-form-item>
+        <el-form-item label="上中下" prop="upperMiddleLower">
+          <el-input v-model="form.upperMiddleLower" placeholder="请输入上中下" />
+        </el-form-item>
+        <el-form-item label="左中右" prop="leftMiddleRight">
+          <el-input v-model="form.leftMiddleRight" placeholder="请输入左中右" />
+        </el-form-item>
+        <el-form-item label="成品安装方法" prop="installMethod">
+          <el-input v-model="form.installMethod" placeholder="请输入成品安装方法" />
+        </el-form-item>
+        <el-form-item label="原材料" prop="rawMaterial">
+          <el-input v-model="form.rawMaterial" placeholder="原材料" />
+        </el-form-item>
+        <el-form-item label="零部件" prop="spareParts">
+          <el-input v-model="form.spareParts" placeholder="请输入零部件" />
+        </el-form-item>
+        <el-form-item label="成品改型时间" prop="modifyTime">
+          <el-date-picker clearable
+                          v-model="form.modifyTime"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="请选择成品改型时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="成品改型措施" prop="modifyMeasures">
+          <el-input v-model="form.modifyMeasures" placeholder="请输入改型措施" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -131,7 +248,8 @@ export default {
       // 弹出层标题
       title: "",
       // 是否显示弹出层
-      open: false,
+      open1: false,
+      open2: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -195,7 +313,8 @@ export default {
     },
     // 取消按钮
     cancel() {
-      this.open = false;
+      this.open1 = false;
+      this.open2 = false;
       this.reset();
     },
     // 表单重置
@@ -240,14 +359,25 @@ export default {
       this.open = true;
       this.title = "添加成品件设计数据";
     },
+    /** 详情按钮操作 */
+    handleDetail(row) {
+      this.reset();
+      const id = row.id || this.ids
+      getDesign(id).then(response => {
+        this.form = response.data;
+        this.open2 = true;
+        this.title = "产品设计数据详情";
+      });
+    },
+
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
       getDesign(id).then(response => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改成品件设计数据";
+        this.open1 = true;
+        this.title = "修改产品设计数据";
       });
     },
     /** 提交按钮 */
@@ -257,7 +387,7 @@ export default {
           if (this.form.id != null) {
             updateDesign(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
-              this.open = false;
+              this.open1 = false;
               this.getList();
             });
           } else {
@@ -289,3 +419,10 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.myTable{
+  width: 100%;
+  height: 50%;
+}
+
+</style>
