@@ -100,6 +100,7 @@ export default {
                         for (let k = 0; k < this.allList[i].list.length; k++) {
                             this.seriesData[j].markPoint.data.push({
                                 // name:'故障类型：'+data[i].name,
+                                name:this.allList[i].name,
                                 coord: [this.allList[i].list[k], j],
                                 label: {
                                     show: true,
@@ -125,12 +126,16 @@ export default {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
                 // },
-                //             tooltip: {
-                //                 trigger: 'axis',
-                // axisPointer: {
-                //   type: 'cross'
-                // }
-                // },
+                tooltip: {
+                    trigger: 'item',
+                    formatter(params) {
+                        // console.log("@@@,",params);
+                        if (params.componentType === "markPoint") {
+                            return params.name + '\n' + params.data.coord[0].substring(0, 10)
+                        }
+                        return params.seriesName + '\n' + params.name.substring(0, 10)
+                    }
+                },
                 legend: {},
                 // toolbox: {
                 //     show: true,
