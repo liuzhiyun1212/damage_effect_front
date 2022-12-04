@@ -28,10 +28,9 @@
           ><partsMakepeople
         /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产设备变更情况"
-          ><partsMakeequip
-        /></el-tab-pane>
+          ><partsMakeequip/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件测量设备变更情况"
-          >质量问题发生地理环境</el-tab-pane
+          ><measuringDevice/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="故障件原材料变更情况"
           ><partsMaterialChange
@@ -85,6 +84,7 @@ import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue"
 import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue"
 import partsMaterialChange from "@/views/qualityChange/partsMaterialChange/index.vue"
 import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilityenhancement/index.vue";
+import measuringDevice from "@/views/qualityChange/changeOfMeasuringDevice/index";
 export default {
   name: "problemChange",
   components: {
@@ -96,7 +96,9 @@ export default {
     partsMakeWorkmanshipChanged,
     devStateChanged,
     environmentChanged,
-    partsMaterialChange,equipmentAbilityenhancement
+    partsMaterialChange,
+    equipmentAbilityenhancement,
+    measuringDevice
   },
   data() {
     return {

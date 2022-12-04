@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
+        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 200px"></div>
     </div>
 </template>
 
@@ -172,7 +172,7 @@ export default {
                     // }
                 },
                 series: this.seriesData,
-                color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
+                // color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
             };
             //this.getHeight(myChart,option);
             this.$nextTick(myChart.setOption(option));

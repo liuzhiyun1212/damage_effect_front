@@ -31,7 +31,7 @@ export default {
         return {
             loading: false,
             option: {
-                color: ['#5470c6', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75'],
+                // color: ['#5470c6', '#fac858', '#ee6666', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
