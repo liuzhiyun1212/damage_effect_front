@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="measuring_device_time_line" ></div>
+        <div ref="measuring_device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
     </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
                 });
                 //高度适应
                 var d = this.$refs.measuring_device_time_line;
-                var height = this.yList.length * 150;
+                var height = this.yList.length * 100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText = "height:" + height + "px";
                 this.getTime();
@@ -112,11 +112,9 @@ export default {
                     }
                 }
             }
-            //   console.log(count);
             for (let j = 0; j < this.seriesData.length; j++) {
                 for (let i = 0; i < count; i++) this.seriesData[j].data.push(j)
             }
-            console.log("11111111", this.allList)
         },
 
         // 时间线
@@ -160,7 +158,7 @@ export default {
                     type: 'value',
                     interval: 1,
                     axisLabel: {
-                        margin: 20,
+                        margin: 15,
                         formatter: function (val, index) {
                             return dataGet[val];
                         },
