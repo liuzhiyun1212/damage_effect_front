@@ -143,3 +143,27 @@ export function promeasuringdev3() {
     method: 'get'
   })
 }
+
+//生产工艺发生变化:1.不同生产工艺生产的故障件中，某种故障模式质量问题数量存在较大差异
+export function ProMakeWorkmanship1() {
+  return request({
+    url: '/system/reasonrule/ProMakeWorkmanship1',
+    method: 'get'
+  })
+}
+
+//生产工艺发生变化:2.故障件生产工艺变更时间与质量问题数量变化时间一致或不超过一定范围
+export function ProMakeWorkmanship2() {
+  return request({
+    url: '/system/reasonrule/ProMakeWorkmanship2',
+    method: 'get'
+  })
+}
+
+//生产工艺发生变化:3.故障件检测方法变更时间与质量问题数量变化时间一致或不超过一定范围
+export function ProMakeWorkmanship3() {
+  return request({
+    url: '/system/reasonrule/ProMakeWorkmanship3',
+    method: 'get'
+  })
+}

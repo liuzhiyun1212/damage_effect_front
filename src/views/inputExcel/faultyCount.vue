@@ -121,6 +121,7 @@ export default {
                     this.faultyList.push(this.faultyCountList[i].partsModelName)
                 }
                 console.log(this.faultyList);
+                console.log("aaaaa",this.selectList.length);
                 this.selectAllFaulty();
             });
         },

@@ -224,7 +224,6 @@ export default {
             barWidth: 20,
             itemStyle: {
               color: (params) => {
-                console.log(params)
                 if (params.name.slice(this.xLength + 1) !== "null") {
                   return "red"
                 }
