@@ -86,6 +86,8 @@ import partsMaterialChange from "@/views/qualityChange/partsMaterialChange/index
 import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilityenhancement/index.vue";
 import faultyPartsChange from "@/views/qualityChange/faultyPartsChange/faultyPartsChange.vue";
 import measuringDevice from "@/views/qualityChange/changeOfMeasuringDevice/index";
+import measuringDeviceStackChart from "@/views/qualityChange/changeOfMeasuringDevice/index.vue";
+
 export default {
   name: "problemChange",
   components: {
