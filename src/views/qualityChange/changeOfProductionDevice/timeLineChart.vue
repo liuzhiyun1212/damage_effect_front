@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="device_time_line" ></div>
+        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
     </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
                 });
                 //高度适应
                 var d = this.$refs.device_time_line;
-                var height = this.yList.length * 150;
+                var height = this.yList.length * 100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText = "height:" + height + "px";
                 this.getTime();
@@ -57,6 +57,7 @@ export default {
         // 时间线统计列表
         timeProduceDeviceChanged() {
             timeProduceDeviceChanged(this.queryParams).then(response => {
+                console.log("timeProduceDeviceChanged", response);
                 this.allList = response;
                 this.dealRes(this.allList);
                 this.selectByProduceDeviceChanged();
@@ -67,6 +68,7 @@ export default {
         },
 
         dealRes(data) {
+            console.log("dealRes",data);
             var count = 0;
             for (var i = 0; i < data.length; i++) {
                 this.seriesData.push({

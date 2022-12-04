@@ -347,3 +347,16 @@ export function selectProductByMakeWorkmanship() {
     method: 'get'
   })
 }
+
+export function faultStatistics() {
+  return request({
+    url: '/system/dev/faultStatistics',
+    method: 'get'
+  })
+}
+// export function analysisCount() {
+//   return request({
+//     url: '/system/dev/analysisCount',
+//     method: 'get'
+//   })
+// }
