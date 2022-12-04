@@ -17,7 +17,7 @@
         <el-tab-pane :lazy="true" label="装备改型情况"
           ><equipmentchange
         /></el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备能力提升情况"></el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备能力提升情况"><equipmentAbilityenhancement/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件改型情况"
           ><partsChange
         /></el-tab-pane>
@@ -84,6 +84,7 @@ import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmans
 import devStateChanged from "@/views/qualityChange/devStateChanged/index.vue"
 import environmentChanged from "@/views/qualityChange/environmentChanged/index.vue"
 import partsMaterialChange from "@/views/qualityChange/partsMaterialChange/index.vue"
+import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilityenhancement/index.vue";
 export default {
   name: "problemChange",
   components: {
@@ -95,7 +96,7 @@ export default {
     partsMakeWorkmanshipChanged,
     devStateChanged,
     environmentChanged,
-    partsMaterialChange,
+    partsMaterialChange,,equipmentAbilityenhancement
   },
   data() {
     return {
