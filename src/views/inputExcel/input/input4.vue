@@ -1,5 +1,36 @@
 <template>
   <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="产品种类" prop="productType">
+        <el-input
+          v-model="queryParams.productType"
+          placeholder="请输入产品种类"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="产品型号" prop="productModel">
+        <el-input
+          v-model="queryParams.productModel"
+          placeholder="请输入产品型号"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -13,19 +44,19 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="modifyList" @selection-change="handleSelectionChange" class="myTable">
+    <el-table v-loading="loading" :data="modifyList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="产品种类" align="center" prop="productType" />
-      <el-table-column label="产品名称" align="center" prop="productName" />
-      <el-table-column label="产品型号" align="center" prop="productModel" />
-      <el-table-column label="产品改型时间" align="center" prop="modifyTime" width="180">
+      <el-table-column label="序号" align="center" prop="id" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="产品种类" align="center" prop="productType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="产品名称" align="center" prop="productName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="产品型号" align="center" prop="productModel" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="产品改型时间" align="center" prop="modifyTime" width="180"  :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.modifyTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="成品件改型措施" align="center" prop="modifyMeasures" />
+      <el-table-column label="成品件改型措施" align="center" prop="modifyMeasures" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -187,6 +218,8 @@ export default {
       single: true,
       // 非多个禁用
       multiple: true,
+      // 默认排序
+      defaultSort: {prop:"modifyTime", order: 'descending'},
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -279,7 +312,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -336,12 +370,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除产品改型数据编号为"' + ids + '"的数据项？').then(function() {
-        return delModify(ids);
+      const name = row.planeType;
+      this.$modal.confirm('是否确认删除成品件设计数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {

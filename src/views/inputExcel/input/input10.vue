@@ -1,6 +1,36 @@
 <template>
   <div class="app-container">
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="partsName">
+        <el-input
+          v-model="queryParams.partsName"
+          placeholder="请输入产品名称"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="产品型号" prop="partsModel">
+        <el-input
+          v-model="queryParams.partsModel"
+          placeholder="请输入产品型号"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="变更类型" prop="modifyType">
+        <el-input
+          v-model="queryParams.modifyType"
+          placeholder="请输入变更类型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -13,18 +43,18 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange" class="myTable">
+    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column label="产品名称" align="center" prop="partsName" />
-      <el-table-column label="产品型号" align="center" prop="partsModel" />
-      <el-table-column label="变更时间" align="center" prop="modifyTime" width="180">
+      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="产品名称" align="center" prop="partsName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="产品型号" align="center" prop="partsModel" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="变更时间" align="center" prop="modifyTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.modifyTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="变更类型" align="center" prop="modifyType" />
-      <el-table-column label="变更方式" align="center" prop="modifyMethod" />
+      <el-table-column label="变更类型" align="center" prop="modifyType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+      <el-table-column label="变更方式" align="center" prop="modifyMethod" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -176,6 +206,8 @@ export default {
       single: true,
       // 非多个禁用
       multiple: true,
+      // 默认排序
+      defaultSort: {prop:"modifyTime", order: 'descending'},
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -266,7 +298,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -323,12 +356,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除【维修变更数据】编号为"' + ids + '"的数据项？').then(function() {
-        return del10(ids);
+      const name = row.partsName;
+      this.$modal.confirm('是否确认删除维修变更数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {

@@ -1,6 +1,36 @@
 <template>
   <div class="app-container">
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="装备出厂编号" prop="devCode">
+        <el-input
+          v-model="queryParams.devCode"
+          placeholder="请输入装备出厂编号"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="类型" prop="type">
+        <el-input
+          v-model="queryParams.type"
+          placeholder="请输入类型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -14,20 +44,20 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange" class="myTable">
+    <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="装备出厂编号" align="center" prop="devCode" />
-      <el-table-column label="类型" align="center" prop="type" />
-      <el-table-column label="生产/升级时间" align="center" prop="productionUpgradeTime" width="180">
+      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备出厂编号" align="center" prop="devCode" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="类型" align="center" prop="type" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="生产/升级时间" align="center" prop="productionUpgradeTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.productionUpgradeTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="装备制造单位" align="center" prop="devUnit" />
-      <el-table-column label="装备制造批次" align="center" prop="devManufacture" />
-      <el-table-column label="能力状态" align="center" prop="capabilityStatus" />
+      <el-table-column label="装备制造单位" align="center" prop="devUnit" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备制造批次" align="center" prop="devManufacture" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="能力状态" align="center" prop="capabilityStatus" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -190,6 +220,8 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      // 默认排序
+      defaultSort: {prop:"modifyTime", order: 'descending'},
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -343,12 +375,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除【请填写功能名称】编号为"' + ids + '"的数据项？').then(function() {
-        return delData5(ids);
+      const name = row.planeType;
+      this.$modal.confirm('是否确认删除装备制造数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {

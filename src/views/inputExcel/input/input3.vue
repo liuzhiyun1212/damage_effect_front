@@ -1,6 +1,36 @@
 <template>
   <div class="app-container">
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="成品件名称" prop="finishedName">
+        <el-input
+          v-model="queryParams.finishedName"
+          placeholder="请输入成品件名称"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="成品件安装方法" prop="installMethod">
+        <el-input
+          v-model="queryParams.installMethod"
+          placeholder="请输入成品件安装方法"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -13,18 +43,20 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="designList" @selection-change="handleSelectionChange" class="myTable">
+    <el-table v-loading="loading" :data="designList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="成品件种类" align="center" prop="finishedType" />
-      <el-table-column label="成品件名称" align="center" prop="finishedName" />
-      <el-table-column label="成品件型号" align="center" prop="finishedModel" />
-      <el-table-column label="成品件制造单位" align="center" prop="finishedManufacturer" />
-      <el-table-column label="框" align="center" prop="frame" />
-      <el-table-column label="上中下" align="center" prop="upperMiddleLower" />
-      <el-table-column label="左中右" align="center" prop="leftMiddleRight" />
-      <el-table-column label="成品件安装方法" align="center" prop="installMethod" />
+      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="成品件种类" align="center" prop="finishedType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="成品件名称" align="center" prop="finishedName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="成品件型号" align="center" prop="finishedModel" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']" />
+      <el-table-column label="成品件制造单位" align="center" prop="finishedManufacturer" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="框" align="center" prop="frame" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="上中下" align="center" prop="upperMiddleLower" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="左中右" align="center" prop="leftMiddleRight" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="成品件安装方法" align="center" prop="installMethod" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+<!--      <el-table-column label="原材料" align="center" prop="rawMaterial" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="零部件" align="center" prop="spareParts" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>-->
 <!--      <el-table-column label="原材料" align="center" prop="rawMaterial" />-->
 <!--      <el-table-column label="零部件" align="center" prop="spareParts" />-->
 <!--      <el-table-column label="成品件改型时间" align="center" prop="modifyTime" width="180">-->
@@ -233,6 +265,8 @@ export default {
       },
       // 遮罩层
       loading: true,
+      // 默认排序
+      defaultSort: {prop:"modifyTime", order: 'descending'},
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -345,7 +379,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -403,12 +438,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除成品件设计数据编号为"' + ids + '"的数据项？').then(function() {
+      const name = row.planeType;
+      this.$modal.confirm('是否确认删除产品设计数据名为"' + name + '"的数据项？').then(function() {
         return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {

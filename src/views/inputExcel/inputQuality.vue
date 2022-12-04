@@ -174,7 +174,37 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>-->
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="装备出厂编号" prop="devCode">
+        <el-input
+          v-model="queryParams.devCode"
+          placeholder="请输入装备出厂编号"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="装备制造单位" prop="devUnit">
+        <el-input
+          v-model="queryParams.devUnit"
+          placeholder="请输入装备制造单位"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -228,26 +258,26 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange" class="myTable">
+    <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange" :height="'500px'" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <<el-table-column type="index" label="序号"> </el-table-column>
-      <el-table-column label="质量问题标题" align="center" prop="title" />
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="装备出厂编号" align="center" prop="devCode" />
-      <el-table-column label="装备制造单位" align="center" prop="devUnit" />
-      <el-table-column label="装备制造批次" align="center" prop="devManufacture" />
-      <el-table-column label="装备出厂时间" align="center" prop="devFactoryTime" width="180">
+      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column label="质量问题标题" align="center" prop="title" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备出厂编号" align="center" prop="devCode" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备制造单位" align="center" prop="devUnit" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备制造批次" align="center" prop="devManufacture" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备出厂时间" align="center" prop="devFactoryTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.devFactoryTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="装备使用时长" align="center" prop="devUseTime" />
-      <el-table-column label="发生时间" align="center" prop="devHappenTime" width="180">
+      <el-table-column label="装备使用时长" align="center" prop="devUseTime" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="发生时间" align="center" prop="devHappenTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.devHappenTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="故障件种类" align="center" prop="partsType" />
+      <el-table-column label="故障件种类" align="center" prop="partsType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
 <!--      <el-table-column label="故障件名称" align="center" prop="partsName" />-->
 <!--      <el-table-column label="故障件型号" align="center" prop="partsModel" />-->
 <!--      <el-table-column label="故障件出厂编号" align="center" prop="partsCode" />-->
@@ -554,6 +584,8 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      // 默认排序
+      defaultSort: {prop:"partsFactoryTime", order: 'descending'},
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -687,7 +719,8 @@ export default {
     /** 重置按钮操作 */
     resetQuery() {
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -744,12 +777,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除quality_problem编号为"' + ids + '"的数据项？').then(function() {
-        return delDev(ids);
+      const name = row.title;
+      this.$modal.confirm('是否确认删除质量问题数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {
