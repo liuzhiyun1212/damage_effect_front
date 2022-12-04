@@ -7,9 +7,11 @@
 </template>
 
 <script>
-import {oneQuality,oneYear,selectPlaneType,faultStatistics} from '@/api/system/dev';
+import {oneQuality,oneYear,selectPlaneType,faultStatistics,faultModelByYearSum,faultModelByQuarterSum,
+    highSumByEnvironment,selectFaultyCount,nameAndModelByQuarter,nameAndModelByYear} from '@/api/system/dev';
 import { getCheckList} from "@/api/chart/aircraftTypeWithTime";
-import { getCheckList as useIntensity} from "@/api/chart/useIntensity"
+import { getCheckList as useIntensity} from "@/api/chart/useIntensity";
+import {pointCount} from "@/api/system/design.js"
 
 export default {
     data () {
@@ -20,6 +22,15 @@ export default {
             count3:[],
             count4:[],
             count5:[],
+            count6Quarter:[],
+            count6Year:[],
+            count7:[],
+            count8:[],
+            count9:[],
+            count10Quarter:[],
+            count10Year:[],
+            count11:[],
+            count12:[],
         }
     },
     methods: {
@@ -60,7 +71,56 @@ export default {
     faultStatistics() {
         faultStatistics(this.queryParams).then(response => {
             this.count5 = response.length;
-                console.log(this.count5);
+                // console.log(this.count5);
+            });
+    },
+    // 4.2.1.6
+    faultModelByQuarterSum() {
+        faultModelByQuarterSum(this.queryParams).then(response => {
+            this.count6Quarter = response.length;
+                // console.log(this.count6Quarter);
+            });
+    },
+    faultModelByYearSum(){
+        faultModelByYearSum(this.queryParams).then(response => {
+            this.count6Year = response.length;
+                // console.log(this.count6Year);
+            });
+    },
+    // 4.2.1.7
+    highSumByEnvironment(){
+        highSumByEnvironment(this.queryParams).then(response => {
+            this.count7 = response.length;
+                // console.log(this.count7);
+            });
+    },
+    // 4.2.1.8
+
+    // 4.2.1.9
+    selectFaultyCount(){
+        selectFaultyCount(this.queryParams).then(response => {
+            this.count9 = response.length;
+                // console.log(this.count9);
+            });
+    },
+    // 4.2.1.10
+    nameAndModelByQuarter(){
+        nameAndModelByQuarter(this.queryParams).then(response => {
+            this.count10Quarter = response.length;
+                // console.log(this.count10);
+            });
+    },
+    nameAndModelByYear(){
+        nameAndModelByYear(this.queryParams).then(response => {
+            this.count10Year = response.length;
+                // console.log(this.count11);
+            });
+    },
+    // 4.2.1.11
+    pointCount(){
+        pointCount(this.queryParams).then(response => {
+            this.count11 = response.length;
+                console.log(this.count11);
             });
     },
     },
@@ -72,6 +132,13 @@ export default {
         this.getCheckList();
         this.useIntensity();
         this.faultStatistics();
+        this.faultModelByQuarterSum();
+        this.faultModelByYearSum();
+        this.highSumByEnvironment();
+        this.selectFaultyCount();
+        this.nameAndModelByQuarter();
+        this.nameAndModelByYear();
+        this.pointCount();
     },
 }
 </script>
