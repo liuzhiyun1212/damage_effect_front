@@ -1,6 +1,36 @@
 <template>
   <div class="app-container">
-
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
+      <el-form-item label="机型" prop="planeType">
+        <el-input
+          v-model="queryParams.planeType"
+          placeholder="请输入机型"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="装备制造单位" prop="makeUnit">
+        <el-input
+          v-model="queryParams.makeUnit"
+          placeholder="请输入装备制造单位"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="型号系列" prop="modelSeries">
+        <el-input
+          v-model="queryParams.modelSeries"
+          placeholder="请输入型号系列"
+          clearable
+          style="width: 240px;"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+      <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+    </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -14,18 +44,18 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
-      <el-table-column label="机型" align="center" prop="planeType" />
-      <el-table-column label="装备改型时间" align="center" prop="remodelDate" width="180">
+      <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备改型时间" align="center" prop="remodelDate" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.remodelDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="装备改型措施" align="center" prop="remodelMeasure" />
-      <el-table-column label="装备制造单位" align="center" prop="makeUnit" />
-      <el-table-column label="型号系列" align="center" prop="modelSeries" />
+      <el-table-column label="装备改型措施" align="center" prop="remodelMeasure" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="装备制造单位" align="center" prop="makeUnit" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column label="型号系列" align="center" prop="modelSeries" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -71,9 +101,6 @@
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip text-center" slot="tip">
-          <!--          <div class="el-upload__tip" slot="tip">
-                      <el-checkbox v-model="upload.updateSupport" /> 是否更新已经存在的用户数据
-                    </div>-->
           <span>仅允许导入xls、xlsx格式文件。</span>
           <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate3">下载模板</el-link>
         </div>
@@ -120,6 +147,8 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      // 默认排序
+      defaultSort: {prop:"remodelDate", order: 'descending'},
       // 总条数
       total: 0,
       // 装备设计/改型数据表格数据
@@ -205,8 +234,10 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.dateRange = [];
       this.resetForm("queryForm");
-      this.handleQuery();
+      this.queryParams.pageNum = 1;
+      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
@@ -253,12 +284,19 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$modal.confirm('是否确认删除装备设计/改型数据编号为"' + ids + '"的数据项？').then(function() {
-        return delData(ids);
+      const name = row.planeType;
+      this.$modal.confirm('是否确认删除装备设计/改型数据名为"' + name + '"的数据项？').then(function() {
+        return delDesign(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    /** 排序触发事件 */
+    handleSortChange(column, prop, order) {
+      this.queryParams.orderByColumn = column.prop;
+      this.queryParams.isAsc = column.order;
+      this.getList();
     },
     /** 导出按钮操作 */
     handleExport() {
