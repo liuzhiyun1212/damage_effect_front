@@ -75,10 +75,7 @@
 
 import equipmentchange from "@/views/monitor/refit/index.vue";
 import partsChange from "@/views/qualityChange/troubleRemodel";
-import partsGroupchange from "@/views/qualityChange/gradeChange/index";
 import repairGroupchange from "@/views/qualityChange/repairChange/index";
-import equipmentchange from "@/views/monitor/refit/index.vue"
-import partsChange from "@/views/qualityChange/troubleRemodel"
 import partsGroupchange from "@/views/qualityChange/gradeChange/index"
 import partsMakeequip from "@/views/qualityChange/changeOfProductionDevice/index"
 import partsMakepeople from "@/views/qualityChange/zzh/peopleChange"
