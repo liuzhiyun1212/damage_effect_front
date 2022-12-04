@@ -24,7 +24,8 @@
         <el-tab-pane :lazy="true" label="故障件原材料变更情况">故障件种类</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备所用零件变更情况">故障件名称</el-tab-pane>
         <el-tab-pane :lazy="true" label="装备生产工艺变更情况"><partsMakeWorkmanshipChanged></partsMakeWorkmanshipChanged></el-tab-pane>
-        <el-tab-pane :lazy="true" label="故障件维修班组变更情况">质故障件安装位置</el-tab-pane>
+<!--        <el-tab-pane :lazy="true" label="故障件维修班组变更情况">质故障件安装位置</el-tab-pane>-->
+        <el-tab-pane :lazy="true" label="故障件维修班组变更情况"><repairGroupchange /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修人员变更情况">故障件安装方法</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修设备变更情况">故障件安装方法</el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修工艺变更情况">故障件安装方法</el-tab-pane>
@@ -49,6 +50,7 @@
 import equipmentchange from "@/views/monitor/refit/index.vue";
 import partsChange from "@/views/qualityChange/troubleRemodel";
 import partsGroupchange from "@/views/qualityChange/gradeChange/index";
+import repairGroupchange from "@/views/qualityChange/repairChange/index";
 import partsMakeequip from "@/views/qualityChange/changeOfProductionDevice/index"
 import partsMakepeople from "@/views/qualityChange/zzh/peopleChange";
 import partsMakeWorkmanshipChanged from "@/views/qualityChange/PartsMakeWorkmanshipChanged/index.vue";
@@ -68,7 +70,8 @@ export default {
     partsMakeWorkmanshipChanged,
     devStateChanged,
     environmentChanged,
-    measuringDeviceStackChart
+    measuringDeviceStackChart,
+    repairGroupchange
   },
   data() {
     return {
