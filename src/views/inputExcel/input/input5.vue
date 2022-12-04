@@ -46,7 +46,7 @@
 
     <el-table v-loading="loading" :data="data5List" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="装备出厂编号" align="center" prop="devCode" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="类型" align="center" prop="type" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>

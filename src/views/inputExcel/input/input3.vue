@@ -45,7 +45,7 @@
 
     <el-table v-loading="loading" :data="designList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="成品件种类" align="center" prop="finishedType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="成品件名称" align="center" prop="finishedName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
