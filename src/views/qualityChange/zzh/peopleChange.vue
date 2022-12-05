@@ -47,7 +47,7 @@
           </el-tooltip>
 
         </div>
-      <div id="duibi" style="width: 100%; height: 450px"></div>
+      <div id="compare_people" style="width: 100%; height: 450px"></div>
 
         <!--<iframe src="//player.bilibili.com/player.html?aid=978257347&bvid=BV1p44y1L7zG&cid=489572698&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
 -->
@@ -102,7 +102,7 @@ export default {
     },
     // 高度适应 对比堆叠图
     getHeight_stacked() {
-      var id__stacked = document.getElementById("duibi")
+      var id__stacked = document.getElementById("compare_people")
       var height__stacked = this.yList.length * 40
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
@@ -136,7 +136,7 @@ export default {
 
 
     initChart() {
-      var myChart = echarts.init(document.getElementById('duibi'));
+      var myChart = echarts.init(document.getElementById('compare_people'));
       var myChart2 = echarts.init(document.getElementById('people_timeLine'));
       myChart.setOption(this.setOption());
       myChart2.setOption(this.setOption2(),true);
