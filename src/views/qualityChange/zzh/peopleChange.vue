@@ -238,8 +238,14 @@ export default {
             margin:20,
             formatter: function (val,index) {
 
-              /*if(dataGet[val].name.length>5)*/
+              if(dataGet.length===1&&val===0){
+                return dataGet[0].name
+              }
+              else if(dataGet.length>1){
                 return dataGet[val].name;
+              }
+              /*if(dataGet[val].name.length>5)*/
+                /*return dataGet[val].name;*/
             },
           },
         },
