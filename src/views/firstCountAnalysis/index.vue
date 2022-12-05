@@ -2,6 +2,16 @@
   <div>
     <ul>
         <li>质量问题发生时间:   季度{{this.count1Quarter}}年度{{this.count1Year}}</li>
+        <li>质量问题涉及到的机型:   {{this.count2}}</li>
+        <li>质量问题发生机型随时间变化情况:   {{this.count3}}</li>
+        <li>质量问题高发故障模式:   {{this.count5}}</li>
+        <li>质量问题故障模式随时间变化情况:   季度{{this.count6Quarter}}年度{{this.count6Year}}</li>
+        <li>质量问题发生地理环境:   {{this.count7}}</li>
+        <li>故障件种类:   {{this.count8}}</li>
+        <li>故障件名称:   {{this.count9}}</li>
+        <li>故障件名称随时间变化情况统计:   季度{{this.count10Quarter}}年度{{this.count10Year}}</li>
+        <li>故障件安装位置:   {{this.count11}}</li>
+        <!-- <li>故障件名称:   {{this.count9}}</li> -->
     </ul>
   </div>
 </template>
@@ -149,6 +159,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style  scoped>
+/* ul{ margin-left:-.5rem;margin-right:-.5rem;  padding: .16rem 0;}
+li{ float: left; width: 33.33%; text-align: center; position: relative}
+li:before{ position:absolute; content: ""; height:30%; width: 1px; background: rgba(255,255,255,.1); right: 0; top: 15%;}
+li:last-child:before{ width: 0;}
+li h2{ font-size:.3rem; color: #c5ccff;}
+li span{ font-size:.18rem; color: #fff; opacity: .5;} */
 </style>
