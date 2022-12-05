@@ -1,18 +1,77 @@
 <template>
   <div>
-    <ul>
-        <li>质量问题发生时间:   季度{{this.count1Quarter}}年度{{this.count1Year}}</li>
-        <li>质量问题涉及到的机型:   {{this.count2}}</li>
-        <li>质量问题发生机型随时间变化情况:   {{this.count3}}</li>
-        <li>质量问题高发故障模式:   {{this.count5}}</li>
-        <li>质量问题故障模式随时间变化情况:   季度{{this.count6Quarter}}年度{{this.count6Year}}</li>
-        <li>质量问题发生地理环境:   {{this.count7}}</li>
-        <li>故障件种类:   {{this.count8}}</li>
-        <li>故障件名称:   {{this.count9}}</li>
-        <li>故障件名称随时间变化情况统计:   季度{{this.count10Quarter}}年度{{this.count10Year}}</li>
-        <li>故障件安装位置:   {{this.count11}}</li>
-        <!-- <li>故障件名称:   {{this.count9}}</li> -->
-    </ul>
+    <el-card style="margin-left: 0.5%; width:99%; height: 700px; float:left">
+    <div class="mainContainer">
+			<!-- 左侧显示区 -->
+			<div class="leftContent">
+				<div class="labelContent">
+					<span class="label-title">质量问题发生时间</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;">年度</span><span style="padding-right: 20px;">{{this.count1Year}}</span>
+                        <span style="color: blue; font-size: 18px;">季度</span><span>{{this.count1Quarter}}</span>
+                    </span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题涉及到的机型</span>
+					<span class="label-body">{{this.count2}}</span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题发生机型随时间变化情况</span>
+					<span class="label-body">{{this.count3}}</span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题涉及到的机型使用强度随时间变化情况</span>
+					<span class="label-body">{{this.count4}}</span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题高发故障模式</span>
+					<span class="label-body">{{this.count5}}</span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题故障模式随时间变化情况</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;">年度</span><span style="padding-right: 20px;">{{this.count6Year}}</span>
+                        <span style="color: blue; font-size: 18px;">季度</span><span>{{this.count6Quarter}}</span>
+                    </span>
+				</div>
+				<div class="labelContent">
+					<span class="label-title">质量问题发生地理环境</span>
+					 <span class="label-body">{{this.count7}}</span>
+				</div>
+                <div class="labelContent">
+					<span class="label-title">故障件种类</span>
+					 <span class="label-body">{{this.count8}}</span>
+				</div>
+                <div class="labelContent">
+					<span class="label-title">故障件名称</span>
+					 <span class="label-body">{{this.count9}}</span>
+				</div>
+                <div class="labelContent">
+					<span class="label-title">故障件名称随时间变化情况统计</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;">年度</span><span style="padding-right: 20px;">{{this.count10Year}}</span>
+                        <span style="color: blue; font-size: 18px;">季度</span><span>{{this.count10Quarter}}</span>
+                    </span>
+				</div>
+                <div class="labelContent">
+					<span class="label-title">故障件安装位置</span>
+					 <span class="label-body">{{this.count11}}</span>
+				</div>
+			</div>
+		</div>
+    </el-card>
+    <!-- <ul>
+        <li>质量问题发生时间:   季度<span>{{this.count1Quarter}}</span>年度<span>{{this.count1Year}}</span></li>
+        <li>质量问题涉及到的机型:   <span>{{this.count2}}</span></li>
+        <li>质量问题发生机型随时间变化情况:   <span>{{this.count3}}</span></li>
+        <li>质量问题高发故障模式:   <span>{{this.count5}}</span></li>
+        <li>质量问题故障模式随时间变化情况:   季度<span>{{this.count6Quarter}}</span>年度<span>{{this.count6Year}}</span></li>
+        <li>质量问题发生地理环境:   <span>{{this.count7}}</span></li>
+        <li>故障件种类:   <span>{{this.count8}}</span></li>
+        <li>故障件名称:   <span>{{this.count9}}</span></li>
+        <li>故障件名称随时间变化情况统计:   季度<span>{{this.count10Quarter}}</span>年度<span>{{this.count10Year}}</span></li>
+        <li>故障件安装位置:   <span>{{this.count11}}</span></li>
+    </ul> -->
   </div>
 </template>
 
@@ -160,10 +219,35 @@ export default {
 </script>
 
 <style  scoped>
-/* ul{ margin-left:-.5rem;margin-right:-.5rem;  padding: .16rem 0;}
-li{ float: left; width: 33.33%; text-align: center; position: relative}
-li:before{ position:absolute; content: ""; height:30%; width: 1px; background: rgba(255,255,255,.1); right: 0; top: 15%;}
-li:last-child:before{ width: 0;}
-li h2{ font-size:.3rem; color: #c5ccff;}
-li span{ font-size:.18rem; color: #fff; opacity: .5;} */
+/* 综合css */
+/* .leftContent .labelContent {
+	width: 250px;
+	height: 100px;
+} */
+.leftContent .labelContent .label-title {
+    font-family: 微软雅黑;
+    font-size: 18px;
+    opacity: 2;
+    display: inline-block;
+    padding-left: 14px;
+}
+.leftContent .labelContent .label-body {
+    opacity: 0.7;
+    padding-left: 14px;
+    font-family: DIN Alternate Bold, Arial;
+    font-size: 25px;
+    /* text-align: center; */
+    display: block;
+    cursor: pointer;
+    margin-top: 1px;
+}
+.leftContent {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    left: 17px;
+    width: 300px;
+    height: 250px;
+    padding: 14px 0px 0px 16px;
+}
 </style>
