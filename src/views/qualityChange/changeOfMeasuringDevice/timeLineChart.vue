@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="measuring_device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
+        <div ref="measuring_device_time_line" style="cursor: pointer; width: 100%; height: 200px"></div>
     </div>
 </template>
 
@@ -100,6 +100,7 @@ export default {
                         for (let k = 0; k < this.allList[i].list.length; k++) {
                             this.seriesData[j].markPoint.data.push({
                                 // name:'故障类型：'+data[i].name,
+                                name:this.allList[i].name,
                                 coord: [this.allList[i].list[k], j],
                                 label: {
                                     show: true,
@@ -125,12 +126,16 @@ export default {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
                 // },
-                //             tooltip: {
-                //                 trigger: 'axis',
-                // axisPointer: {
-                //   type: 'cross'
-                // }
-                // },
+                tooltip: {
+                    trigger: 'item',
+                    formatter(params) {
+                        // console.log("@@@,",params);
+                        if (params.componentType === "markPoint") {
+                            return params.name + '\n' + params.data.coord[0].substring(0, 10)
+                        }
+                        return params.seriesName + '\n' + params.name.substring(0, 10)
+                    }
+                },
                 legend: {},
                 // toolbox: {
                 //     show: true,
@@ -168,7 +173,6 @@ export default {
                     // }
                 },
                 series: this.seriesData,
-                color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
             };
             //this.getHeight(myChart,option);
             this.$nextTick(myChart.setOption(option));

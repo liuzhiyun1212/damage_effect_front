@@ -1,22 +1,55 @@
 <template>
   <div>
     
-    <p
-        style="
+    <h2  style="
           font-family: Arial;
-          font-size: 20px;
-          font-weight: 600;
-          display: inline-block;
-          margin-left: 30px;
-        "
-      >
-        故障件生产班组变更情况
-      </p>
+
+          margin-left: 20px;
+        ">故障件生产班组变更情况</h2>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
+      <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+        <p
+          style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+        >
+          改型时间线
+        </p>
+
+        <el-tooltip placement="top">
+          <div slot="content">涉及到的故障件生产班组发生变更</div>
+          <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+        </el-tooltip>
+
+      </div>
         <div
             id="timeLine"
             style="width: 100%; height: 300px;"
           ></div>
+          <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+          <p
+            style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+          >
+            对比堆叠图
+          </p>
+
+
+          <el-tooltip placement="top">
+            <div slot="content">涉及高发故障模式的故障件的生产班组所生产的产品数以及产品对应的质量问题数</div>
+            <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+          </el-tooltip>
+
+        </div>
           <div
             id="duibi"
             style="width: 100%; height: 400px;"

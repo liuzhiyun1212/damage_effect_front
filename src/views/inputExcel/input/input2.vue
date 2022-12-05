@@ -44,9 +44,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange" class="myTable" :default-sort="defaultSort" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="dataList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange" class="myTable">
       <el-table-column type="selection" width="55" align="center" />
-      <<el-table-column type="index" label="序号"> </el-table-column>
+      <el-table-column type="index" label="序号"> </el-table-column>
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="装备改型时间" align="center" prop="remodelDate" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">

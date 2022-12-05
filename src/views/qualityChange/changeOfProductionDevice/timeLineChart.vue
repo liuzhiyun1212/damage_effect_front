@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 300px"></div>
+        <div ref="device_time_line" style="cursor: pointer; width: 100%; height: 200px"></div>
     </div>
 </template>
 
@@ -71,6 +71,7 @@ export default {
             console.log("dealRes",data);
             var count = 0;
             for (var i = 0; i < data.length; i++) {
+                // console.log("data["+i+"].name", data[i].name);
                 this.seriesData.push({
                     name: data[i].name,
                     type: "line",
@@ -96,12 +97,17 @@ export default {
                 count += data[i].list.length
             }
 
+            // console.log("this.allList",this.allList)
+            // console.log("this.seriesData",this.seriesData)
+            //获取某个设备的日期list
             for (let i = 0; i < this.allList.length; i++) {
                 for (let j = 0; j < this.seriesData.length; j++) {
+                    //名字一样说明是同一个设备，然后遍历这个设备的日期list
                     if (this.allList[i].name === this.seriesData[j].name) {
                         for (let k = 0; k < this.allList[i].list.length; k++) {
                             this.seriesData[j].markPoint.data.push({
-                                // name:'故障类型：'+data[i].name,
+                                name:this.allList[i].name,
+                                //三角形标记的位置，第一个是横坐标，第二个值是第几行，
                                 coord: [this.allList[i].list[k], j],
                                 label: {
                                     show: true,
@@ -114,11 +120,10 @@ export default {
                     }
                 }
             }
-            //   console.log(count);
+            //画横线,j表示第几行，count表示横坐标有几个点；即在第j行填count个点
             for (let j = 0; j < this.seriesData.length; j++) {
                 for (let i = 0; i < count; i++) this.seriesData[j].data.push(j)
             }
-            console.log("11111111", this.allList)
         },
 
         // 时间线
@@ -129,12 +134,16 @@ export default {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
                 // },
-                //             tooltip: {
-                //                 trigger: 'axis',
-                // axisPointer: {
-                //   type: 'cross'
-                // }
-                // },
+                tooltip: {
+                    trigger: 'item',
+                    formatter(params) {
+                        // console.log("@@@,",params);
+                        if(params.componentType==="markPoint"){
+                            return params.name+'\n'+params.data.coord[0].substring(0,10)
+                        }
+                        return params.seriesName+'\n'+params.name.substring(0,10)
+                    }
+                },
                 legend: {},
                 // toolbox: {
                 //     show: true,
@@ -172,7 +181,7 @@ export default {
                     // }
                 },
                 series: this.seriesData,
-                color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
+                // color: ['#5470c6', '#fac858', '#73c0de', '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#91cc75', '#ee6666'],
             };
             //this.getHeight(myChart,option);
             this.$nextTick(myChart.setOption(option));
