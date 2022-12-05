@@ -13,37 +13,37 @@
        <p>故障件随时间变化情况</p>
        <p>质故障件安装位置</p>
        <p>故障件安装方法</p>-->
-      <el-tabs :tab-position="tabPosition" :lazy="true">
+      <el-tabs :tab-position="tabPosition" :lazy="true" @tab-click="handleLoad">
         <el-tab-pane :lazy="true" label="装备改型情况"
-          ><equipmentchange
+          ><equipmentchange :key="timer"
         /></el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备能力提升情况"><equipmentAbilityenhancement/></el-tab-pane>
+        <el-tab-pane :lazy="true" label="装备能力提升情况"><equipmentAbilityenhancement :key="timer"/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件改型情况"
-          ><partsChange
+          ><partsChange :key="timer"
         /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产班组变更情况"
-          ><partsGroupchange
+          ><partsGroupchange :key="timer"
         /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件人员变更情况"
-          ><partsMakepeople
+          ><partsMakepeople :key="timer"
         /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件生产设备变更情况"
-          ><partsMakeequip/></el-tab-pane>
+          ><partsMakeequip :key="timer" /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件测量设备变更情况"
-          ><measuringDevice/></el-tab-pane
+          ><measuringDevice :key="timer"/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="故障件原材料变更情况"
-          ><partsMaterialChange
+          ><partsMaterialChange :key="timer"
         /></el-tab-pane>
         <el-tab-pane :lazy="true" label="装备所用零件变更情况"
-          ><faultyPartsChange/></el-tab-pane
+          ><faultyPartsChange :key="timer"/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备生产工艺变更情况"
-          ><partsMakeWorkmanshipChanged></partsMakeWorkmanshipChanged
+          ><partsMakeWorkmanshipChanged :key="timer"></partsMakeWorkmanshipChanged
         ></el-tab-pane>
-        <el-tab-pane :lazy="true" label="故障件维修班组变更情况"><repairGroupchange /></el-tab-pane>
+        <el-tab-pane :lazy="true" label="故障件维修班组变更情况"><repairGroupchange :key="timer"/></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修人员变更情况"
-          ><repairPeopleChange/>故障件安装方法</el-tab-pane
+          ><repairPeopleChange :key="timer"/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="故障件维修设备变更情况"
           >故障件安装方法</el-tab-pane
@@ -55,10 +55,10 @@
           >故障件安装方法</el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备装备状态更情况"
-          ><devStateChanged></devStateChanged
+          ><devStateChanged :key="timer"></devStateChanged
         ></el-tab-pane>
         <el-tab-pane :lazy="true" label="装备使用环境更情况"
-          ><environmentChanged></environmentChanged
+          ><environmentChanged :key="timer"></environmentChanged
         ></el-tab-pane>
       </el-tabs>
     </el-card>
@@ -111,8 +111,14 @@ export default {
   data() {
     return {
       tabPosition: "left",
+      timer:'',
     }
-  },
+},
+  methods: {
+    handleLoad () {
+      this.timer = new Date().getTime()
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

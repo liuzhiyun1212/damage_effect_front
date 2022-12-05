@@ -13,18 +13,18 @@
     <p>故障件随时间变化情况</p>
     <p>质故障件安装位置</p>
     <p>故障件安装方法</p>-->
-    <el-tabs :tab-position="tabPosition" v-model="activeName">
-      <el-tab-pane label="质量问题发生时间" :lazy="true"><QualityTime></QualityTime></el-tab-pane>
-      <el-tab-pane label="质量问题涉及到的机型" :lazy="true"><QualityPlaneType/></el-tab-pane>
-      <el-tab-pane label="质量问题发生机型时间变化情况" :lazy="true"><AircraftTypeWithTime/></el-tab-pane>
-      <el-tab-pane label="质量问题涉及到的机型使用强度随时间变换情况" :lazy="true"><UseIntensity/></el-tab-pane>
-      <el-tab-pane label="质量问题故障模式" :lazy="true"><QualityTroublePie/></el-tab-pane>
-      <el-tab-pane label="质量问题故障模式随时间变化情况" :lazy="true"><QualityByFaultModel></QualityByFaultModel></el-tab-pane>
-      <el-tab-pane label="质量问题发生地理环境" :lazy="true"><Environment></Environment></el-tab-pane>
-      <el-tab-pane label="故障件种类" :lazy="true"><PartsType/></el-tab-pane>
-      <el-tab-pane label="故障件名称" :lazy="true"><FaultyCount></FaultyCount></el-tab-pane>
-      <el-tab-pane label="故障件随时间变化情况" :lazy="true"><PartsTime></PartsTime></el-tab-pane>
-      <el-tab-pane label="质故障件安装位置" :lazy="true"><ThreeD1></ThreeD1></el-tab-pane>
+    <el-tabs :tab-position="tabPosition" :lazy="true" @tab-click="handleLoad">
+      <el-tab-pane label="质量问题发生时间" :lazy="true"><QualityTime :key="timer"></QualityTime></el-tab-pane>
+      <el-tab-pane label="质量问题涉及到的机型" :lazy="true"><QualityPlaneType :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题发生机型时间变化情况" :lazy="true"><AircraftTypeWithTime :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题涉及到的机型使用强度随时间变换情况" :lazy="true"><UseIntensity :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题故障模式" :lazy="true"><QualityTroublePie :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题故障模式随时间变化情况" :lazy="true"><QualityByFaultModel :key="timer"></QualityByFaultModel></el-tab-pane>
+      <el-tab-pane label="质量问题发生地理环境" :lazy="true"><Environment :key="timer"></Environment></el-tab-pane>
+      <el-tab-pane label="故障件种类" :lazy="true"><PartsType :key="timer"/></el-tab-pane>
+      <el-tab-pane label="故障件名称" :lazy="true"><FaultyCount :key="timer"></FaultyCount></el-tab-pane>
+      <el-tab-pane label="故障件随时间变化情况" :lazy="true"><PartsTime :key="timer"></PartsTime></el-tab-pane>
+      <el-tab-pane label="质故障件安装位置" :lazy="true"><ThreeD1 :key="timer"></ThreeD1></el-tab-pane>
       <el-tab-pane label="故障件安装方法" :lazy="true"></el-tab-pane>
     </el-tabs>
   </el-card>
@@ -61,45 +61,12 @@ export default {
     return {
       // activeName:"second",
       tabPosition: 'left',
-      data: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
+      timer:'',
+    }
+  },
+  methods: {
+    handleLoad () {
+      this.timer = new Date().getTime()
     }
   }
 }

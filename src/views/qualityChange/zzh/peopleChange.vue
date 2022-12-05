@@ -42,7 +42,7 @@
 
 
           <el-tooltip placement="top">
-            <div slot="content">涉及高发故障模式的故障件的生产人员所生产的产品数以及产品对应的质量问题数</div>
+            <div slot="content">装备不同能力状态下所发生的质量问题数</div>
             <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
           </el-tooltip>
 
