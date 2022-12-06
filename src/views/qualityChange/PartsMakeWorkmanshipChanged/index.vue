@@ -50,7 +50,7 @@
 
 
         <el-tooltip placement="top">
-          <div slot="content">装备不同能力状态下所发生的质量问题数</div>
+          <div slot="content">不同生产工艺的产品数量以及所发生的质量问题数</div>
           <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
         </el-tooltip>
 
@@ -91,6 +91,9 @@ export default {
             seriesData:[],
             // 时间线显示列表
             timeData:[],
+          xdate:[],
+          ydate:[],
+          se:[],
         }
     },
   created() {
@@ -125,10 +128,9 @@ export default {
           this.dealRes(this.line)
           console.log(this.line)
           this.selectQualityByMakeWorkmanship();
-          this.selectProductByMakeWorkmanship();
-          this.getHeight_timeline();
-          this.getHeight_stacked();
-          this.initChart()
+
+
+          /*this.initChart()*/
         });
       },
 
@@ -142,7 +144,7 @@ export default {
       // 高度适应 对比堆叠图
       getHeight_stacked() {
         var id__stacked = document.getElementById("Maketechnique")
-        var height__stacked = this.yList.length * 40
+        var height__stacked = this.makeWorkmanshipList.length * 80
         //d.setAttribute(height,height+"px");
         id__stacked.style.cssText = "height:" + height__stacked + "px"
       },
@@ -155,6 +157,7 @@ export default {
                     this.makeWorkmanshipList.push(response[i].quarter);
                     this.qualityList.push(response[i].sum);
                 }
+              this.selectProductByMakeWorkmanship();
                /* this.getChart();*/
         });
         },
@@ -164,6 +167,9 @@ export default {
                 for(let i=0;i<response.length;i++){
                     this.productList.push(response[i].sum);
                 }
+
+                this.initChart();
+
                 /*this.getChart();*/
         });
         },
@@ -231,8 +237,11 @@ export default {
             },
 
       initChart() {
+        this.getHeight_stacked();
+        this.getHeight_timeline();
         var myChart = echarts.init(document.getElementById('Maketechnique'));
         var myChart2 = echarts.init(document.getElementById('Maketechnique_timeLine'));
+
         myChart.setOption(this.setOption(),true);
         myChart2.setOption(this.setOption2(),true);
         window.addEventListener("resize", () => {

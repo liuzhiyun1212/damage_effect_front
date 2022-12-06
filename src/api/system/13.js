@@ -9,6 +9,16 @@ export function list13(query) {
   })
 }
 
+
+export function Countrepair() {
+  return request({
+    url: '/system/13/Countrepair',
+    method: 'get',
+  })
+}
+
+
+
 // 查询【请填写功能名称】详细
 export function get13(id) {
   return request({

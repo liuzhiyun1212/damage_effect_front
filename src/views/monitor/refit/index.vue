@@ -47,7 +47,7 @@
         </p>
       </div>
       <div
-        id="compared_stacked"
+        id="equp_change_compared_stacked"
         style="cursor: pointer; width: 100%; height: 300px"
       ></div>
     </el-card>
@@ -110,7 +110,7 @@ export default {
     },
     // 高度适应 对比堆叠图
     getHeight_stacked() {
-      var id__stacked = document.getElementById("compared_stacked")
+      var id__stacked = document.getElementById("equp_change_compared_stacked")
       var height__stacked = this.yData_stacked.length * 100
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
@@ -475,7 +475,7 @@ export default {
     //初始化 对比堆叠图
     init_Chart_compared_stacked() {
       let compared_stacked_chart = echarts.init(
-        document.getElementById("compared_stacked")
+        document.getElementById("equp_change_compared_stacked")
       )
       // echarts自适应
       window.addEventListener("resize", () => {
