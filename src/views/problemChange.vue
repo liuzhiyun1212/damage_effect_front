@@ -47,7 +47,7 @@
         >
         <el-tab-pane :lazy="true" label="故障件维修设备变更情况"><repairDeviceStackChart :key="timer" /></el-tab-pane>
         <el-tab-pane :lazy="true" label="故障件维修工艺变更情况"
-          >故障件安装方法</el-tab-pane
+          ><faultyRepairWayChange :key="timer"/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备使用强度变更情况"
           ><equipmentStrengthChanged></equipmentStrengthChanged></el-tab-pane
