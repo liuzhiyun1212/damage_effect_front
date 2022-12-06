@@ -13,11 +13,11 @@
     </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
       <div
-        id="timeLine"
+        id="repairGroupTimeLine"
         style="width: 100%; height: 300px;"
       ></div>
       <div
-        id="duibi"
+        id="repairGroup"
         style="width: 100%; height: 400px;"
       ></div>
 
@@ -169,7 +169,7 @@ export default {
         });
         console.log("xList",this.xList)
         //hhhhhhhhhh高度适应
-        var d =  document.getElementById("timeLine");
+        var d =  document.getElementById("repairGroupTimeLine");
         var height=this.yList.length*100;
         //  d.setAttribute(height,height+"px");
         d.style.cssText="height:"+height+"px";
@@ -192,7 +192,7 @@ export default {
 
     // 对比堆叠图
     getChart(){
-      var myChart = echarts.init(document.getElementById("duibi"))
+      var myChart = echarts.init(document.getElementById("repairGroup"))
       var option = {
         tooltip: {
           trigger: 'axis',
@@ -251,7 +251,7 @@ export default {
     // 时间线
     getTime(){
       let dataGet = this.yList
-      var myChart = echarts.init(document.getElementById("timeLine"))
+      var myChart = echarts.init(document.getElementById("repairGroupTimeLine"))
       var option = {
         // title: {
         //     text: '故障件维修班组变更时间线'
