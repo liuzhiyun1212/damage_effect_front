@@ -91,6 +91,8 @@ export default {
             seriesData:[],
             // 时间线显示列表
             timeData:[],
+            xdate:[],
+            ydate:[]
         }
     },
   created() {
@@ -111,7 +113,6 @@ export default {
       getlinedata(){
         getMaketechnique().then((response) => {
           this.line=response;
-
           for(let i=0;i<this.line.length;i++){
             for(let j=0;j<this.line[i].listdate.length;j++){
               this.xdate.push(this.line[i].listdate[j]);
@@ -124,8 +125,8 @@ export default {
 
           this.dealRes(this.line)
           console.log(this.line)
-          this.selectQualityByMakeWorkmanship();
-          this.selectProductByMakeWorkmanship();
+          // this.selectQualityByMakeWorkmanship();
+          // this.selectProductByMakeWorkmanship();
           this.getHeight_timeline();
           this.getHeight_stacked();
           this.initChart()
@@ -231,12 +232,12 @@ export default {
             },
 
       initChart() {
-        var myChart = echarts.init(document.getElementById('Maketechnique'));
+        // var myChart = echarts.init(document.getElementById('Maketechnique'));
         var myChart2 = echarts.init(document.getElementById('Maketechnique_timeLine'));
-        myChart.setOption(this.setOption(),true);
+        // myChart.setOption(this.setOption(),true);
         myChart2.setOption(this.setOption2(),true);
         window.addEventListener("resize", () => {
-          myChart.resize();
+          // myChart.resize();
           myChart2.resize();
         });
         console.log(this.setOption());

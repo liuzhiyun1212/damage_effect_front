@@ -1,8 +1,7 @@
 <template>
   <div>
-    <el-card style="margin-left: 0.5%; width:99%; height: 1000px; float:left;">
+    <el-card style="margin-left: 0.5%; width:99%; height: 1000px;">
     <div class="mainContainer">
-			<!-- 左侧显示区 -->
 			<ul class="leftContent">
 				<li class="labelContent">
 					<span class="label-title">质量问题发生时间</span>
@@ -56,6 +55,10 @@
                 <li class="labelContent">
 					<span class="label-title">故障件安装位置</span>
 					 <span class="label-body">{{this.count11}}</span>
+				</li>
+                <li class="labelContent">
+					<span class="label-title">故障件安装方法</span>
+					 <span class="label-body"></span>
 				</li>
 			</ul>
 		</div>
@@ -220,13 +223,28 @@ export default {
 
 <style  scoped>
 /* 综合css */
-/* .leftContent .labelContent {
-	width: 250px;
-	height: 100px;
-} */
-li{
+
+.leftContent li{
     display: block;
-    width: 250px;
+    float: left;
+    color: #ffffff;
+    width: 40%;
+    height: .8rem;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+
+
+/* li{
+    float:left;width:190px;padding:5px;
+    display: block;
+    width: 150px;
+    float: left;
     height: 70px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -234,7 +252,7 @@ li{
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;
-}
+} */
 ul li:first-child{
     background-color: #0082bd;
     /* display: inline-block; */
@@ -270,13 +288,13 @@ ul li:nth-child(10){
 ul li:nth-child(11){
     background-color: #3bb54b;
 }
+ul li:nth-child(12){
+    background-color: #19599d;
+}
 .leftContent .labelContent .label-body {
-    /* opacity: 0.7;
-    padding-left: 14px;
-    font-family: DIN Alternate Bold, Arial;
-    font-size: 25px; */
     display: block;
     cursor: pointer;
+    text-align: center;
     margin-top: 1px;
     font-size: 25px;
 }
