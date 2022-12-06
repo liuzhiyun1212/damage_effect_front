@@ -25,7 +25,7 @@
           改型时间线
         </p>
       </div>
-      <div id="remodel_timeline" :style="{ width: '100%', height: '400px' }"></div>
+      <div id="repairRemodel_timeline" :style="{ width: '100%', height: '400px' }"></div>
 
       <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
           <p
@@ -48,7 +48,7 @@
 
         </div>
           <div
-            id="duibi"
+            id="repairDuibi"
             style="width: 100%; height: 400px;"
           ></div>
     </el-card>
@@ -144,7 +144,7 @@ export default {
       
     },
     getY() {
-      debugger
+      // debugger
       let flag = 0;
       for (let index = 0; index < this.productChange.length; index++) {
         if (!this.y.includes(this.productChange[index].productModel + this.productChange[index].productName)){
@@ -159,7 +159,7 @@ export default {
     },
 
     dealRes() {
-      debugger
+      // debugger
       for (var i = 0; i < this.productChange.length; i++) {
         this.se.push({
           name: this.productChange[i].productModel,
@@ -230,8 +230,8 @@ export default {
     },
 
     initChart() {
-      debugger
-      var chartDom = document.getElementById("remodel_timeline");
+      // debugger
+      var chartDom = document.getElementById("repairRemodel_timeline");
       var myChart = echarts.init(chartDom);
       var option;
       option = {
@@ -349,7 +349,7 @@ export default {
     },
     // 高度适应 改型时间线
     getHeight_timeline() {
-      var id__timeline = document.getElementById("remodel_timeline")
+      var id__timeline = document.getElementById("repairRemodel_timeline")
       var height__timeline = this.y.length * 100
       //d.setAttribute(height,height+"px");
       id__timeline.style.cssText = "height:" + height__timeline + "px"
@@ -357,7 +357,7 @@ export default {
     //初始化 改型时间线折线图
     init_Chart_remodel_timeline() {
       let remodel_timeline_chart = echarts.init(
-        document.getElementById("remodel_timeline")
+        document.getElementById("repairRemodel_timeline")
       )
       // echarts自适应
       window.addEventListener("resize", () => {
@@ -530,7 +530,7 @@ export default {
     //初始化 对比堆叠图
     init_Chart_compared_stacked() {
       let compared_stacked_chart = echarts.init(
-        document.getElementById("duibi")
+        document.getElementById("repairDuibi")
       )
       // echarts自适应
       window.addEventListener("resize", () => {
@@ -562,7 +562,7 @@ export default {
       return option
     },
     getHeight_stacked() {
-      var id__stacked = document.getElementById("duibi")
+      var id__stacked = document.getElementById("repairDuibi")
       var height__stacked = this.partsNameList.length * 100
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
