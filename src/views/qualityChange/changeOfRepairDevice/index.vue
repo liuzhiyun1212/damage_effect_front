@@ -1,7 +1,27 @@
 <template>
     <div>
+        <h2 style="font-family: Arial; margin-left: 20px;">
+            故障件维修设备变更情况
+        </h2>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
-            <h2>故障件维修设备变更情况</h2>
+            <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+                <p style="
+                    font-family: Arial;
+                    font-size: 16px;
+                    font-weight: 600;
+                    display: inline-block;
+                    margin-left: 20px;
+                ">
+                    维修设备变更时间线
+                </p>
+
+                <el-tooltip placement="top">
+                    <div slot="content">涉及到的故障件维修设备发生变更</div>
+                    <i class="el-icon-question"
+                        style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+                </el-tooltip>
+
+            </div>
             <TimeLineChart />
             <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
                 <p style="
@@ -13,6 +33,11 @@
                 ">
                     故障件维修设备变更情况
                 </p>
+                <el-tooltip placement="top">
+                    <div slot="content">涉及高发故障模式的故障件的维修设备所维修的产品数以及产品对应的质量问题数</div>
+                    <i class="el-icon-question"
+                        style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+                </el-tooltip>
             </div>
             <div ref="repair_device_stack_chart" :style="{ width: '100%', height: '380px' }"></div>
         </el-card>
