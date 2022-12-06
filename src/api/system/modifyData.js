@@ -24,6 +24,17 @@ export function getPeoplechange() {
   })
 }
 
+
+export function getMaketechnique() {
+  return request({
+    url: "/system/modifyData/getMaketechnique",
+    method: "get",
+  })
+}
+
+
+
+
 // 查询产品制造变更数据详细
 export function getModifyData(id) {
   return request({

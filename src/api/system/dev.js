@@ -235,8 +235,22 @@ export function selectByMeasuringDeviceChanged() {
     method: 'get'
   })
 }
+// 维修设备变更时间线
+export function timeRepairDeviceChanged() {
+  return request({
+    url: '/system/dev/timeRepairDeviceChanged',
+    method: 'get'
+  })
+}
+// 维修设备变更时间线
+export function selectByRepairDeviceChanged() {
+  return request({
+    url: '/system/dev/selectByRepairDeviceChanged',
+    method: 'get'
+  })
+}
 
-// 
+//
 export function selectState1() {
   return request({
     url: '/system/dev/selectState1',
@@ -334,6 +348,42 @@ export function selectByFaultModelMake() {
     method: 'get'
   })
 }
+// 4.2.2.11
+// 维修班组变更情况
+export function selectByGroupFaultModel() {
+  return request({
+    url: '/system/dev/selectByGroupFaultModel',
+    method: 'get'
+  })
+}
+// 维修班组统计质量问题总数
+export function qualitySumByGroup() {
+  return request({
+    url: '/system/dev/qualitySumByGroup',
+    method: 'get'
+  })
+}
+// 维修班组统计产品总数
+export function partsSumByGroup() {
+  return request({
+    url: '/system/dev/partsSumByGroup',
+    method: 'get'
+  })
+}
+// 故障件维修班组变更
+export function selectByGroupChanged() {
+  return request({
+    url: '/system/dev/selectByGroupChanged',
+    method: 'get'
+  })
+}
+// 时间线统计图用故障件维修班组变更
+export function timeGradeChanged1() {
+  return request({
+    url: '/system/dev/timeGradeChanged1',
+    method: 'get'
+  })
+}
 
 export function selectQualityByMakeWorkmanship() {
   return request({
@@ -351,6 +401,13 @@ export function selectProductByMakeWorkmanship() {
 export function faultStatistics() {
   return request({
     url: '/system/dev/faultStatistics',
+    method: 'get'
+  })
+}
+
+export function faultStatistics1() {
+  return request({
+    url: '/system/dev/faultStatistics1',
     method: 'get'
   })
 }
