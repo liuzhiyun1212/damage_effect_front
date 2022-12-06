@@ -44,9 +44,9 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="modifyList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="modifyList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange" class="myTable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column type="index" label="序号" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"></el-table-column> 
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="产品种类" align="center" prop="productType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="产品名称" align="center" prop="productName" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>

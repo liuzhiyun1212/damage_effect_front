@@ -258,7 +258,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange" :height="'500px'" :default-sort="defaultSort" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange" :height="'500px'" :default-sort="defaultSort" @sort-change="handleSortChange" class="myTable">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" align="center" prop="id" />
       <el-table-column label="质量问题标题" align="center" prop="title" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>

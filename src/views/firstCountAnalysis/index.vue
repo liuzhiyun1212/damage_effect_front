@@ -1,8 +1,80 @@
 <template>
   <div>
-    <ul>
-        <li>质量问题发生时间:   季度{{this.count1Quarter}}年度{{this.count1Year}}</li>
-    </ul>
+    <el-card style="margin-left: 0.5%; width:99%; height: 1000px;">
+    <div class="mainContainer">
+			<ul class="leftContent">
+				<li class="labelContent" @click="hand(1)">
+					<span class="label-title">质量问题发生时间</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count1Year}}</span>
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count1Quarter}}</span>
+                    </span>
+				</li>
+				<li class="labelContent" @click="hand(2)">
+					<span class="label-title">质量问题涉及到的机型</span>
+					<span class="label-body">{{this.count2}}</span>
+                </li>
+				<li class="labelContent" @click="hand(3)">
+					<span class="label-title">质量问题发生机型随时间变化情况</span>
+					<span class="label-body">{{this.count3}}</span>
+                </li>
+				<li class="labelContent" @click="hand(4)">
+					<span class="label-title">涉及到的机型使用强度随时间变化</span>
+					<span class="label-body">{{this.count4}}</span>
+                </li>
+				<li class="labelContent" @click="hand(5)">
+					<span class="label-title">质量问题高发故障模式</span>
+					<span class="label-body">{{this.count5}}</span>
+                </li>
+				<li class="labelContent" @click="hand(6)">
+					<span class="label-title">质量问题故障模式随时间变化情况</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count6Year}}</span>
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count6Quarter}}</span>
+                    </span>
+				</li>
+				<li class="labelContent" @click="hand(7)">
+					<span class="label-title">质量问题发生地理环境</span>
+					 <span class="label-body">{{this.count7}}</span>
+                </li>
+                <li class="labelContent" @click="hand(8)">
+					<span class="label-title">故障件种类</span>
+					 <span class="label-body">{{this.count8}}</span>
+				</li>
+                <li class="labelContent" @click="hand(9)">
+					<span class="label-title">故障件名称</span>
+					 <span class="label-body">{{this.count9}}</span>
+				</li>
+                <li class="labelContent" @click="hand(10)">
+					<span class="label-title">故障件名称随时间变化情况统计</span>
+					<span class="label-body">
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count10Year}}</span>
+                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count10Quarter}}</span>
+                    </span>
+				</li>
+                <li class="labelContent" @click="hand(11)">
+					<span class="label-title">故障件安装位置</span>
+					 <span class="label-body">{{this.count11}}</span>
+				</li>
+                <li class="labelContent" @click="hand(12)">
+					<span class="label-title">故障件安装方法</span>
+					 <span class="label-body"></span>
+				</li>
+			</ul>
+		</div>
+    </el-card>
+    <!-- <ul>
+        <li>质量问题发生时间:   季度<span>{{this.count1Quarter}}</span>年度<span>{{this.count1Year}}</span></li>
+        <li>质量问题涉及到的机型:   <span>{{this.count2}}</span></li>
+        <li>质量问题发生机型随时间变化情况:   <span>{{this.count3}}</span></li>
+        <li>质量问题高发故障模式:   <span>{{this.count5}}</span></li>
+        <li>质量问题故障模式随时间变化情况:   季度<span>{{this.count6Quarter}}</span>年度<span>{{this.count6Year}}</span></li>
+        <li>质量问题发生地理环境:   <span>{{this.count7}}</span></li>
+        <li>故障件种类:   <span>{{this.count8}}</span></li>
+        <li>故障件名称:   <span>{{this.count9}}</span></li>
+        <li>故障件名称随时间变化情况统计:   季度<span>{{this.count10Quarter}}</span>年度<span>{{this.count10Year}}</span></li>
+        <li>故障件安装位置:   <span>{{this.count11}}</span></li>
+    </ul> -->
   </div>
 </template>
 
@@ -34,6 +106,47 @@ export default {
         }
     },
     methods: {
+        hand(x){
+            switch(x){
+                case 1:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'a'} })
+                    break;
+                case 2:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'b'} })
+                    break;
+                case 3:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'c'} })
+                    break;
+                case 4:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'d'} })
+                    break;
+                case 5:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'e'} })
+                    break;
+                case 6:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'f'} })
+                    break;
+                case 7:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'g'} })
+                    break;
+                case 8:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'h'} })
+                    break;
+                case 9:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'i'} })
+                    break;
+                case 10:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'j'} })
+                    break;
+                case 11:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'k'} })
+                    break;
+                case 12:
+                this.$router.push({ path: '/problemAnalysis', query: {type:'l'} })
+                    break;
+                
+            }
+        },
         // 4.2.1.1
     oneQuality() {
       oneQuality(this.queryParams).then((response) => {
@@ -98,7 +211,7 @@ export default {
     selectAllType(){
         selectAllType(this.queryParams).then(response => {
             this.count8 = response.length;
-                console.log(this.count8);
+                // console.log("xxxxxxxxx",this.count8);
             });
     },
     // 4.2.1.9
@@ -149,6 +262,106 @@ export default {
 }
 </script>
 
-<style>
+<style  scoped>
+/* 综合css */
 
+.leftContent li{
+    display: block;
+    float: left;
+    color: #ffffff;
+    width: 40%;
+    height: .8rem;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+
+
+/* li{
+    float:left;width:190px;padding:5px;
+    display: block;
+    width: 150px;
+    float: left;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+} */
+ul li:first-child{
+    background-color: #0082bd;
+    /* display: inline-block; */
+}
+ul li:nth-child(2){
+    background-color: #3bb54b;
+}
+
+ul li:nth-child(3){
+    background-color: #19599d;
+}
+ul li:nth-child(4){
+    background-color: #cb5454;
+}
+ul li:nth-child(5){
+    background-color: #0082bd;
+}
+ul li:nth-child(6){
+    background-color: #3bb54b;
+}
+ul li:nth-child(7){
+    background-color: #19599d;
+}
+ul li:nth-child(8){
+    background-color: #cb5454;
+}
+ul li:nth-child(9){
+    background-color: #19599d;
+}
+ul li:nth-child(10){
+    background-color: #ff7f27;
+}
+ul li:nth-child(11){
+    background-color: #3bb54b;
+}
+ul li:nth-child(12){
+    background-color: #19599d;
+}
+.leftContent .labelContent .label-body {
+    display: block;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 1px;
+    font-size: 25px;
+}
+/* .leftContent .labelContent .label-title {
+    font-family: 微软雅黑;
+    font-size: 18px;
+    opacity: 2;
+    display: inline-block;
+    padding-left: 14px;
+}
+.leftContent .labelContent .label-body {
+    opacity: 0.7;
+    padding-left: 14px;
+    font-family: DIN Alternate Bold, Arial;
+    font-size: 25px;
+    display: block;
+    cursor: pointer;
+    margin-top: 1px;
+}
+.leftContent {
+    position: relative;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    left: 17px;
+    width: 300px;
+    height: 250px;
+    padding: 14px 0px 0px 16px;
+} */
 </style>

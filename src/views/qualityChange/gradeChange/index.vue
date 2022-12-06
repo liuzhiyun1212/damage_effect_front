@@ -1,24 +1,57 @@
 <template>
   <div>
     
-    <p
-        style="
+    <h2  style="
           font-family: Arial;
-          font-size: 20px;
-          font-weight: 600;
-          display: inline-block;
-          margin-left: 30px;
-        "
-      >
-        故障件生产班组变更情况
-      </p>
+
+          margin-left: 20px;
+        ">故障件生产班组变更情况</h2>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
+      <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+        <p
+          style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+        >
+          改型时间线
+        </p>
+
+        <el-tooltip placement="top">
+          <div slot="content">涉及到的故障件生产班组发生变更</div>
+          <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+        </el-tooltip>
+
+      </div>
         <div
-            id="timeLine"
+            id="compareTimeLine"
             style="width: 100%; height: 300px;"
           ></div>
+          <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+          <p
+            style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+          >
+            对比堆叠图
+          </p>
+
+
+          <el-tooltip placement="top">
+            <div slot="content">涉及高发故障模式的故障件的生产班组所生产的产品数以及产品对应的质量问题数</div>
+            <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+          </el-tooltip>
+
+        </div>
           <div
-            id="duibi"
+            id="compare"
             style="width: 100%; height: 400px;"
           ></div>
           
@@ -168,7 +201,7 @@ export default {
                     return time1.indexOf(item) === index;  
                 });
                  //hhhhhhhhhh高度适应
-                var d =  document.getElementById("timeLine");
+                var d =  document.getElementById("compareTimeLine");
                 var height=this.yList.length*100;
                 //  d.setAttribute(height,height+"px");
                 d.style.cssText="height:"+height+"px";
@@ -191,7 +224,7 @@ export default {
         
         // 对比堆叠图
         getChart(){
-            var myChart = echarts.init(document.getElementById("duibi"))
+            var myChart = echarts.init(document.getElementById("compare"))
             var option = {
                 // title: {
                 //     text: '故障件涉及生产班组对比堆叠图'
@@ -253,7 +286,7 @@ export default {
         // 时间线
         getTime(){
             let dataGet = this.yList
-            var myChart = echarts.init(document.getElementById("timeLine"))
+            var myChart = echarts.init(document.getElementById("compareTimeLine"))
             var option = {
                 // title: {
                 //     text: '故障件生产班组变更时间线'
@@ -265,18 +298,18 @@ export default {
     // }
                 // },
                 legend: {},
-                toolbox: {
-                    show: true,
-                    feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    dataView: { readOnly: false },
-                    magicType: { type: ['line', 'bar'] },
-                    restore: {},
-                    saveAsImage: {}
-                    }
-                },
+                // toolbox: {
+                //     show: true,
+                //     feature: {
+                //     dataZoom: {
+                //         yAxisIndex: 'none'
+                //     },
+                //     dataView: { readOnly: false },
+                //     magicType: { type: ['line', 'bar'] },
+                //     restore: {},
+                //     saveAsImage: {}
+                //     }
+                // },
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,

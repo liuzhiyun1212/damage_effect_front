@@ -13,19 +13,19 @@
     <p>故障件随时间变化情况</p>
     <p>质故障件安装位置</p>
     <p>故障件安装方法</p>-->
-    <el-tabs :tab-position="tabPosition" v-model="activeName">
-      <el-tab-pane label="质量问题发生时间" :lazy="true"><QualityTime></QualityTime></el-tab-pane>
-      <el-tab-pane label="质量问题涉及到的机型" :lazy="true"><QualityPlaneType/></el-tab-pane>
-      <el-tab-pane label="质量问题发生机型时间变化情况" :lazy="true"><AircraftTypeWithTime/></el-tab-pane>
-      <el-tab-pane label="质量问题涉及到的机型使用强度随时间变换情况" :lazy="true"><UseIntensity/></el-tab-pane>
-      <el-tab-pane label="质量问题故障模式" :lazy="true"><QualityTroublePie/></el-tab-pane>
-      <el-tab-pane label="质量问题故障模式随时间变化情况" :lazy="true"><QualityByFaultModel></QualityByFaultModel></el-tab-pane>
-      <el-tab-pane label="质量问题发生地理环境" :lazy="true"><Environment></Environment></el-tab-pane>
-      <el-tab-pane label="故障件种类" :lazy="true"><PartsType/></el-tab-pane>
-      <el-tab-pane label="故障件名称" :lazy="true"><FaultyCount></FaultyCount></el-tab-pane>
-      <el-tab-pane label="故障件随时间变化情况" :lazy="true"><PartsTime></PartsTime></el-tab-pane>
-      <el-tab-pane label="质故障件安装位置" :lazy="true"><ThreeD1></ThreeD1></el-tab-pane>
-      <el-tab-pane label="故障件安装方法" :lazy="true"></el-tab-pane>
+    <el-tabs :tab-position="tabPosition" :lazy="true" @tab-click="handleLoad" v-model="activeName">
+      <el-tab-pane label="质量问题发生时间" :lazy="true" name="a"><QualityTime :key="timer"></QualityTime></el-tab-pane>
+      <el-tab-pane label="质量问题涉及到的机型" :lazy="true" name="b"><QualityPlaneType :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题发生机型时间变化情况" :lazy="true" name="c"><AircraftTypeWithTime :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题涉及到的机型使用强度随时间变换情况" :lazy="true" name="d"><UseIntensity :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题故障模式" :lazy="true" name="e"><QualityTroublePie :key="timer"/></el-tab-pane>
+      <el-tab-pane label="质量问题故障模式随时间变化情况" :lazy="true" name="f"><QualityByFaultModel :key="timer"></QualityByFaultModel></el-tab-pane>
+      <el-tab-pane label="质量问题发生地理环境" :lazy="true" name="g"><Environment :key="timer"></Environment></el-tab-pane>
+      <el-tab-pane label="故障件种类" :lazy="true" name="h"><PartsType :key="timer"/></el-tab-pane>
+      <el-tab-pane label="故障件名称" :lazy="true" name="i"><FaultyCount :key="timer"></FaultyCount></el-tab-pane>
+      <el-tab-pane label="故障件随时间变化情况" :lazy="true" name="j"><PartsTime :key="timer"></PartsTime></el-tab-pane>
+      <el-tab-pane label="质故障件安装位置" :lazy="true" name="k"><ThreeD1 :key="timer"></ThreeD1></el-tab-pane>
+      <el-tab-pane label="故障件安装方法" :lazy="true" name="l"></el-tab-pane>
     </el-tabs>
   </el-card>
  <!-- <el-card style="margin-left: 15%; width:84%; height:800px;margin-top: 20px;">
@@ -61,47 +61,48 @@ export default {
     return {
       // activeName:"second",
       tabPosition: 'left',
-      data: [{
-        label: '一级 1',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }]
-      }, {
-        label: '一级 2',
-        children: [{
-          label: '二级 2-1',
-          children: [{
-            label: '三级 2-1-1'
-          }]
-        }, {
-          label: '二级 2-2',
-          children: [{
-            label: '三级 2-2-1'
-          }]
-        }]
-      }, {
-        label: '一级 3',
-        children: [{
-          label: '二级 3-1',
-          children: [{
-            label: '三级 3-1-1'
-          }]
-        }, {
-          label: '二级 3-2',
-          children: [{
-            label: '三级 3-2-1'
-          }]
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
-      }
+      timer:'',
+      activeName: 'c'
     }
-  }
+  },
+  methods: {
+    updateType () {
+      let type = this.$route.query.type
+      // 判断type的值，更改activeName的值
+      if (type === 'a') {
+        this.activeName = 'a'
+      } else if (type === 'b') {
+        this.activeName = 'b'
+      // eslint-disable-next-line keyword-spacing
+      }else if (type === 'c') {
+        this.activeName = 'c'
+      }else if (type === 'd') {
+        this.activeName = 'd'
+      }else if (type === 'e') {
+        this.activeName = 'e'
+      }else if (type === 'f') {
+        this.activeName = 'f'
+      }else if (type === 'g') {
+        this.activeName = 'g'
+      }else if (type === 'h') {
+        this.activeName = 'h'
+      }else if (type === 'i') {
+        this.activeName = 'i'
+      }else if (type === 'j') {
+        this.activeName = 'j'
+      }else if (type === 'k') {
+        this.activeName = 'k'
+      }else if (type === 'l') {
+        this.activeName = 'l'
+      }
+    },
+    handleLoad () {
+      this.timer = new Date().getTime()
+    }
+  },
+  mounted() {
+    this.updateType();
+  },
 }
 </script>
 <style lang="scss" scoped>

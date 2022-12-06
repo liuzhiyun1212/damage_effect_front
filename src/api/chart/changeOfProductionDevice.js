@@ -13,3 +13,10 @@ import request from '@/utils/request'
       method: 'get'
     })
   }
+
+  export function getRepairDeviceChartList() {
+    return request({
+      url: '/qualityChange/changeOfRepairDevice/getRepairDeviceChart',
+      method: 'get'
+    })
+  }
