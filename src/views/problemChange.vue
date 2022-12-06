@@ -50,7 +50,7 @@
           >故障件安装方法</el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备使用强度变更情况"
-          >故障件安装方法</el-tab-pane
+          ><equipmentStrengthChanged></equipmentStrengthChanged></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备装备状态更情况"
           ><devStateChanged :key="timer"></devStateChanged
@@ -87,6 +87,7 @@ import measuringDevice from "@/views/qualityChange/changeOfMeasuringDevice/index
 import measuringDeviceStackChart from "@/views/qualityChange/changeOfMeasuringDevice/index.vue";
 import repairPeopleChange from "@/views/qualityChange/repairPeopleChange";
 import repairDeviceStackChart from "@/views/qualityChange/changeOfRepairDevice/index";
+import equipmentStrengthChanged from "@/views/qualityChange/equipmentStrengthChanged/index"
 
 export default {
   name: "problemChange",
@@ -107,6 +108,7 @@ export default {
     repairGroupchange,
     repairPeopleChange,
     repairDeviceStackChart,
+    equipmentStrengthChanged
   },
   data() {
     return {
