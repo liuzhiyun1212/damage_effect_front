@@ -26,6 +26,18 @@
         >
           改型时间线
         </p>
+        <el-tooltip placement="top">
+          <div slot="content">质量问题涉及到的机型随时间变化的改型变更情况</div>
+          <i
+            class="el-icon-question"
+            style="
+              float: right;
+              margin-right: 20px;
+              margin-top: 8px;
+              font-size: 40px;
+            "
+          ></i>
+        </el-tooltip>
       </div>
       <div
         id="remodel_timeline"
@@ -45,6 +57,18 @@
         >
           对比堆叠图
         </p>
+        <el-tooltip placement="top">
+          <div slot="content">不同机型对应的质量问题数</div>
+          <i
+            class="el-icon-question"
+            style="
+              float: right;
+              margin-right: 20px;
+              margin-top: 8px;
+              font-size: 40px;
+            "
+          ></i>
+        </el-tooltip>
       </div>
       <div
         id="equp_change_compared_stacked"

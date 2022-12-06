@@ -9,6 +9,14 @@ export function list12(query) {
   })
 }
 
+// 查询所有 wdh
+export function list12All(query) {
+  return request({
+    url: '/system/12/listAll',
+    method: 'get',
+  })
+}
+
 // 查询【请填写功能名称】详细
 export function get12(id) {
   return request({
