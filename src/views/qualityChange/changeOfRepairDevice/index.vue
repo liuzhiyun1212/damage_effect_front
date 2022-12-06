@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2 style="font-family: Arial; margin-left: 20px;">
-            故障件生产设备变更情况
+            故障件维修设备变更情况
         </h2>
         <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
             <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -12,11 +12,11 @@
                     display: inline-block;
                     margin-left: 20px;
                 ">
-                    生产设备变更时间线
+                    维修设备变更时间线
                 </p>
 
                 <el-tooltip placement="top">
-                    <div slot="content">涉及到的故障件生产设备发生变更</div>
+                    <div slot="content">涉及到的故障件维修设备发生变更</div>
                     <i class="el-icon-question"
                         style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
                 </el-tooltip>
@@ -31,26 +31,26 @@
                 display: inline-block;
                 margin-left: 20px;
                 ">
-                    故障件生产设备变更情况
+                    故障件维修设备变更情况
                 </p>
                 <el-tooltip placement="top">
-                    <div slot="content">涉及高发故障模式的故障件的生产设备所生产的产品数以及产品对应的质量问题数</div>
+                    <div slot="content">涉及高发故障模式的故障件的维修设备所维修的产品数以及产品对应的质量问题数</div>
                     <i class="el-icon-question"
                         style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
                 </el-tooltip>
             </div>
-            <div ref="production_device_stack_chart" :style="{ width: '100%', height: '380px' }"></div>
+            <div ref="repair_device_stack_chart" :style="{ width: '100%', height: '380px' }"></div>
         </el-card>
     </div>
 </template>
 
 <script>
 import echarts from "echarts";
-import { getChartData } from "../../../api/chart/changeOfProductionDevice"
+import { getRepairDeviceChartList } from "../../../api/chart/changeOfProductionDevice"
 import TimeLineChart from "./timeLineChart.vue"
 
 export default {
-    name: "changeOfProductionDevice",
+    name: "changeOfRepairDevice",
     components: { TimeLineChart },
     data() {
         return {
@@ -86,7 +86,7 @@ export default {
             },
             xData: [
                 {
-                    name: '设备生产数',
+                    name: '设备维修数',
                     type: 'bar',
                     stack: 'total',
                     label: {
@@ -115,7 +115,7 @@ export default {
     },
     methods: {
         initChart() {
-            let getchart = echarts.init(this.$refs.production_device_stack_chart);
+            let getchart = echarts.init(this.$refs.repair_device_stack_chart);
             getchart.clear()
             getchart.setOption(this.option);
 
@@ -126,10 +126,10 @@ export default {
         },
 
         getChartData() {
-            getChartData().then(res => {
+            getRepairDeviceChartList().then(res => {
                 console.log(res);
                 let list = [];
-                list.push(res.data.produceNumObj)
+                list.push(res.data.repairNumObj)
                 list.push(res.data.faultNumObj)
                 this.option.series = list
                 this.option.yAxis.data = res.data.equipmentNameArray

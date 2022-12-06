@@ -235,6 +235,20 @@ export function selectByMeasuringDeviceChanged() {
     method: 'get'
   })
 }
+// 维修设备变更时间线
+export function timeRepairDeviceChanged() {
+  return request({
+    url: '/system/dev/timeRepairDeviceChanged',
+    method: 'get'
+  })
+}
+// 维修设备变更时间线
+export function selectByRepairDeviceChanged() {
+  return request({
+    url: '/system/dev/selectByRepairDeviceChanged',
+    method: 'get'
+  })
+}
 
 //
 export function selectState1() {

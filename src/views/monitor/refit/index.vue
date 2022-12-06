@@ -26,6 +26,18 @@
         >
           改型时间线
         </p>
+        <el-tooltip placement="top">
+          <div slot="content">质量问题涉及到的机型随时间变化的改型变更情况</div>
+          <i
+            class="el-icon-question"
+            style="
+              float: right;
+              margin-right: 20px;
+              margin-top: 8px;
+              font-size: 40px;
+            "
+          ></i>
+        </el-tooltip>
       </div>
       <div
         id="remodel_timeline"
@@ -45,9 +57,21 @@
         >
           对比堆叠图
         </p>
+        <el-tooltip placement="top">
+          <div slot="content">不同机型对应的质量问题数</div>
+          <i
+            class="el-icon-question"
+            style="
+              float: right;
+              margin-right: 20px;
+              margin-top: 8px;
+              font-size: 40px;
+            "
+          ></i>
+        </el-tooltip>
       </div>
       <div
-        id="compared_stacked"
+        id="equp_change_compared_stacked"
         style="cursor: pointer; width: 100%; height: 300px"
       ></div>
     </el-card>
@@ -110,7 +134,7 @@ export default {
     },
     // 高度适应 对比堆叠图
     getHeight_stacked() {
-      var id__stacked = document.getElementById("compared_stacked")
+      var id__stacked = document.getElementById("equp_change_compared_stacked")
       var height__stacked = this.yData_stacked.length * 100
       //d.setAttribute(height,height+"px");
       id__stacked.style.cssText = "height:" + height__stacked + "px"
@@ -475,7 +499,7 @@ export default {
     //初始化 对比堆叠图
     init_Chart_compared_stacked() {
       let compared_stacked_chart = echarts.init(
-        document.getElementById("compared_stacked")
+        document.getElementById("equp_change_compared_stacked")
       )
       // echarts自适应
       window.addEventListener("resize", () => {

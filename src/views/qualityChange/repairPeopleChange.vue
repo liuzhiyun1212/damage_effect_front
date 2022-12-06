@@ -41,18 +41,20 @@
             对比堆叠图
           </p>
         </div>
-      <div id="trouble-num" :style="{ width: '100%', height: '400px' }"></div>
+      <div id="repair_compare" :style="{ width: '100%', height: '400px' }"></div>
 
-     
+
     </el-card>
 
-    
+
   </div>
 </template>
 
 <script>
 import {repairPeople} from "@/api/system/10";
+import {Countrepair} from "@/api/system/13";
 import * as echarts from "echarts";
+import {Countqua} from "@/api/system/9";
 
 export default {
   name: "repairPeople",
@@ -62,15 +64,17 @@ export default {
       se: [],
       x: [],
       y: [],
-
+      yList:[],
+      parts:[],
+      qua:[],
 
     };
   },
   created() {
-    
+
   },
   mounted() {
-    
+
     this.tsRepairPeople();
   },
   methods: {
@@ -80,15 +84,92 @@ export default {
             this.getX();
             this.getY();
         })
+      Countrepair().then((response) => {
+          for(let i=0;i<response.length;i++){
+            this.yList.push(response[i].person);
+            this.parts.push(response[i].repaire);
+            this.qua.push(response[i].quality);
+          }
+          this.getHeight_stacked();
+          this.getHeight_timeline();
+        this.initChart();
+      })
     },
 
+    getHeight_timeline() {
+      var id__timeline = document.getElementById("repair-people-time")
+      var height__timeline = this.se.length * 40
+      //d.setAttribute(height,height+"px");
+      id__timeline.style.cssText = "height:" + height__timeline + "px"
+    },
+    // 高度适应 对比堆叠图
+    getHeight_stacked() {
+      var id__stacked = document.getElementById("repair_compare")
+      var height__stacked = this.yList.length * 80
+      //d.setAttribute(height,height+"px");
+      id__stacked.style.cssText = "height:" + height__stacked + "px"
+    },
+    //对比堆叠图的数据配置
+    setOption(){
+      let option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            // Use axis to trigger tooltip
+            type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+          }
+        },
+        legend: {},
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'value'
+        },
+        yAxis: {
+          type: 'category',
+          data: this.yList//['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        series: [
+          {
+            name: '产品数量',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.qua//[320, 302, 301, 334, 390, 330, 320]
+          },
+          {
+            name: '质量问题数',
+            type: 'bar',
+            stack: 'total',
+            label: {
+              show: true
+            },
+            emphasis: {
+              focus: 'series'
+            },
+            data: this.parts//[120, 132, 101, 134, 90, 230, 210]
+          },
+
+        ]
+      };
+      return option;
+    },
 
     getX() {
       for (let index = 0; index < this.peopleChange.length; index++) {
         this.x[index] = this.peopleChange[index].modifyTime;
       }
 
-      console.log("x:", this.x);
+      /*console.log("x:", this.x);*/
       this.dealRes();
     },
 
@@ -106,7 +187,7 @@ export default {
           }
         }
       console.log("y:", this.y);
-      this.initChart();
+
     },
 
     dealRes() {
@@ -151,6 +232,8 @@ export default {
     initChart() {
       var chartDom = document.getElementById("repair-people-time");
       var myChart = echarts.init(chartDom);
+      var myChart2 = echarts.init(document.getElementById('repair_compare'));
+      myChart2.setOption(this.setOption());
       var option;
       option = {
         title: {
@@ -209,7 +292,7 @@ export default {
 
     },
 
-    
+
   },
 };
 </script>

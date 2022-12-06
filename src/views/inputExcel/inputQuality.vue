@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div>
+  <div class="app-container" style="width:95%;margin-left: 30px;background: #d2e9ff; margin-top: 10px;height: 70px;border-radius: 5px;box-shadow: 4px 4px 4px  #d9d9d9;">
 <!--    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="质量问题标题" prop="title">
         <el-input
@@ -180,7 +181,7 @@
           v-model="queryParams.planeType"
           placeholder="请输入机型"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -189,7 +190,7 @@
           v-model="queryParams.devCode"
           placeholder="请输入装备出厂编号"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -198,20 +199,31 @@
           v-model="queryParams.devUnit"
           placeholder="请输入装备制造单位"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
       <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
     </el-form>
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+      </div>
+<!--    <el-row :gutter="10" class="mb8">-->
+
+     <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+<!--      <el-col :span="1.5">-->
+
         <el-button
           type="primary"
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport"
+          style="
+            font-family: Arial;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
         >质量问题数据导入</el-button>
 
 <!--        <el-button
@@ -222,7 +234,7 @@
           @click="handleAdd"
           v-hasPermi="['system:dev:add']"
         >新增</el-button>-->
-      </el-col>
+<!--      </el-col>-->
 <!--      <el-col :span="1.5">
         <el-button
           type="success"
@@ -256,28 +268,40 @@
         >导出</el-button>
       </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
+<!--    </el-row>-->
 
-    <el-table v-loading="loading" :data="devList" @selection-change="handleSelectionChange" :height="'500px'" :default-sort="defaultSort" @sort-change="handleSortChange" class="myTable">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+
+    <el-table v-loading ="loading" :data="devList"
+              @selection-change="handleSelectionChange" :default-sort="defaultSort"
+              @sort-change="handleSortChange"
+              :header-cell-style="{
+               background: '#84BBFE',
+               color: '#fff',
+               // fontSize: '14px',
+               textAlign: 'center',
+               // fontWeight: '600',
+               fontFamily: '黑体',
+               padding: '0',
+                 }" style="margin-top: 10px" class="myTable">
+<!--      <el-table-column type="selection"  align="center" />-->
+      <el-table-column type="index" label="序号" align="center" />
       <el-table-column label="质量问题标题" align="center" prop="title" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="装备出厂编号" align="center" prop="devCode" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="装备制造单位" align="center" prop="devUnit" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="装备制造批次" align="center" prop="devManufacture" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column label="装备出厂时间" align="center" prop="devFactoryTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column label="装备出厂时间" align="center" prop="devFactoryTime" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.devFactoryTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="装备使用时长" align="center" prop="devUseTime" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column label="发生时间" align="center" prop="devHappenTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column label="发生时间" align="center" prop="devHappenTime" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.devHappenTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="故障件种类" align="center" prop="partsType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+<!--      <el-table-column label="故障件种类" align="center" prop="partsType" width="130"  :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>-->
 <!--      <el-table-column label="故障件名称" align="center" prop="partsName" />-->
 <!--      <el-table-column label="故障件型号" align="center" prop="partsModel" />-->
 <!--      <el-table-column label="故障件出厂编号" align="center" prop="partsCode" />-->
@@ -300,11 +324,11 @@
 <!--      </el-table-column>-->
 <!--      <el-table-column label="大修厂" align="center" prop="repairedFactory" />-->
 <!--      <el-table-column label="大修人员" align="center" prop="repairedStaff" />-->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  width="150" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="text"
+            type="primary"
             icon="el-icon-edit"
             @click="handleDetail(scope.row)"
             v-hasPermi="['system:dev:edit']"
@@ -312,14 +336,14 @@
 
           <el-button
             size="mini"
-            type="text"
+            type="primary"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:dev:edit']"
           >修改</el-button>
           <el-button
             size="mini"
-            type="text"
+            type="danger"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:dev:remove']"
@@ -335,7 +359,7 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
+    </el-card>
     <!-- 添加或修改quality_problem对话框 -->
     <el-dialog :title="title" :visible.sync="open1" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="140px">

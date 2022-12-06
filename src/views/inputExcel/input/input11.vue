@@ -1,12 +1,13 @@
 <template>
-  <div class="app-container">
+  <div>
+   <div class="app-container" style="width:95%;margin-left: 30px;background: #d2e9ff; margin-top: 10px;height: 70px;border-radius: 5px;box-shadow: 4px 4px 4px  #d9d9d9;">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="120px">
       <el-form-item label="机型" prop="planeType">
         <el-input
           v-model="queryParams.planeType"
           placeholder="请输入机型"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -15,7 +16,7 @@
           v-model="queryParams.troops"
           placeholder="请输入部队"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -24,29 +25,49 @@
           v-model="queryParams.deploymentQuantity"
           placeholder="请输入部署数量"
           clearable
-          style="width: 240px;"
+          style="width: 160px;"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
       <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
     </el-form>
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+    </div>
+
+    <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+
         <el-button
           type="primary"
           icon="el-icon-upload2"
           size="mini"
           @click="handleImport6"
+          style="
+            font-family: Arial;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
         >装备部署数据导入</el-button>
-      </el-col>
+
 
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
 
-    <el-table v-loading="loading" :data="List" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange" class="myTable">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column type="index" label="序号"> </el-table-column>
+
+    <el-table v-loading="loading" :data="List"
+              @selection-change="handleSelectionChange"
+              :default-sort="defaultSort"
+              @sort-change="handleSortChange"
+              :header-cell-style="{
+               background: '#84BBFE',
+               color: '#fff',
+               // fontSize: '14px',
+               textAlign: 'center',
+               // fontWeight: '600',
+               fontFamily: '黑体',
+               padding: '0',
+                 }" style="margin-top: 10px" class="myTable">
+      <el-table-column type="index"  align="center" label="序号"/>
       <el-table-column label="机型" align="center" prop="planeType" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="部队" align="center" prop="troops" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column label="部署时间" align="center" prop="deploymentTime" width="180" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']">
@@ -59,21 +80,21 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="text"
+            type="primary"
             icon="el-icon-edit"
             @click="handleDetail(scope.row)"
             v-hasPermi="['system:11:edit']"
           >详情</el-button>
           <el-button
             size="mini"
-            type="text"
+            type="primary"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:11:edit']"
           >修改</el-button>
           <el-button
             size="mini"
-            type="text"
+            type="danger"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:11:remove']"
@@ -89,6 +110,9 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+
+    </el-card>
+
 
     <!-- 修改装备部署数据对话框 -->
     <el-dialog :title="title" :visible.sync="open1" width="500px" append-to-body>

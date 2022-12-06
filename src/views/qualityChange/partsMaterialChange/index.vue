@@ -26,6 +26,20 @@
         >
           变更时间线
         </p>
+        <el-tooltip placement="top">
+          <div slot="content">
+            质量问题涉及到的故障件的原材料及其供应商变更情况
+          </div>
+          <i
+            class="el-icon-question"
+            style="
+              float: right;
+              margin-right: 20px;
+              margin-top: 8px;
+              font-size: 40px;
+            "
+          ></i>
+        </el-tooltip>
       </div>
       <div
         id="MaterialChange_timeline"
