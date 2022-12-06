@@ -49,7 +49,7 @@
           >故障件安装方法</el-tab-pane
         >
         <el-tab-pane :lazy="true" label="故障件维修工艺变更情况"
-          >故障件安装方法</el-tab-pane
+          ><faultyRepairWayChange/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备使用强度变更情况"
           >故障件安装方法</el-tab-pane
@@ -87,6 +87,7 @@ import equipmentAbilityenhancement from "@/views/qualityChange/equipmentAbilitye
 import faultyPartsChange from "@/views/qualityChange/faultyPartsChange/faultyPartsChange.vue";
 import measuringDevice from "@/views/qualityChange/changeOfMeasuringDevice/index";
 import measuringDeviceStackChart from "@/views/qualityChange/changeOfMeasuringDevice/index.vue";
+import faultyRepairWayChange from "@/views/qualityChange/faultyRepairWayChange/faultyRepairWayChange.vue";
 
 export default {
   name: "problemChange",
@@ -104,7 +105,8 @@ export default {
     measuringDevice,
     faultyPartsChange,
     measuringDeviceStackChart,
-    repairGroupchange
+    repairGroupchange,
+    faultyRepairWayChange
   },
   data() {
     return {

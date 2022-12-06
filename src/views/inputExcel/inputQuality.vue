@@ -585,7 +585,7 @@ export default {
       // 选中数组
       ids: [],
       // 默认排序
-      defaultSort: {prop:"partsFactoryTime", order: 'descending'},
+      defaultSort: {prop:"devHappenTime", order: 'descending'},
       // 非单个禁用
       single: true,
       // 非多个禁用

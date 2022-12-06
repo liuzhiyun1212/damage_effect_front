@@ -50,3 +50,19 @@ export function del10(id) {
     method: 'delete'
   })
 }
+
+// 获取故障件维修工艺变更时间
+export function listRepairWayChange() {
+  return request({
+    url: '/system/10/listRepairWayChange',
+    method: 'get',
+  })
+}
+
+// 获取高发故障模式涉及到的维修工艺生成故障件数
+export function listFaultyCountByRepairWay() {
+  return request({
+    url: '/system/10/listFaultyCountByRepairWay',
+    method: 'get',
+  })
+}

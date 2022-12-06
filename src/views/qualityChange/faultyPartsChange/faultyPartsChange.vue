@@ -141,8 +141,8 @@ export default {
       let flag = 0;
       // debugger
       for (let index = 0; index < this.productChange.length; index++) {
-        if (!this.y.includes(this.productChange[index].productModel + this.productChange[index].productName)){
-          this.y[flag] = this.productChange[index].productModel + this.productChange[index].productName;  
+        if (!this.y.includes(this.productChange[index].productName)){
+          this.y[flag] = this.productChange[index].productName;  
           flag++;
         }
         
@@ -154,7 +154,7 @@ export default {
     dealRes() {
       for (var i = 0; i < this.productChange.length; i++) {
         this.se.push({
-          name: this.productChange[i].productModel,
+          name: this.productChange[i].productName,
           type: "line",
           data: [],
 
@@ -163,11 +163,10 @@ export default {
             symbol: "triangle",
             data: [
               {
-                name: "",
+                name: this.productChange[i].productName+" "+this.productChange[i].modifyTime+" "+this.productChange[i].productModel,
                 coord: [
                   this.productChange[i].modifyTime,
-                  this.productChange[i].productModel +
-                    this.productChange[i].productName,
+                  this.productChange[i].productName,
                 ],
                 label: {
                   show: true,
@@ -199,6 +198,7 @@ export default {
       });
     },
 
+
     initChart() {
       var chartDom = document.getElementById("echart-line");
       var myChart = echarts.init(chartDom);
@@ -208,7 +208,7 @@ export default {
           // text: '故障件改型时间线'
         },
         tooltip: {
-          trigger: "axis",
+          trigger: "item",
           formatter: "{b}",
           axisPointer: {
             axis: "x",
