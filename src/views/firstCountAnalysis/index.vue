@@ -1,64 +1,78 @@
 <template>
   <div>
-    <el-card style="margin-left: 0.5%; width:99%; height: 1000px;">
-    <div class="mainContainer">
+    <el-card style="margin-left: 0.5%; width:100%; height: 1000px;">
+    <div class="mainContainer" style="width: 50%;">
 			<ul class="leftContent">
 				<li class="labelContent" @click="hand(1)">
 					<span class="label-title">质量问题发生时间</span>
 					<span class="label-body">
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count1Year}}</span>
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count1Quarter}}</span>
+                        <span class="problem">问题数:&nbsp;&nbsp;</span>
+                        <span style="font-style: italic; font-size: 2vh;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count1Year}}</span>
+                        <span style="font-style: italic; font-size: 2vh;padding-right: 10px;">季度</span><span>{{this.count1Quarter}}</span>
                     </span>
 				</li>
 				<li class="labelContent" @click="hand(2)">
 					<span class="label-title">质量问题涉及到的机型</span>
-					<span class="label-body">{{this.count2}}</span>
+					<span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count2}}</span>
                 </li>
 				<li class="labelContent" @click="hand(3)">
 					<span class="label-title">质量问题发生机型随时间变化情况</span>
-					<span class="label-body">{{this.count3}}</span>
+					<span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count3}}</span>
                 </li>
 				<li class="labelContent" @click="hand(4)">
 					<span class="label-title">涉及到的机型使用强度随时间变化</span>
-					<span class="label-body">{{this.count4}}</span>
+					<span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count4}}</span>
                 </li>
 				<li class="labelContent" @click="hand(5)">
 					<span class="label-title">质量问题高发故障模式</span>
-					<span class="label-body">{{this.count5}}</span>
+					<span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count5}}</span>
                 </li>
 				<li class="labelContent" @click="hand(6)">
 					<span class="label-title">质量问题故障模式随时间变化情况</span>
 					<span class="label-body">
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count6Year}}</span>
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count6Quarter}}</span>
+                    <span class="problem">问题数:</span>
+                        <span style="font-style: italic; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count6Year}}</span>
+                        <span style="font-style: italic; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count6Quarter}}</span>
                     </span>
 				</li>
 				<li class="labelContent" @click="hand(7)">
 					<span class="label-title">质量问题发生地理环境</span>
-					 <span class="label-body">{{this.count7}}</span>
+					 <span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count7}}</span>
                 </li>
                 <li class="labelContent" @click="hand(8)">
 					<span class="label-title">故障件种类</span>
-					 <span class="label-body">{{this.count8}}</span>
+					 <span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count8}}</span>
 				</li>
                 <li class="labelContent" @click="hand(9)">
 					<span class="label-title">故障件名称</span>
-					 <span class="label-body">{{this.count9}}</span>
+					 <span class="label-body">
+                        
+                    <span class="problem">问题数:</span>{{this.count9}}</span>
 				</li>
                 <li class="labelContent" @click="hand(10)">
 					<span class="label-title">故障件名称随时间变化情况统计</span>
 					<span class="label-body">
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count10Year}}</span>
-                        <span style="color: blue; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count10Quarter}}</span>
+                    <span class="problem">问题数:</span>
+                        <span style="font-style: italic; font-size: 18px;padding-right: 10px;">年度</span><span style="padding-right: 20px;">{{this.count10Year}}</span>
+                        <span style="font-style: italic; font-size: 18px;padding-right: 10px;">季度</span><span>{{this.count10Quarter}}</span>
                     </span>
 				</li>
                 <li class="labelContent" @click="hand(11)">
 					<span class="label-title">故障件安装位置</span>
-					 <span class="label-body">{{this.count11}}</span>
+					 <span class="label-body">
+                    <span class="problem">问题数:</span>{{this.count11}}</span>
 				</li>
                 <li class="labelContent" @click="hand(12)">
 					<span class="label-title">故障件安装方法</span>
-					 <span class="label-body"></span>
+					 <span class="label-body">
+                    <span class="problem">问题数:&nbsp;&nbsp;</span>
+                     </span>
 				</li>
 			</ul>
 		</div>
@@ -279,8 +293,18 @@ export default {
     padding-top: 5px;
     margin-left: 5px;
 }
-
-
+@media (min-width: 768px) {
+  .col-sm-3 {width: 33.333333%}
+}
+@media (min-width: 992px) {
+  .col-md-4 {width: 25%}
+}
+@media (min-width: 1200px) {
+  .col-lg-5 {width: 20%}
+}
+.problem::after{
+    content: "　 ";
+}
 /* li{
     float:left;width:190px;padding:5px;
     display: block;
@@ -335,9 +359,9 @@ ul li:nth-child(12){
 .leftContent .labelContent .label-body {
     display: block;
     cursor: pointer;
-    text-align: center;
+    /* text-align: center; */
     margin-top: 1px;
-    font-size: 25px;
+    /* font-size: 15px; */
 }
 /* .leftContent .labelContent .label-title {
     font-family: 微软雅黑;
