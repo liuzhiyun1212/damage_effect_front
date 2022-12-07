@@ -151,6 +151,16 @@ export default {
       });
     },
 
+    /*dealTimeline(xdate){
+      if(xdate.length>=10)
+        return xdate
+      else{
+
+      }
+    },*/
+
+
+
 
     initChart() {
       var myChart = echarts.init(document.getElementById('abilityCompare'));
