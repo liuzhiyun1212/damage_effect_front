@@ -1,7 +1,8 @@
 <template>
   <div>
-    <el-card style="margin-left: 0.5%; width:100%; height: 1000px;">
-    <div class="mainContainer" style="width: 50%;">
+    <el-card style="margin-left: 0.5%; width:100%;height: 1000px;">
+        <div class="mainContainer" style="width: 50%;float: left;">
+        <p style="text-align: center; color:blue; font-weight: 1000;font-size: 25px;">问题规律分析统计</p>
 			<ul class="leftContent">
 				<li class="labelContent" @click="hand(1)">
 					<span class="label-title">质量问题发生时间</span>
@@ -76,6 +77,15 @@
 				</li>
 			</ul>
 		</div>
+        <div class="change" style="width: 50%;float: left;">
+            <p style="text-align: center; color:blue; font-weight: 1000;font-size: 25px;">原因推测分析</p>
+			<ul class="rightContent">
+                <li class="rightLabelContent"></li>
+                <li class="rightLabelContent"></li>
+                <li class="rightLabelContent"></li>
+                <li class="rightLabelContent"></li>
+            </ul>
+        </div>
     </el-card>
     <!-- <ul>
         <li>质量问题发生时间:   季度<span>{{this.count1Quarter}}</span>年度<span>{{this.count1Year}}</span></li>
@@ -284,7 +294,6 @@ export default {
     float: left;
     color: #ffffff;
     width: 40%;
-    height: .8rem;
     height: 70px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -293,14 +302,31 @@ export default {
     padding-top: 5px;
     margin-left: 5px;
 }
-@media (min-width: 768px) {
-  .col-sm-3 {width: 33.333333%}
+
+.rightContent li{
+    display: inline-block;
+    color: #ffffff;
+    width: 40%;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    margin-right: 5px;
 }
-@media (min-width: 992px) {
-  .col-md-4 {width: 25%}
-}
-@media (min-width: 1200px) {
-  .col-lg-5 {width: 20%}
+/* .rightContent .right{
+    display: block;
+    float:right;
+    color: #ffffff;
+    width: 25%;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 5px;
+    margin-left: 600px;
+} */
+.rightContent li{
+    background-color: #0082bd;
 }
 .problem::after{
     content: "　 ";
@@ -318,42 +344,42 @@ export default {
     padding-right: 5px;
     padding-top: 5px;
 } */
-ul li:first-child{
+.leftContent li:first-child{
     background-color: #0082bd;
     /* display: inline-block; */
 }
-ul li:nth-child(2){
+.leftContent li:nth-child(2){
     background-color: #3bb54b;
 }
 
-ul li:nth-child(3){
+.leftContent li:nth-child(3){
     background-color: #19599d;
 }
-ul li:nth-child(4){
+.leftContent li:nth-child(4){
     background-color: #cb5454;
 }
-ul li:nth-child(5){
+.leftContent li:nth-child(5){
     background-color: #0082bd;
 }
-ul li:nth-child(6){
+.leftContent li:nth-child(6){
     background-color: #3bb54b;
 }
-ul li:nth-child(7){
+.leftContent li:nth-child(7){
     background-color: #19599d;
 }
-ul li:nth-child(8){
+.leftContent li:nth-child(8){
     background-color: #cb5454;
 }
-ul li:nth-child(9){
+.leftContent li:nth-child(9){
     background-color: #19599d;
 }
-ul li:nth-child(10){
+.leftContent li:nth-child(10){
     background-color: #ff7f27;
 }
-ul li:nth-child(11){
+.leftContent li:nth-child(11){
     background-color: #3bb54b;
 }
-ul li:nth-child(12){
+.leftContent li:nth-child(12){
     background-color: #19599d;
 }
 .leftContent .labelContent .label-body {
