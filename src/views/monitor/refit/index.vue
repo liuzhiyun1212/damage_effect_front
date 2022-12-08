@@ -113,8 +113,7 @@ export default {
   mounted() {
     //改型时间线折线图
     this.getData2()
-    //对比堆叠图
-    this.getData1()
+
   },
 
   methods: {
@@ -239,10 +238,13 @@ export default {
         }
 
         //console.log("plane_remodel_time", this.plane_remodel_time)
+
+        //对比堆叠图
+        this.getData1()
       })
     },
     dealRes2() {
-      for (let i = 0; i < this.yData_timeline.length; i++) {
+      for (let i = 0; i < this.yData_timeline.length;i++) {
         this.se_timeline.push({
           name: this.yData_timeline[i],
           type: "line",

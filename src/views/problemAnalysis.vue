@@ -24,8 +24,8 @@
       <el-tab-pane label="故障件种类" :lazy="true" name="h"><PartsType :key="timer"/></el-tab-pane>
       <el-tab-pane label="故障件名称" :lazy="true" name="i"><FaultyCount :key="timer"></FaultyCount></el-tab-pane>
       <el-tab-pane label="故障件随时间变化情况" :lazy="true" name="j"><PartsTime :key="timer"></PartsTime></el-tab-pane>
-      <el-tab-pane label="质故障件安装位置" :lazy="true" name="k"><ThreeD1 :key="timer"></ThreeD1></el-tab-pane>
-      <el-tab-pane label="故障件安装方法" :lazy="true" name="l"></el-tab-pane>
+      <el-tab-pane label="故障件安装位置" :lazy="true" name="k"><ThreeD1 :key="timer"></ThreeD1></el-tab-pane>
+      <el-tab-pane label="故障件安装方法" :lazy="true" name="l"><ThreeD2 :key="timer"/></el-tab-pane>
     </el-tabs>
   </el-card>
  <!-- <el-card style="margin-left: 15%; width:84%; height:800px;margin-top: 20px;">

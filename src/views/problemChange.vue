@@ -52,10 +52,10 @@
         <el-tab-pane :lazy="true" label="装备使用强度变更情况"
           ><equipmentStrengthChanged></equipmentStrengthChanged></el-tab-pane
         >
-        <el-tab-pane :lazy="true" label="装备装备状态更情况"
+        <el-tab-pane :lazy="true" label="装备装备状态变更情况"
           ><devStateChanged :key="timer"></devStateChanged
         ></el-tab-pane>
-        <el-tab-pane :lazy="true" label="装备使用环境更情况"
+        <el-tab-pane :lazy="true" label="装备使用环境变更情况"
           ><environmentChanged :key="timer"></environmentChanged
         ></el-tab-pane>
       </el-tabs>

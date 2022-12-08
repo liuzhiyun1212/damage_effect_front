@@ -13,7 +13,7 @@
       </p>
     <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
       <div style="margin-bottom:120px;margin-left: 2%;width: 96%;height: 700px;background: #999; " >
-        <div id="main" style="width: 100%;height: 100%;"></div>
+        <div id="threed2_main" style="width: 100%;height: 100%;"></div>
         <div id="legend" style="margin-bottom:10px;width: 100%;height: 100px;background:#998866"></div>
       </div>
       <div style="margin-top:10px;width: 100%; background: #d2e9ff; border-radius: 10px">
@@ -216,12 +216,13 @@ export default {
     gettable(){
       getana_install_way().then((response)=>{
         this.tabledata=response;
+        console.log("表格");
         console.log(this.tabledata);
       })
     },
 
     initChart() {
-      var myChart = echarts.init(document.getElementById('main'));
+      var myChart = echarts.init(document.getElementById('threed2_main'));
       myChart.setOption(this.setOption());
       console.log(this.setOption());
     },
@@ -372,11 +373,16 @@ export default {
             itemStyle: {
               normal: {
                 color:function(params){  //根据不同数据显示不同颜色的标记
-                  console.log("------",params)
-                  console.log("------",install)
+                 /* console.log("------0",params.data[0])
+                  console.log("------1",params.data[1])
+                  console.log("------2",params.data[2])
+                  console.log("------3",params.data[3])
+                  console.log("------4",params.data[4])
+                  console.log("------5",params.data[5])
+                  console.log("------2",install)*/
                   for(let i=0;i<install.length;i++){
                     let mark=0;
-                    if(params.data[4]===install[i]){
+                    if(params.data[5]===install[i]){
                       /*test.push(colors[i]);*/
                       return colors[i];
 
