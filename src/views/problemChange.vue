@@ -50,7 +50,7 @@
           ><faultyRepairWayChange :key="timer"/></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备使用强度变更情况"
-          ><equipmentStrengthChanged></equipmentStrengthChanged></el-tab-pane
+          ><equipmentStrengthChanged :key="timer"></equipmentStrengthChanged></el-tab-pane
         >
         <el-tab-pane :lazy="true" label="装备装备状态变更情况"
           ><devStateChanged :key="timer"></devStateChanged
