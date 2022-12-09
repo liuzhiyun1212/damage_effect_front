@@ -167,3 +167,19 @@ export function ProMakeWorkmanship3() {
     method: 'get'
   })
 }
+
+//维修班组发生变化:1.不同维修班组生产的相同故障件型号中，某种故障模式质量问题数量存在较大差异
+export function prorepairteam1() {
+  return request({
+    url: '/system/reasonrule/prorepairteam1',
+    method: 'get'
+  })
+}
+
+//维修班组发生变化:2.某故障件型号维修班组发生调整时间与质量问题数量变化时间一致或不超过一定范围
+export function prorepairteam2() {
+  return request({
+    url: '/system/reasonrule/prorepairteam2',
+    method: 'get'
+  })
+}
