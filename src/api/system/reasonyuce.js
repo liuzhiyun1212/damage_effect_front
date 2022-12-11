@@ -183,3 +183,19 @@ export function prorepairteam2() {
     method: 'get'
   })
 }
+
+//维修工艺发生变化:1.不同维修工艺维修的故障件中，某种故障模式质量问题数量存在较大差异
+export function ProRepairWorkmanship1() {
+  return request({
+    url: '/system/reasonrule/ProRepairWorkmanship1',
+    method: 'get'
+  })
+}
+
+//维修工艺发生变化:2.故障件维修工艺变更时间与质量问题数量变化时间一致或不超过一定范围
+export function ProRepairWorkmanship2() {
+  return request({
+    url: '/system/reasonrule/ProRepairWorkmanship2',
+    method: 'get'
+  })
+}

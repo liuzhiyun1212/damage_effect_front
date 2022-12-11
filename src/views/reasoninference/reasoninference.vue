@@ -77,6 +77,8 @@ import {
   ProMakeWorkmanship3,
   prorepairteam1,
   prorepairteam2,
+  ProRepairWorkmanship1,
+  ProRepairWorkmanship2,
 } from "../../api/system/reasonyuce";
 
 export default {
@@ -247,6 +249,13 @@ export default {
         this.rule4 = ""
         this.ifprorepairteam()
       }
+      if(label=="维修工艺发生变化"){
+        this.rule1 = "1.不同维修工艺维修的故障件中，某种故障模式质量问题数量存在较大差异；"
+        this.rule2 = "2.故障件维修工艺变更时间与质量问题数量变化时间一致或不超过一定范围。"
+        this.rule3 = ""
+        this.rule4 = ""
+        this.ifProRepairWorkmanship()
+      }
     },
     handleRule(rule){
       var myChart = echarts.init(document.getElementById('stackedLineChart'));
@@ -320,6 +329,31 @@ export default {
       if(rule=="2.某故障件型号维修班组发生调整时间与质量问题数量变化时间一致或不超过一定范围。"){
         this.ruleprorepairteam2()
       }
+      if(rule=="1.不同维修工艺维修的故障件中，某种故障模式质量问题数量存在较大差异；"){
+        this.ruleProRepairWorkmanship1()
+      }
+      if(rule=="2.故障件维修工艺变更时间与质量问题数量变化时间一致或不超过一定范围。"){
+        this.ruleProRepairWorkmanship2()
+      }
+    },
+    ifProRepairWorkmanship(){
+      ProRepairWorkmanship1().then(response1 => {
+        ProRepairWorkmanship2().then(response2 => {
+          this.total1 = response1.total;
+          this.total2 = response2.total;
+          if(this.total1>0){
+            this.if1 = true
+          }
+          if(this.total2>0){
+            this.if2 = true
+          }
+          if(this.total1>0){
+            this.printProRepairWorkmanship1(response1.rows)
+          }else if(this.total2>0){
+            this.printProRepairWorkmanship2(response2.rows)
+          }
+        })
+      })
     },
     ifprorepairteam(){
       prorepairteam1().then(response1 => {
@@ -645,6 +679,16 @@ export default {
     ruleprorepairteam2(){
       prorepairteam2().then(response => {
         this.printprorepairteam2(response.rows)
+      })
+    },
+    ruleProRepairWorkmanship1(){
+      ProRepairWorkmanship1().then(response => {
+        this.printProRepairWorkmanship1(response.rows)
+      })
+    },
+    ruleProRepairWorkmanship2(){
+      ProRepairWorkmanship2().then(response => {
+        this.printProRepairWorkmanship2(response.rows)
       })
     },
     printdevup1(rows){
@@ -4742,6 +4786,363 @@ export default {
                 }
               }
               return a+'维修班组变更时间'
+            }
+          },
+          data: a2
+        }
+        by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
+        oy.push(by)
+      }
+      // 渲染图表
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            if(html == getName + '<br/>'||html == ''){
+              return null
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: name
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          name:"年-季度",
+          type: 'category',
+          boundaryGap: false,
+          axisLabel:{
+            interval: 0
+          },
+          data: xdate
+        },
+        yAxis: {
+          minInterval:1,
+          type: 'value'
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+    },
+    printProRepairWorkmanship1(rows){
+      this.yiju = "（判断规则1）"
+      this.dataList1 = rows
+
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+
+      for (let i = 0; i < this.dataList1.length; i++) {
+        date = this.dataList1[i].partsName + "（" + this.dataList1[i].partsModel + "）"+this.dataList1[i].faultModel
+        if(name.indexOf(date) == -1){
+          name.push(date)
+        }
+        if(xdate.indexOf(this.dataList1[i].partsMakeWorkmanship) == -1){
+          xdate.push(this.dataList1[i].partsMakeWorkmanship)
+        }
+        md = {name:date,id:this.dataList1[i].partsMakeWorkmanship,time:this.dataList1[i].partsMakeWorkmanship,num:this.dataList1[i].devHappennum}
+        ndata.push(md)
+      }
+      var xdate1 = []
+      for (let i = 0; i < xdate.length; i++){
+        xdate1.push(xdate[i])
+      }
+      var fydata = new Array()
+      var ydata = new Array()
+      for (let i = 0; i < xdate.length; i++){
+        fydata[i] = new Array()
+        ydata[i] = new Array()
+        for (let j = 0; j < name.length; j++){
+          fydata[i][j]=0
+          ydata[i][j]=""
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[b][a] = ndata[i].num
+        ydata[b][a] = ndata[i].id
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : true,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < xdate.length; i++){
+        by = {name:xdate1[i],type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+        oy.push(by)
+      }
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          position: function (point, params, dom, rect, size) {
+            // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+            // 提示框位置
+            var x = 0; // x坐标位置
+            var y = 0; // y坐标位置
+
+            // 当前鼠标位置
+            var pointX = point[0];
+            var pointY = point[1];
+
+            // 外层div大小
+            // var viewWidth = size.viewSize[0];
+            // var viewHeight = size.viewSize[1];
+
+            // 提示框大小
+            var boxWidth = size.contentSize[0];
+            var boxHeight = size.contentSize[1];
+
+            // boxWidth > pointX 说明鼠标左边放不下提示框
+            if (boxWidth > pointX) {
+              x = 5;
+            } else { // 左边放的下
+              x = pointX - boxWidth;
+            }
+
+            // boxHeight > pointY 说明鼠标上边放不下提示框
+            if (boxHeight > pointY) {
+              y = 5;
+            } else { // 上边放得下
+              y = pointY - boxHeight;
+            }
+
+            return [x, y];
+          },
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  let a = name.indexOf(getName)
+                  let b = xdate1.indexOf(params[i].seriesName)
+                  html += ydata[b][a] + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: xdate1
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          minInterval:1,
+          type: 'value',
+        },
+        yAxis: {
+          data: name,
+          type: 'category',
+          scale: true,
+          triggerEvent: true,
+          axisLabel:{
+            interval: 0,
+            formatter: function (value) {
+              if (value.length > 3) {
+                return `${value.slice(0, 3)}...`
+              }
+              return value
+            },
+          },
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+      this.extension(myChart);
+    },
+    printProRepairWorkmanship2(rows){
+      this.yiju = "（判断规则2）"
+      var biaozhuline = []
+      for(let i =0;i<rows.length;i++){
+        if(rows[i].devHappennum!=-1){
+          this.dataList2.push(rows[i])
+        }else{
+          biaozhuline.push(rows[i])
+        }
+      }
+      var name = []
+      var date = ""
+      var date1 = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+      for (let i = 0; i < this.dataList2.length; i++) {
+        date = this.dataList2[i].devHappenTime
+        if(xdate.indexOf(date) == -1){
+          xdate.push(date)
+        }
+        date1 = this.dataList2[i].partsName + "（" + this.dataList2[i].partsModel + "）"
+        if(name.indexOf(date1) == -1){
+          name.push(date1)
+        }
+        md = {name:date1,time:date,num:this.dataList2[i].devHappennum}
+        ndata.push(md)
+      }
+      var compare1 = function (x, y) {//比较函数
+        if (x < y) {
+          return -1;
+        } else if (x > y) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+      xdate.sort(compare1)
+      var ndata1 = []
+      var ndatatt = []
+      var md2 = ""
+      var date2 = ""
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].partsName + "（" + biaozhuline[i].partsModel + "）"
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].partsName + "（" + biaozhuline[j].partsModel + "）"
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+            biaozhuline.splice(j,1)
+          }
+        }
+      }
+      var bb = []
+      for (let i = 0; i < biaozhuline.length; i++){
+        bb.push(biaozhuline[i])
+      }
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].partsName + "（" + biaozhuline[i].partsModel + "）"
+        date2 = date1
+        let sss = -1
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].partsName + "（" + biaozhuline[j].partsModel + "）"
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+            sss = j
+            if(date2.indexOf(aaa)==-1){
+              date2 += "和"+aaa
+            }
+            biaozhuline.splice(sss,1)
+          }
+        }
+        md2 = {time:date,type:date2}
+        ndatatt.push(md2)
+      }
+      for (let i = 0; i < bb.length; i++){
+        for (let j = 0; j < ndatatt.length; j++){
+          date = bb[i].devHappenTime
+          date1 = bb[i].partsName + "（" + bb[i].partsModel + "）"
+          if(date==ndatatt[j].time){
+            md2 = {name:date1,time:date,type:ndatatt[j].type}
+            ndata1.push(md2)
+          }
+        }
+      }
+      var fydata = new Array()
+      for (let i = 0; i < name.length; i++){
+        fydata[i] = new Array()
+        for (let j = 0; j < xdate.length; j++){
+          fydata[i][j]=0
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[a][b] = ndata[i].num
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : false,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < name.length; i++){
+        var a1 = ""
+        var a2 = []
+        for (let i1 = 0; i1 < ndata1.length; i1++){
+          if(ndata1[i1].name==name[i]){
+            a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
+            a2.push(a1)
+          }
+        }
+        var mark = {
+          symbol: 'triangle',
+          label: { show: true,
+            formatter: function(params){
+              let a = ""
+              for (let i1 = 0; i1 < ndata1.length; i1++){
+                if(ndata1[i1].time==xdate[params.value]){
+                  a = ndata1[i1].type
+                }
+              }
+              return a+'维修工艺变更时间'
             }
           },
           data: a2
