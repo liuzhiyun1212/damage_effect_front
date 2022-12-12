@@ -454,7 +454,7 @@ export default {
       const ids = row.id || this.ids;
       const name = row.planeType;
       this.$modal.confirm('是否确认删除产品生成数量数据名为"' + name + '"的数据项？').then(function() {
-        return delDesign(ids);
+        return del9(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");

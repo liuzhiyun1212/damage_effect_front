@@ -803,7 +803,7 @@ export default {
       const ids = row.id || this.ids;
       const name = row.title;
       this.$modal.confirm('是否确认删除质量问题数据名为"' + name + '"的数据项？').then(function() {
-        return delDesign(ids);
+        return delDev(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
