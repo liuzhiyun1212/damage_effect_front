@@ -381,7 +381,7 @@ export default {
       const ids = row.id || this.ids;
       const name = row.productName;
       this.$modal.confirm('是否确认删除产品制造变更数据名为"' + name + '"的数据项？').then(function() {
-        return delDesign(ids);
+        return delModifyData(ids);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
