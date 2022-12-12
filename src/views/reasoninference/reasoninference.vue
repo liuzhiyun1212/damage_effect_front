@@ -37,7 +37,21 @@
           </div>
         </el-card>
         <hr />
-        <el-card class="box-card" style="height: 450px;">
+        <el-card v-if = "this.ifsplit==true" class="box-card" style="height: 450px;">
+          <div v-if = "this.if1==true" >
+            <el-tabs v-model="activeName" @tab-click="handleClickTab">
+              <el-tab-pane v-if = "this.total1>0" label="季度" name="quarter" :lazy="true"></el-tab-pane>
+              <el-tab-pane v-if = "this.total2>0" label="年度" name="year" :lazy="true"></el-tab-pane>
+            </el-tabs>
+          </div>
+          <div v-else slot="header" class="clearfix">
+            <span>判断依据</span>
+          </div>
+          <div class="body">
+            <div id="stackedLineChart1" :style="{ width: '100%', height: '350px' }"></div>
+          </div>
+        </el-card>
+        <el-card v-else class="box-card" style="height: 450px;">
           <div slot="header" class="clearfix">
             <span>判断依据{{yiju}}</span>
           </div>
@@ -79,12 +93,16 @@ import {
   prorepairteam2,
   ProRepairWorkmanship1,
   ProRepairWorkmanship2,
+  devusechangequarter,
+  devusechangeyear,
 } from "../../api/system/reasonyuce";
 
 export default {
   name: "reasoninference",
   data() {
     return {
+      activeName:"quarter",
+      ifsplit:false,
       reason:"",
       yiju : "",
       rule1:"",
@@ -115,6 +133,21 @@ export default {
     this.getchangeTree();
   },
   methods: {
+    handleClickTab(tab) {
+      this.activeName = tab.name;
+      this.dataList2 = []
+      var myChart2 = echarts.init(document.getElementById('stackedLineChart1'));
+      myChart2.clear()
+      if(this.activeName=="quarter"){
+        devusechangequarter().then(response1 => {
+          this.printdevusechangequarter(response1.rows)
+        })
+      }else if(this.activeName=="year"){
+        devusechangeyear().then(response2 => {
+          this.printdevusechangeyear(response2.rows)
+        })
+      }
+    },
     extension(chart) {
       // 注意这里，是以X轴显示内容过长为例，如果是y轴的话，需要把params.componentType == 'xAxis'改为yAxis
       // 判断是否创建过div框,如果创建过就不再创建了
@@ -167,7 +200,15 @@ export default {
       }
     },
     handleLabel(label){
+      if(this.ifsplit==false){
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        myChart.clear()
+      }else{
+        var myChart2 = echarts.init(document.getElementById('stackedLineChart1'));
+        myChart2.clear()
+      }
       this.yiju = ""
+      this.ifsplit=false
       this.if1 = false
       this.if2 = false
       this.if3 = false
@@ -184,8 +225,6 @@ export default {
       this.rule2 = ""
       this.rule3 = ""
       this.rule4 = ""
-      var myChart = echarts.init(document.getElementById('stackedLineChart'));
-      myChart.clear()
       if(label=="装备型号升级"){
         this.rule1 = "1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"
         this.rule2 = "2.问题装备型号技术状态进行升级时间与质量问题变化时间一致或不超过一定范围。"
@@ -256,10 +295,27 @@ export default {
         this.rule4 = ""
         this.ifProRepairWorkmanship()
       }
+      if(label=="使用强度发生变化"){
+        this.ifsplit = true
+        this.rule1 = "1.年度/季度平均飞行小时变更时间与质量问题数量变化时间一致或不超过一定范围。"
+        this.rule2 = ""
+        this.rule3 = ""
+        this.rule4 = ""
+        this.ifdevusechange()
+      }
     },
     handleRule(rule){
-      var myChart = echarts.init(document.getElementById('stackedLineChart'));
-      myChart.clear()
+      if(this.ifsplit==false){
+        var myChart = echarts.init(document.getElementById('stackedLineChart'));
+        myChart.clear()
+      }else{
+        var myChart2 = echarts.init(document.getElementById('stackedLineChart1'));
+        myChart2.clear()
+      }
+      this.dataList1 = []
+      this.dataList2 = []
+      this.dataList3 = []
+      this.dataList4 = []
       if(rule=="1.不同问题装备型号中，某种故障模式质量问题数量存在较大差异；"){
         this.ruledevup1()
       }
@@ -335,6 +391,27 @@ export default {
       if(rule=="2.故障件维修工艺变更时间与质量问题数量变化时间一致或不超过一定范围。"){
         this.ruleProRepairWorkmanship2()
       }
+      if(rule=="1.年度/季度平均飞行小时变更时间与质量问题数量变化时间一致或不超过一定范围。"){
+        this.ruledevusechange()
+      }
+    },
+    ifdevusechange(){
+      devusechangequarter().then(response1 => {
+        devusechangeyear().then(response2 => {
+          this.total1 = response1.total;
+          this.total2 = response2.total;
+          if(this.total1>0||this.total2>0){
+            this.if1 = true
+          }
+          if(this.total1>0){
+            this.activeName="quarter"
+            this.printdevusechangequarter(response1.rows)
+          }else if(this.total2>0){
+            this.activeName="year"
+            this.printdevusechangeyear(response2.rows)
+          }
+        })
+      })
     },
     ifProRepairWorkmanship(){
       ProRepairWorkmanship1().then(response1 => {
@@ -689,6 +766,21 @@ export default {
     ruleProRepairWorkmanship2(){
       ProRepairWorkmanship2().then(response => {
         this.printProRepairWorkmanship2(response.rows)
+      })
+    },
+    ruledevusechange(){
+      devusechangequarter().then(response1 => {
+        devusechangeyear().then(response2 => {
+          this.total1 = response1.total;
+          this.total2 = response2.total;
+          if(this.total1>0){
+            this.activeName="quarter"
+            this.printdevusechangequarter(response1.rows)
+          }else if(this.total2>0){
+            this.activeName="year"
+            this.printdevusechangeyear(response2.rows)
+          }
+        })
       })
     },
     printdevup1(rows){
@@ -5152,6 +5244,398 @@ export default {
       }
       // 渲染图表
       var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            if(html == getName + '<br/>'||html == ''){
+              return null
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: name
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          name:"年-季度",
+          type: 'category',
+          boundaryGap: false,
+          axisLabel:{
+            interval: 0
+          },
+          data: xdate
+        },
+        yAxis: {
+          minInterval:1,
+          type: 'value'
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+    },
+    printdevusechangequarter(rows){
+      var biaozhuline = []
+      for(let i =0;i<rows.length;i++){
+        if(rows[i].devHappennum!=-1){
+          this.dataList2.push(rows[i])
+        }else{
+          biaozhuline.push(rows[i])
+        }
+      }
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+      for (let i = 0; i < this.dataList2.length; i++) {
+        date = this.dataList2[i].devHappenTime
+        if(xdate.indexOf(date) == -1){
+          xdate.push(date)
+        }
+        if(name.indexOf(this.dataList2[i].planeType) == -1){
+          name.push(this.dataList2[i].planeType)
+        }
+        md = {name:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
+        ndata.push(md)
+      }
+      var compare1 = function (x, y) {//比较函数
+        if (x < y) {
+          return -1;
+        } else if (x > y) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+      xdate.sort(compare1)
+      var ndata1 = []
+      var ndatatt = []
+      var md2 = ""
+      var date2 = ""
+      var date1 = ""
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].planeType
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].planeType
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+            biaozhuline.splice(j,1)
+          }
+        }
+      }
+      var bb = []
+      for (let i = 0; i < biaozhuline.length; i++){
+        bb.push(biaozhuline[i])
+      }
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].planeType
+        date2 = date1
+        let sss = -1
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].planeType
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+            sss = j
+            if(date2.indexOf(aaa)==-1){
+              date2 += "和"+aaa
+            }
+            biaozhuline.splice(sss,1)
+          }
+        }
+        md2 = {time:date,type:date2}
+        ndatatt.push(md2)
+      }
+      for (let i = 0; i < bb.length; i++){
+        for (let j = 0; j < ndatatt.length; j++){
+          date = bb[i].devHappenTime
+          date1 = bb[i].planeType
+          if(date==ndatatt[j].time){
+            md2 = {name:date1,time:date,type:ndatatt[j].type}
+            ndata1.push(md2)
+          }
+        }
+      }
+      var fydata = new Array()
+      for (let i = 0; i < name.length; i++){
+        fydata[i] = new Array()
+        for (let j = 0; j < xdate.length; j++){
+          fydata[i][j]=0
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[a][b] = ndata[i].num
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : false,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < name.length; i++){
+        var a1 = ""
+        var a2 = []
+        for (let i1 = 0; i1 < ndata1.length; i1++){
+          if(ndata1[i1].name==name[i]){
+            a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
+            a2.push(a1)
+          }
+        }
+        var mark = {
+          symbol: 'triangle',
+          label: { show: true,
+            formatter: function(params){
+              let a = ""
+              for (let i1 = 0; i1 < ndata1.length; i1++){
+                if(ndata1[i1].time==xdate[params.value]){
+                  a = ndata1[i1].type
+                }
+              }
+              return a+'平均飞行小时变更时间'
+            }
+          },
+          data: a2
+        }
+        by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
+        oy.push(by)
+      }
+      // 渲染图表
+      var myChart = echarts.init(document.getElementById('stackedLineChart1'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            if(html == getName + '<br/>'||html == ''){
+              return null
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: name
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          name:"年-季度",
+          type: 'category',
+          boundaryGap: false,
+          axisLabel:{
+            interval: 0
+          },
+          data: xdate
+        },
+        yAxis: {
+          minInterval:1,
+          type: 'value'
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+    },
+    printdevusechangeyear(rows){
+      var biaozhuline = []
+      for(let i =0;i<rows.length;i++){
+        if(rows[i].devHappennum!=-1){
+          this.dataList2.push(rows[i])
+        }else{
+          biaozhuline.push(rows[i])
+        }
+      }
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+      for (let i = 0; i < this.dataList2.length; i++) {
+        date = this.dataList2[i].devHappenTime
+        if(xdate.indexOf(date) == -1){
+          xdate.push(date)
+        }
+        if(name.indexOf(this.dataList2[i].planeType) == -1){
+          name.push(this.dataList2[i].planeType)
+        }
+        md = {name:this.dataList2[i].planeType,time:date,num:this.dataList2[i].devHappennum}
+        ndata.push(md)
+      }
+      var compare1 = function (x, y) {//比较函数
+        if (x < y) {
+          return -1;
+        } else if (x > y) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+      xdate.sort(compare1)
+      var ndata1 = []
+      var ndatatt = []
+      var md2 = ""
+      var date2 = ""
+      var date1 = ""
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].planeType
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].planeType
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1==aaa){
+            biaozhuline.splice(j,1)
+          }
+        }
+      }
+      var bb = []
+      for (let i = 0; i < biaozhuline.length; i++){
+        bb.push(biaozhuline[i])
+      }
+      for (let i = 0; i < biaozhuline.length; i++){
+        date = biaozhuline[i].devHappenTime
+        date1 = biaozhuline[i].planeType
+        date2 = date1
+        let sss = -1
+        for (let j = i; j < biaozhuline.length; j++){
+          let aaa = biaozhuline[j].planeType
+          if(date==biaozhuline[j].devHappenTime&&i!=j&&date1!=aaa){
+            sss = j
+            if(date2.indexOf(aaa)==-1){
+              date2 += "和"+aaa
+            }
+            biaozhuline.splice(sss,1)
+          }
+        }
+        md2 = {time:date,type:date2}
+        ndatatt.push(md2)
+      }
+      for (let i = 0; i < bb.length; i++){
+        for (let j = 0; j < ndatatt.length; j++){
+          date = bb[i].devHappenTime
+          date1 = bb[i].planeType
+          if(date==ndatatt[j].time){
+            md2 = {name:date1,time:date,type:ndatatt[j].type}
+            ndata1.push(md2)
+          }
+        }
+      }
+      var fydata = new Array()
+      for (let i = 0; i < name.length; i++){
+        fydata[i] = new Array()
+        for (let j = 0; j < xdate.length; j++){
+          fydata[i][j]=0
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[a][b] = ndata[i].num
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : false,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < name.length; i++){
+        var a1 = ""
+        var a2 = []
+        for (let i1 = 0; i1 < ndata1.length; i1++){
+          if(ndata1[i1].name==name[i]){
+            a1 = { xAxis:xdate.indexOf(ndata1[i1].time) }
+            a2.push(a1)
+          }
+        }
+        var mark = {
+          symbol: 'triangle',
+          label: { show: true,
+            formatter: function(params){
+              let a = ""
+              for (let i1 = 0; i1 < ndata1.length; i1++){
+                if(ndata1[i1].time==xdate[params.value]){
+                  a = ndata1[i1].type
+                }
+              }
+              return a+'平均飞行小时变更时间'
+            }
+          },
+          data: a2
+        }
+        by = {name:name[i], type: 'line',data: fydata[i], markLine:mark,label: labelOption}
+        oy.push(by)
+      }
+      // 渲染图表
+      var myChart = echarts.init(document.getElementById('stackedLineChart1'));
       var option={
         tooltip: {
           trigger: 'axis',

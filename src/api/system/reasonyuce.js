@@ -199,3 +199,19 @@ export function ProRepairWorkmanship2() {
     method: 'get'
   })
 }
+
+//使用强度发生变化:1.年度-季度平均飞行小时变更时间与质量问题数量变化时间一致或不超过一定范围
+export function devusechangequarter() {
+  return request({
+    url: '/system/reasonrule/devusechangequarter',
+    method: 'get'
+  })
+}
+
+//使用强度发生变化:2.年度平均飞行小时变更时间与质量问题数量变化时间一致或不超过一定范围
+export function devusechangeyear() {
+  return request({
+    url: '/system/reasonrule/devusechangeyear',
+    method: 'get'
+  })
+}
