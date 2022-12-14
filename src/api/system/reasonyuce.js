@@ -215,3 +215,35 @@ export function devusechangeyear() {
     method: 'get'
   })
 }
+
+//供应链发生变化:1.不同故障件所用原材料来源中，某种故障模式质量问题数量存在较大差异
+export function ProMakePlace1() {
+  return request({
+    url: '/system/reasonrule/ProMakePlace1',
+    method: 'get'
+  })
+}
+
+//供应链发生变化:2.不同故障件所用零部件来源中，某种故障模式质量问题数量存在较大差异
+export function ProMakePlace2() {
+  return request({
+    url: '/system/reasonrule/ProMakePlace2',
+    method: 'get'
+  })
+}
+
+//供应链发生变化:3.故障件相关原材料或原材料供应商更换时间与质量问题数量变化时间一致或不超过一定范围
+export function ProMakePlace3() {
+  return request({
+    url: '/system/reasonrule/ProMakePlace3',
+    method: 'get'
+  })
+}
+
+//供应链发生变化:4.故障件所需零部件供应商发生变更时间与质量问题数量变化时间一致或不超过一定范围
+export function ProMakePlace4() {
+  return request({
+    url: '/system/reasonrule/ProMakePlace4',
+    method: 'get'
+  })
+}
