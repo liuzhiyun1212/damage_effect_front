@@ -247,3 +247,35 @@ export function ProMakePlace4() {
     method: 'get'
   })
 }
+
+//维修人员发生变化:1.不同维修人员生产的相同故障件中，某种故障模式质量问题数量存在较大差异
+export function prorepairperson1() {
+  return request({
+    url: '/system/reasonrule/prorepairperson1',
+    method: 'get'
+  })
+}
+
+//维修人员发生变化:2.大量维修新员工入职或老员工离职/换岗与质量问题数量变化时间一致或不超过一定范围
+export function prorepairperson2() {
+  return request({
+    url: '/system/reasonrule/prorepairperson2',
+    method: 'get'
+  })
+}
+
+//维修设备发生变化:1.维修线大量新设备开始使用时间与质量问题数量变化时间一致或不超过一定范围
+export function prorepairdev1() {
+  return request({
+    url: '/system/reasonrule/prorepairdev1',
+    method: 'get'
+  })
+}
+
+//维修设备发生变化:2.维修线进行升级或更换时间与质量问题数量变化时间一致或不超过一定范围
+export function prorepairdev2() {
+  return request({
+    url: '/system/reasonrule/prorepairdev2',
+    method: 'get'
+  })
+}
