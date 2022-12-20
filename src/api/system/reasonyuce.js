@@ -279,3 +279,27 @@ export function prorepairdev2() {
     method: 'get'
   })
 }
+
+//装备状态发生变化:1.不同状态的装备，某种故障模式质量问题数量存在较大差异
+export function devstatus1() {
+  return request({
+    url: '/system/reasonrule/devstatus1',
+    method: 'get'
+  })
+}
+
+//装备状态发生变化:2.不同状态的故障件，某种故障模式质量问题数量存在较大差异
+export function devstatus2() {
+  return request({
+    url: '/system/reasonrule/devstatus2',
+    method: 'get'
+  })
+}
+
+//使用环境发生变化:1.不同使用环境下的装备，某种故障模式质量问题数量存在较大差异
+export function useenvironment1() {
+  return request({
+    url: '/system/reasonrule/useenvironment1',
+    method: 'get'
+  })
+}

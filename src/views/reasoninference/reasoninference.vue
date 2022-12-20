@@ -107,6 +107,9 @@ import {
   prorepairperson2,
   prorepairdev1,
   prorepairdev2,
+  devstatus1,
+  devstatus2,
+  useenvironment1,
 } from "../../api/system/reasonyuce";
 
 export default {
@@ -337,6 +340,20 @@ export default {
         this.rule4 = ""
         this.ifprorepairdev()
       }
+      if(label=="使用环境发生变化"){
+        this.rule1 = "1.不同使用环境下的装备，某种故障模式质量问题数量存在较大差异。"
+        this.rule2 = ""
+        this.rule3 = ""
+        this.rule4 = ""
+        this.ifuseenvironment()
+      }
+      if(label=="装备状态发生变化"){
+        this.rule1 = "1.不同状态的装备，某种故障模式质量问题数量存在较大差异；"
+        this.rule2 = "2.不同状态的故障件，某种故障模式质量问题数量存在较大差异。"
+        this.rule3 = ""
+        this.rule4 = ""
+        this.ifdevstatus()
+      }
     },
     handleRule(rule){
       if(this.ifsplit==false){
@@ -452,6 +469,45 @@ export default {
       if(rule=="2.维修线进行升级或更换时间与质量问题数量变化时间一致或不超过一定范围。"){
         this.ruleprorepairdev2()
       }
+      if(rule=="1.不同使用环境下的装备，某种故障模式质量问题数量存在较大差异。"){
+        this.ruleuseenvironment1()
+      }
+      if(rule=="1.不同状态的装备，某种故障模式质量问题数量存在较大差异；"){
+        this.ruledevstatus1()
+      }
+      if(rule=="2.不同状态的故障件，某种故障模式质量问题数量存在较大差异。"){
+        this.ruledevstatus2()
+      }
+    },
+    ifuseenvironment(){
+      useenvironment1().then(response1 => {
+        this.total1 = response1.total;
+        if(this.total1>0){
+          this.if1 = true
+        }
+        if(this.total1>0){
+          this.printuseenvironment1(response1.rows)
+        }
+      })
+    },
+    ifdevstatus(){
+      devstatus1().then(response1 => {
+        devstatus2().then(response2 => {
+          this.total1 = response1.total;
+          this.total2 = response2.total;
+          if(this.total1>0){
+            this.if1 = true
+          }
+          if(this.total2>0){
+            this.if2 = true
+          }
+          if(this.total1>0){
+            this.printdevstatus1(response1.rows)
+          }else if(this.total2>0){
+            this.printdevstatus2(response2.rows)
+          }
+        })
+      })
     },
     ifprorepairperson(){
       prorepairperson1().then(response1 => {
@@ -953,6 +1009,21 @@ export default {
       prorepairdev2().then(response => {
         this.printprorepairdev2(response.rows)
       });
+    },
+    ruleuseenvironment1(){
+      useenvironment1().then(response => {
+        this.printuseenvironment1(response.rows)
+      })
+    },
+    ruledevstatus1(){
+      devstatus1().then(response => {
+        this.printdevstatus1(response.rows)
+      })
+    },
+    ruledevstatus2(){
+      devstatus2().then(response => {
+        this.printdevstatus2(response.rows)
+      })
     },
     printdevup1(rows){
       this.yiju = "（判断规则1）"
@@ -7369,6 +7440,455 @@ export default {
       window.addEventListener('resize', () => {
         myChart.resize()
       })
+    },
+    printuseenvironment1(rows){
+      this.yiju = "（判断规则1）"
+      this.dataList1 = rows
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+      for (let i = 0; i < this.dataList1.length; i++) {
+        date = this.dataList1[i].planeType + "-" + this.dataList1[i].faultModel
+        if(name.indexOf(date) == -1){
+          name.push(date)
+        }
+        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
+          xdate.push(this.dataList1[i].devHappenTime)
+        }
+        md = {name:date,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        ndata.push(md)
+      }
+      var xdate1 = []
+      for (let i = 0; i < xdate.length; i++){
+        xdate1.push(xdate[i])
+      }
+      var fydata = new Array()
+      for (let i = 0; i < xdate.length; i++){
+        fydata[i] = new Array()
+        for (let j = 0; j < name.length; j++){
+          fydata[i][j]=0
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[b][a] = ndata[i].num
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : true,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < xdate.length; i++){
+        by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+        oy.push(by)
+      }
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          position: function (point, params, dom, rect, size) {
+            // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+            // 提示框位置
+            var x = 0; // x坐标位置
+            var y = 0; // y坐标位置
+            // 当前鼠标位置
+            var pointX = point[0];
+            var pointY = point[1];
+            // 外层div大小
+            // var viewWidth = size.viewSize[0];
+            // var viewHeight = size.viewSize[1];
+            // 提示框大小
+            var boxWidth = size.contentSize[0];
+            var boxHeight = size.contentSize[1];
+            // boxWidth > pointX 说明鼠标左边放不下提示框
+            if (boxWidth > pointX) {
+              x = 5;
+            } else { // 左边放的下
+              x = pointX - boxWidth;
+            }
+            // boxHeight > pointY 说明鼠标上边放不下提示框
+            if (boxHeight > pointY) {
+              y = 5;
+            } else { // 上边放得下
+              y = pointY - boxHeight;
+            }
+            return [x, y];
+          },
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: xdate1
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          minInterval:1,
+          type: 'value',
+        },
+        yAxis: {
+          data: name,
+          type: 'category',
+          scale: true,
+          triggerEvent: true,
+          axisLabel:{
+            interval: 0,
+            formatter: function (value) {
+              if (value.length > 3) {
+                return `${value.slice(0, 3)}...`
+              }
+              return value
+            },
+          },
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+      this.extension(myChart);
+    },
+    printdevstatus1(rows){
+      this.yiju = "（判断规则1）"
+      this.dataList1 = rows
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+      for (let i = 0; i < this.dataList1.length; i++) {
+        date = this.dataList1[i].planeType + "-" + this.dataList1[i].faultModel
+        if(name.indexOf(date) == -1){
+          name.push(date)
+        }
+        if(xdate.indexOf(this.dataList1[i].devHappenTime) == -1){
+          xdate.push(this.dataList1[i].devHappenTime)
+        }
+        md = {name:date,time:this.dataList1[i].devHappenTime,num:this.dataList1[i].devHappennum}
+        ndata.push(md)
+      }
+      var xdate1 = []
+      for (let i = 0; i < xdate.length; i++){
+        xdate1.push(xdate[i])
+      }
+      var fydata = new Array()
+      for (let i = 0; i < xdate.length; i++){
+        fydata[i] = new Array()
+        for (let j = 0; j < name.length; j++){
+          fydata[i][j]=0
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[b][a] = ndata[i].num
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : true,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < xdate.length; i++){
+        by = {name:xdate1[i], type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+        oy.push(by)
+      }
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          position: function (point, params, dom, rect, size) {
+            // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+            // 提示框位置
+            var x = 0; // x坐标位置
+            var y = 0; // y坐标位置
+            // 当前鼠标位置
+            var pointX = point[0];
+            var pointY = point[1];
+            // 外层div大小
+            // var viewWidth = size.viewSize[0];
+            // var viewHeight = size.viewSize[1];
+            // 提示框大小
+            var boxWidth = size.contentSize[0];
+            var boxHeight = size.contentSize[1];
+            // boxWidth > pointX 说明鼠标左边放不下提示框
+            if (boxWidth > pointX) {
+              x = 5;
+            } else { // 左边放的下
+              x = pointX - boxWidth;
+            }
+            // boxHeight > pointY 说明鼠标上边放不下提示框
+            if (boxHeight > pointY) {
+              y = 5;
+            } else { // 上边放得下
+              y = pointY - boxHeight;
+            }
+            return [x, y];
+          },
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  html += params[i].seriesName + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: xdate1
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          minInterval:1,
+          type: 'value',
+        },
+        yAxis: {
+          data: name,
+          type: 'category',
+          scale: true,
+          triggerEvent: true,
+          axisLabel:{
+            interval: 0,
+            formatter: function (value) {
+              if (value.length > 3) {
+                return `${value.slice(0, 3)}...`
+              }
+              return value
+            },
+          },
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+      this.extension(myChart);
+    },
+    printdevstatus2(rows){
+      this.yiju = "（判断规则2）"
+      this.dataList2 = rows
+
+      var name = []
+      var date = ""
+      var xdate = []
+      var ndata = []
+      var md = ""
+
+      for (let i = 0; i < this.dataList2.length; i++) {
+        date = this.dataList2[i].partsName + "（" + this.dataList2[i].partsModel + "）"+this.dataList2[i].faultModel
+        if(name.indexOf(date) == -1){
+          name.push(date)
+        }
+        if(xdate.indexOf(this.dataList2[i].devHappenTime) == -1){
+          xdate.push(this.dataList2[i].devHappenTime)
+        }
+        md = {name:date,id:this.dataList2[i].devHappenTime,time:this.dataList2[i].devHappenTime,num:this.dataList2[i].devHappennum}
+        ndata.push(md)
+      }
+      var xdate1 = []
+      for (let i = 0; i < xdate.length; i++){
+        xdate1.push(xdate[i])
+      }
+      var fydata = new Array()
+      var ydata = new Array()
+      for (let i = 0; i < xdate.length; i++){
+        fydata[i] = new Array()
+        ydata[i] = new Array()
+        for (let j = 0; j < name.length; j++){
+          fydata[i][j]=0
+          ydata[i][j]=""
+        }
+      }
+      for (let i = 0; i < ndata.length; i++){
+        let a = name.indexOf(ndata[i].name)
+        let b = xdate.indexOf(ndata[i].time)
+        fydata[b][a] = ndata[i].num
+        ydata[b][a] = ndata[i].id
+      }
+      var by = ""
+      var oy = []
+      var labelOption = {
+        normal: {
+          show : true,
+          formatter: function(params) {
+            // params是每根柱子的对象
+            var html = '';
+            if (params.value > 0) {
+              // 千万不要html += '';
+              html = params.value
+              return html;
+            }
+            // 没有数据的返回'' 不是返回0
+            return html;
+          },
+        }
+      }
+      for (let i = 0; i < xdate.length; i++){
+        by = {name:xdate1[i],type: 'bar',stack: 'total',data: fydata[i],label: labelOption}
+        oy.push(by)
+      }
+      var myChart = echarts.init(document.getElementById('stackedLineChart'));
+      var option={
+        tooltip: {
+          trigger: 'axis',
+          position: function (point, params, dom, rect, size) {
+            // 鼠标坐标和提示框位置的参考坐标系是：以外层div的左上角那一点为原点，x轴向右，y轴向下
+            // 提示框位置
+            var x = 0; // x坐标位置
+            var y = 0; // y坐标位置
+
+            // 当前鼠标位置
+            var pointX = point[0];
+            var pointY = point[1];
+
+            // 外层div大小
+            // var viewWidth = size.viewSize[0];
+            // var viewHeight = size.viewSize[1];
+
+            // 提示框大小
+            var boxWidth = size.contentSize[0];
+            var boxHeight = size.contentSize[1];
+
+            // boxWidth > pointX 说明鼠标左边放不下提示框
+            if (boxWidth > pointX) {
+              x = 5;
+            } else { // 左边放的下
+              x = pointX - boxWidth;
+            }
+
+            // boxHeight > pointY 说明鼠标上边放不下提示框
+            if (boxHeight > pointY) {
+              y = 5;
+            } else { // 上边放得下
+              y = pointY - boxHeight;
+            }
+
+            return [x, y];
+          },
+          formatter: function (params) {
+            var html = '';
+            if (params.length != 0) {
+              // 对应x轴的时间数据  也就是2019-01-01
+              var getName = params[0].name;
+              html += getName + '<br/>';
+              for (var i = 0; i < params.length; i++) {
+                // 如果为0 为空的数据我们不要了(你们可以直接判断 > 0)
+                if (params[i].value != null && params[i].value != 0
+                  && params[i].value != '') {
+                  // params[i].marker 需要加上，否则你鼠标悬浮时没有样式了
+                  html += params[i].marker;
+                  let a = name.indexOf(getName)
+                  let b = xdate1.indexOf(params[i].seriesName)
+                  html += ydata[b][a] + ': ' + params[i].value + '次<br/>';
+                }
+              }
+            }
+            return html;
+          }
+        },
+        legend: {
+          data: xdate1
+        },
+        grid: {
+          left: '1%',
+          right: '4.2%',
+          bottom: '1%',
+          containLabel: true
+        },
+        xAxis: {
+          minInterval:1,
+          type: 'value',
+        },
+        yAxis: {
+          data: name,
+          type: 'category',
+          scale: true,
+          triggerEvent: true,
+          axisLabel:{
+            interval: 0,
+            formatter: function (value) {
+              if (value.length > 3) {
+                return `${value.slice(0, 3)}...`
+              }
+              return value
+            },
+          },
+        },
+        series: oy,
+      };
+      option && myChart.setOption(option)
+      // 刷新调整
+      window.addEventListener('resize', () => {
+        myChart.resize()
+      })
+      this.extension(myChart);
     }
   }
 }
