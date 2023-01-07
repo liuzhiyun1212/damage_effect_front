@@ -146,9 +146,136 @@ export default {
     };
   },
   created() {
+    this.handleRedTab();
     this.getchangeTree();
   },
   methods: {
+    handleRedTab() {
+      devup1().then(devup1 => {
+        devup2().then(devup2 => {
+          if(devup1.total>0||devup2.total>0){
+            this.backData.push(5)
+          }
+        })
+      })
+      prochaange1().then(prochaange1 => {
+        prochaange2().then(prochaange2 => {
+          prochaange3().then(prochaange3 => {
+            prochaange4().then(prochaange4 => {
+              if(prochaange1.total>0||prochaange2.total>0||prochaange3.total>0||prochaange4.total>0){
+                this.backData.push(6)
+              }
+            })
+          })
+        })
+      })
+      devcapup1().then(devcapup1 => {
+        devcapup2().then(devcapup2 => {
+          if(devcapup1.total>0||devcapup2.total>0){
+            this.backData.push(7)
+          }
+        })
+      })
+      proteam1().then(proteam1 => {
+        proteam2().then(proteam2 => {
+          if(proteam1.total>0||proteam2.total>0){
+            this.backData.push(8)
+          }
+        })
+      })
+      properson1().then(properson1 => {
+        properson2().then(properson2 => {
+          if(properson1.total>0||properson2.total>0){
+            this.backData.push(9)
+          }
+        })
+      })
+      promakedev1().then(promakedev1 => {
+        promakedev2().then(promakedev2 => {
+          promakedev3().then(promakedev3 => {
+            if(promakedev1.total>0||promakedev2.total>0||promakedev3.total>0){
+              this.backData.push(10)
+            }
+          })
+        })
+      })
+      promeasuringdev1().then(promeasuringdev1 => {
+        promeasuringdev2().then(promeasuringdev2 => {
+          promeasuringdev3().then(promeasuringdev3 => {
+            if(promeasuringdev1.total>0||promeasuringdev2.total>0||promeasuringdev3.total>0){
+              this.backData.push(11)
+            }
+          })
+        })
+      })
+      ProMakePlace1().then(ProMakePlace1 => {
+        ProMakePlace2().then(ProMakePlace2 => {
+          ProMakePlace3().then(ProMakePlace3 => {
+            ProMakePlace4().then(ProMakePlace4 => {
+              if(ProMakePlace1.total>0||ProMakePlace2.total>0||ProMakePlace3.total>0||ProMakePlace4.total>0){
+                this.backData.push(12)
+              }
+            })
+          })
+        })
+      })
+      ProMakeWorkmanship1().then(ProMakeWorkmanship1 => {
+        ProMakeWorkmanship2().then(ProMakeWorkmanship2 => {
+          ProMakeWorkmanship3().then(ProMakeWorkmanship3 => {
+            if(ProMakeWorkmanship1.total>0||ProMakeWorkmanship2.total>0||ProMakeWorkmanship3.total>0){
+              this.backData.push(13)
+            }
+          })
+        })
+      })
+      prorepairteam1().then(prorepairteam1 => {
+        prorepairteam2().then(prorepairteam2 => {
+          if(prorepairteam1.total>0||prorepairteam2.total>0){
+            this.backData.push(14)
+          }
+        })
+      })
+      prorepairperson1().then(prorepairperson1 => {
+        prorepairperson2().then(prorepairperson2 => {
+          if(prorepairperson1.total>0||prorepairperson2.total>0){
+            this.backData.push(15)
+          }
+        })
+      })
+      prorepairdev1().then(prorepairdev1 => {
+        prorepairdev2().then(prorepairdev2 => {
+          if(prorepairdev1.total>0||prorepairdev2.total>0){
+            this.backData.push(16)
+          }
+        })
+      })
+      ProRepairWorkmanship1().then(ProRepairWorkmanship1 => {
+        ProRepairWorkmanship2().then(ProRepairWorkmanship2 => {
+          if(ProRepairWorkmanship1.total>0||ProRepairWorkmanship2.total>0){
+            this.backData.push(17)
+          }
+        })
+      })
+      devusechangequarter().then(devusechangequarter => {
+        devusechangeyear().then(devusechangeyear => {
+          if(devusechangequarter.total>0||devusechangeyear.total>0){
+            this.backData.push(18)
+          }
+        })
+      })
+      devstatus1().then(devstatus1 => {
+        devstatus2().then(devstatus2 => {
+          if(devstatus1.total>0||devstatus2.total>0){
+            this.backData.push(19)
+          }
+        })
+      })
+      useenvironment1().then(useenvironment1 => {
+        if(useenvironment1.total>0){
+          this.backData.push(20)
+        }
+      })
+    },
     handleClickTab(tab) {
       this.activeName = tab.name;
       this.dataList2 = []
