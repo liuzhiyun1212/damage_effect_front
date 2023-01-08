@@ -146,8 +146,8 @@ export default {
     };
   },
   created() {
-    this.handleRedTab();
     this.getchangeTree();
+    this.handleRedTab();
   },
   methods: {
     handleRedTab() {
