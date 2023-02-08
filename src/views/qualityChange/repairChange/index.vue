@@ -11,16 +11,46 @@
     >
       故障件维修班组变更情况
     </p>
-    <el-card  style="width: 95%; margin-left: 30px; margin-top: 10px">
-      <div
-        id="repairGroupTimeLine"
-        style="width: 100%; height: 300px;"
-      ></div>
-      <div
-        id="repairGroup"
-        style="width: 100%; height: 400px;"
-      ></div>
-
+    <el-card style="width: 95%; margin-left: 30px; margin-top: 10px">
+      <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+        <p
+          style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+        >
+          改型时间线
+        </p>
+        <el-tooltip placement="top">
+          <div slot="content">质量问题涉及到的故障件类型随时间变化的改型变更情况
+          </div>
+          <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+        </el-tooltip>
+      </div>
+      <div id="repairGroupTimeLine" :style="{ width: '100%', height: '400px' }"></div>
+      <!-- 对比堆叠图 -->
+      <div style="width: 100%; background: #d2e9ff; border-radius: 10px">
+        <p
+          style="
+            font-family: Arial;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 20px;
+          "
+        >
+          对比堆叠图
+        </p>
+        <el-tooltip placement="top">
+          <div slot="content">质量问题涉及到的故障件维修班组对应的质量问题数
+          </div>
+          <i class="el-icon-question"  style="float: right; margin-right: 20px; margin-top: 12px; font-size: 30px;"></i>
+        </el-tooltip>
+      </div>
+      <div id="repairGroup" :style="{ width: '100%', height: '400px' }"></div>
     </el-card>
   </div>
 </template>
