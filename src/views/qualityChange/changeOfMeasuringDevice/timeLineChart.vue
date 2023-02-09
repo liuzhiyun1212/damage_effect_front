@@ -60,9 +60,6 @@ export default {
                 this.allList = response;
                 this.dealRes(this.allList);
                 this.selectByMeasuringDeviceChanged();
-                // this.getHeight();
-                this.getTime();
-                // console.log("1111111",this.allList);
             });
         },
 

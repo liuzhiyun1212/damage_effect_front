@@ -57,12 +57,12 @@ export default {
         // 时间线统计列表
         timeProduceDeviceChanged() {
             timeProduceDeviceChanged(this.queryParams).then(response => {
-                console.log("timeProduceDeviceChanged", response);
+                // console.log("timeProduceDeviceChanged", response);
                 this.allList = response;
                 this.dealRes(this.allList);
                 this.selectByProduceDeviceChanged();
                 // this.getHeight();
-                this.getTime();
+                // this.getTime();
                 // console.log("1111111",this.allList);
             });
         },

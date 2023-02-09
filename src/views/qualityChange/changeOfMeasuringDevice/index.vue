@@ -99,14 +99,23 @@ export default {
 
         getChartData() {
             getMeasuringDeviceChartList().then(res => {
-                console.log(res);
+                // console.log(res);
                 let list = [];
                 list.push(res.data.produceNumObj)
                 list.push(res.data.faultNumObj)
                 this.option.series = list
                 this.option.yAxis.data = res.data.equipmentNameArray
+                this.getHeight_stacked()
                 this.initChart()
             });
+        },
+    
+        // 高度适应 对比堆叠图
+        getHeight_stacked() {
+            var id__stacked = this.$refs.measuring_device_stack_chart
+            var height__stacked = this.option.yAxis.data.length * 80
+            //d.setAttribute(height,height+"px");
+            id__stacked.style.cssText = "height:" + height__stacked + "px"
         },
     },
 

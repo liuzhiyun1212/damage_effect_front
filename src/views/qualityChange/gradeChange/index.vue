@@ -217,7 +217,7 @@ export default {
                 this.dealRes(this.allList);
                 this.selectByGradeChanged();
                 // this.getHeight();
-                this.getTime();
+                // this.getTime();
                 // console.log("1111111",this.allList);
         });
         },
