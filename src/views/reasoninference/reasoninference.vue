@@ -332,7 +332,13 @@ export default {
     getchangeTree() {
       changeDataTreeSelect().then(response => {
         this.changeOptions = response.data;
-        this.handleNodeClick({id:5,label:"装备型号升级"});
+        let type = this.$route.query.type
+        let label = this.$route.query.label
+        if(label==undefined&&type==undefined){
+          this.handleNodeClick({id:5,label:"装备型号升级"});
+        }else{
+          this.handleNodeClick({id:type,label:label});
+        }
       });
     },
     handleNodeClick(data) {
@@ -8028,5 +8034,6 @@ export default {
 }
 .pass {
   background-color: red;
+  color: white;
 }
 </style>
