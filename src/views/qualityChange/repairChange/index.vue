@@ -293,18 +293,18 @@ export default {
         // }
         // },
         legend: {},
-        toolbox: {
-          show: true,
-          feature: {
-            dataZoom: {
-              yAxisIndex: 'none'
-            },
-            dataView: { readOnly: false },
-            magicType: { type: ['line', 'bar'] },
-            restore: {},
-            saveAsImage: {}
-          }
-        },
+        // toolbox: {
+        //   show: true,
+        //   feature: {
+        //     dataZoom: {
+        //       yAxisIndex: 'none'
+        //     },
+        //     dataView: { readOnly: false },
+        //     magicType: { type: ['line', 'bar'] },
+        //     restore: {},
+        //     saveAsImage: {}
+        //   }
+        // },
         xAxis: {
           type: 'category',
           boundaryGap: false,
@@ -317,8 +317,9 @@ export default {
           },
         },
         yAxis: {
-          type: 'value',
-          interval:1,
+          type: 'category',
+          // data:this.yList,
+          // interval:1,
           axisLabel: {
             margin:20,
             formatter: function (val,index) {
